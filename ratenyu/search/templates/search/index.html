@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 
-Welcome to RateNYU
+    <h1 class="welcome">Welcome to RateNYU!</h1>
+    <h2 class="welcome">Search for reviews by course name, course id, or professor name.</h2>
+
+    <form class="search" method="GET" action="">
+        <select class="dropdown">
+            <option value="CourseID">Course ID</option>
+            <option value="CourseName">Course Name</option>
+            <option value="ProfessorName">Professor Name</option>
+        </select>
+        <input type="text" class="search" placeholder="Start Typing">
+        <button type="submit" class="search">Search!</button>
+    </form>
+
+    <div class="nyu-logo">
+    </div>
 
 {% endblock %}

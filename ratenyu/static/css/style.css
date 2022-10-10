@@ -1,3 +1,7 @@
+body {
+  text-align: center;
+}
+
 .navbar {
   background: #702B9D;
   display: flex;
@@ -21,6 +25,89 @@
   padding: 14px 16px;
   width: 89px;
   height: 30px;
+}
+
+.nyu-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 900px;
+  height: 300px;
+  background-image: url('/static/images/nyulogo.png');
+  background-size: 100% 100%;
+}
+
+h1 {
+  font-family: inter-semibold;
+  font-weight: 700;
+}
+
+h1.welcome {
+  font-size: 75px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  padding-top: 80px;
+  line-height: 40%;
+}
+
+h2 {
+  font-family: inter-semibold;
+  font-weight: 700;
+}
+
+h2.welcome {
+  font-size: 35px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+form.search {
+  display: inline-block;
+  flex-wrap: nowrap;
+  width: 50%;
+  padding-bottom: 50px;
+}
+
+input {
+  font-family: inter-regular;
+  outline: none;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  padding: 7px;
+}
+
+input.search {
+  font-size: 18px;
+  width: 50%;
+  margin-left: 0px;
+  margin-right: 5px;
+}
+
+button {
+  font-family: inter-regular;
+  background: #FFFFFF;
+  cursor: pointer;
+}
+
+button.search {
+  font-size: 18px;
+  outline: none;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
+}
+
+.dropdown {
+  font-size: 18px;
+  font-family: inter-regular;
+  background: #FFFFFF;
+  cursor: pointer;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
 }
 
 ul {
