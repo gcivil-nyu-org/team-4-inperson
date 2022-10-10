@@ -1,0 +1,79 @@
+.navbar {
+  background: #702B9D;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  position: relative;
+  width: 1280px;
+  height: 56px;
+}
+
+.title {
+  font-size: 20px;
+  font-family: inter-semibold;
+  color: white;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 14px 16px;
+  width: 89px;
+  height: 30px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li {
+  font-family: inter-regular;
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: black;
+}
+
+@font-face {
+  font-family: 'inter-bold';
+  src: Local('Inter-Bold'), url('/static/fonts/Inter-Bold.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'inter-regular';
+  src: Local('Inter-Bold'), url('/static/fonts/Inter-Regular.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'inter-medium';
+  src: Local('Inter-Bold'), url('/static/fonts/Inter-Medium.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'inter-black';
+  src: Local('Inter-Bold'), url('/static/fonts/Inter-Black.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'inter-light';
+  src: Local('Inter-Bold'), url('/static/fonts/Inter-Light.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'inter-semibold';
+  src: Local('Inter-Bold'), url('/static/fonts/Inter-Semibold.ttf') format("truetype");
+}
