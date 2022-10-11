@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['ratenyu-dev.eba-apngxcqy.us-east-1.elasticbeanstalk.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'search',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
