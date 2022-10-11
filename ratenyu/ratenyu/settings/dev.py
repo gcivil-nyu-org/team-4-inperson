@@ -11,3 +11,6 @@ DATABASES = {
             'PORT': os.environ['RDS_PORT'],
         }
 }
+STATICFILES_DIRS = []
+STATIC_ROOT = 'static'
+
