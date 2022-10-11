@@ -3,7 +3,7 @@ __pycache__/
 .idea
 /ratenyu/db.sqlite3
 /ratenyu/ratenyu/db.sqlite3
-/ratenyu/static/admin
+/ratenyu/ratenyu/static/admin
 .env
 
 /ratenyu/.elasticbeanstalk/*

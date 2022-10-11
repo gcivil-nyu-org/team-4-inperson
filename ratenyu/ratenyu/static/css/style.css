@@ -49,7 +49,7 @@ body {
   padding-left: 30px;
   width: 100px;
   height: 60px;
-  
+
 }
 
 .nyu-logo {
@@ -58,7 +58,7 @@ body {
   margin-right: auto;
   width: 900px;
   height: 300px;
-  background-image: url('/static/images/nyulogo.png');
+  background-image: url('//nyulogo.png');
   background-size: 100% 100%;
 }
 
@@ -165,30 +165,30 @@ li a:hover {
 
 @font-face {
   font-family: 'inter-bold';
-  src: Local('Inter-Bold'), url('/static/fonts/Inter-Bold.ttf') format("truetype");
+  src: Local('Inter-Bold'), url('/Inter-Bold.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'inter-regular';
-  src: Local('Inter-Bold'), url('/static/fonts/Inter-Regular.ttf') format("truetype");
+  src: Local('Inter-Bold'), url('/Inter-Regular.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'inter-medium';
-  src: Local('Inter-Bold'), url('/static/fonts/Inter-Medium.ttf') format("truetype");
+  src: Local('Inter-Bold'), url('/Inter-Medium.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'inter-black';
-  src: Local('Inter-Bold'), url('/static/fonts/Inter-Black.ttf') format("truetype");
+  src: Local('Inter-Bold'), url('/Inter-Black.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'inter-light';
-  src: Local('Inter-Bold'), url('/static/fonts/Inter-Light.ttf') format("truetype");
+  src: Local('Inter-Bold'), url('/Inter-Light.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'inter-semibold';
-  src: Local('Inter-Bold'), url('/static/fonts/Inter-Semibold.ttf') format("truetype");
+  src: Local('Inter-Bold'), url('/Inter-SemiBold.ttf') format("truetype");
 }
