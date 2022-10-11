@@ -3,3 +3,7 @@ __pycache__/
 .idea
 /ratenyu/db.sqlite3
 .env
+
+/ratenyu/.elasticbeanstalk/*
+/ratenyu/!.elasticbeanstalk/*.cfg.yml
+/ratenyu/!.elasticbeanstalk/*.global.yml
