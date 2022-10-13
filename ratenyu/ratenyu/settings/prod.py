@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ratenyu.eba-apngxcqy.us-east-1.elasticbeanstalk.com']
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
