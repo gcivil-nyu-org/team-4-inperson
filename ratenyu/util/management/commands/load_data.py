@@ -105,8 +105,8 @@ def create_data(filename: str, model: str) -> None:
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # create_data(filename=COURSES, model="course")
-        # create_data(filename=PROFESSORS, model="professor")
-        # create_data(filename=CLASSES, model="class")
+        create_data(filename=COURSES, model="course")
+        create_data(filename=PROFESSORS, model="professor")
+        create_data(filename=CLASSES, model="class")
         create_data(filename=REVIEWS, model="review")
 
