@@ -13,9 +13,6 @@ class Course(models.Model):
     catalog_number = models.CharField(max_length=20, blank=True)
     course_description = models.TextField(blank=True)
 
-    def __str__(self):
-        return self
-
 
 class Class(models.Model):
     class_id = models.CharField(max_length=250, primary_key=True)
@@ -27,9 +24,6 @@ class Class(models.Model):
     last_offered = models.CharField(max_length=250, blank=True)
     location = models.CharField(max_length=250, blank=True)
     enroll_capacity = models.PositiveIntegerField(blank=True)
-
-    def __str__(self):
-        return self
 
 
 class Review(models.Model):

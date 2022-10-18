@@ -6,6 +6,3 @@ class Professor(models.Model):
     name = models.CharField(max_length=250)
     net_id = models.CharField(max_length=250)
     role = models.CharField(max_length=250)
-
-    def __str__(self):
-        return self
