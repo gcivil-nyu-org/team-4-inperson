@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <ul class="detail-left-section">
+        <li>Last Offered: <span class="left-section">Fall 2022</span></li>
+        <li>Class Location: <span class="left-section">WS</span></li>
+        <li>Class Capacity: <span class="left-section">75</span></li>
+    </ul>
+
+    <div class="detail-title">
+        <h1 class="detail-name">John Smith</h1>
+        <h1 class="detail-rating">4.5/5.0</h1>
+    </div>
+
+    <div class="detail-sub-title">
+        <h2>CS-GY-6063</h2>
+        <h2>10 Reviews</h2>
+    </div>
+
+    <div class="detail-sub-course-desc">
+        <p>The course emphasizes the full software-engineering approach with alternative approaches.
+        Technical emphasis is on requirements, design, development and modeling. Management issues include
+        software cost estimating and project management. Understanding the processes applicable to the software
+        development/integration cycle and maintenance along with technology changes on quality and development
+        activities.</p>
+    </div>
+
+    <div class="detail-dropdown">
+        <form class="search"  method="GET" action="">
+            <select class="dropdown" id="detail-dropdown">
+                <option value="RevDateDesc">Review Date Descending</option>
+                <option value="RevDateDesc">Review Date Ascending</option>
+                <option value="RevDateDesc">Rating Descending</option>
+                <option value="RevDateDesc">Rating Ascending</option>
+                <option value="RevDateDesc">Class Level</option>
+            </select>
+        </form>
+    </div>
+
+    <ul class="detail-side-links">
+        <li class="detail-side-links"><span class="rev-title">Courses:</span></li>
+        <li class="detail-side-links"><a href="">Software Engineering</a></li>
+        <li class="detail-side-links"><a href=""> Big Data</a></li>
+        <li class="detail-side-links"><a href=""> Algorithms I</a></li>
+    </ul>
+
+    <div class="all-reviews">
+        <div class="review">
+            <p>Junior <br> May, 2021 <br> 4/5</p>
+            <p><span class="rev-title">Course: <a href="">Software Engineering</a> | Professor: John Smith</span><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.</p>
+        </div>
+
+        <div class="review">
+            <p>Junior <br> May, 2021 <br> 4/5</p>
+            <p><span class="rev-title">Course: Software Engineering | Professor: John Smith</span><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.</p>
+      </div>
+
+        <div class="review">
+            <p>Junior <br> May, 2021 <br> 4/5</p>
+            <p><span class="rev-title">Course: Software Engineering | Professor: John Smith</span><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.</p>
+      </div>
+
+        <div class="review">
+            <p>Junior <br> May, 2021 <br> 4/5</p>
+            <p><span class="rev-title">Course: Software Engineering | Professor: John Smith</span><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.</p>
+      </div>
+
+
+{% endblock %}
