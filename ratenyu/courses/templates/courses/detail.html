@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{#Commenting for now until we can decide how to populate#}
+{#    <ul class="detail-left-section">#}
+{#        <li>Last Offered: <span class="left-section">{{ classes.last_offered }}</span></li>#}
+{#        <li>Class Location: <span class="left-section">{{ classes.location }}</span></li>#}
+{#        <li>Class Capacity: <span class="left-section">{{ classes.enroll_capacity }}</span></li>#}
+{#    </ul>#}
+
+    <div class="detail-title">
+        <h1 class="detail-name">{{ course.course_title }}</h1>
+        <h1 class="detail-rating">{{ reviews_avg }}/5.0</h1>
+    </div>
+
+    <div class="detail-sub-title">
+        <h2>{{ course.course_subject_code }} {{ course.catalog_number }}</h2>
+        <h2>{{ reviews_list|length }} Reviews</h2>
+    </div>
+
+    <div class="detail-sub-course-desc">
+        <p>{{ course.course_description }}</p>
+    </div>
+
+    <div class="detail-dropdown">
+        <form class="search"  method="GET" action="">
+            <select class="dropdown" id="detail-dropdown">
+                <option value="RevDateDesc">Review Date Descending</option>
+                <option value="RevDateDesc">Review Date Ascending</option>
+                <option value="RevDateDesc">Rating Descending</option>
+                <option value="RevDateDesc">Rating Ascending</option>
+                <option value="RevDateDesc">Class Level</option>
+            </select>
+        </form>
+    </div>
+
+    <ul class="detail-side-links">
+        <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
+        {% for professor in professors_list %}
+        <li class="detail-side-links"><a href="">{{ professor.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <div class="all-reviews">
+        {% for review in reviews_list %}
+        <div class="review">
+            <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
+                {{ review.review_obj.rating }}.0/5.0</p>
+            <p><span class="rev-title">Course:<a href=""> {{ review.course_obj.course_title }}</a>
+                | Professor: {{ review.professor_obj.name }}</span><br>
+            {{ review.review_obj.review_text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
