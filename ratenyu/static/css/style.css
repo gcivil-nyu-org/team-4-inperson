@@ -1,7 +1,3 @@
-body {
-  text-align: center;
-}
-
 /* For navbar   */
 
 /*nav bar class*/
@@ -103,6 +99,11 @@ h2.welcome {
   padding-bottom: 15px;
 }
 
+/* Align index page search bar in center */
+.searchbar {
+  text-align: center;
+}
+
 form.search {
   display: inline-block;
   flex-wrap: nowrap;
@@ -201,6 +202,11 @@ ul.detail-side-links {
   width: 70%;
   justify-content: space-between;
   padding: 50px;
+}
+
+/* Add spacing between detail name and detail rating */
+.detail-name {
+  margin-right: 15px;
 }
 
 /*format course id and number of reviews to be right under name and average rating in a smaller font*/
