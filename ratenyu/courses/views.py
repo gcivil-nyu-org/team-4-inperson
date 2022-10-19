@@ -10,7 +10,6 @@ def course_detail(request: HttpRequest, course_id: str):
         professors_list = []
         for cl in classes:
             professors_list.append(cl.professor)
-            print(cl.professor)
         reviews_list = []
         reviews_rating_list = []
         for cl in classes:
