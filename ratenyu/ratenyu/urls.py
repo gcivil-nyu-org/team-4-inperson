@@ -21,5 +21,6 @@ urlpatterns = [
     path('', lambda request: redirect('/search', permanent=True)),
     path('search/', include('search.urls')),
     path('admin/', admin.site.urls),
-    path('professors/',include('professors.urls')),
+    path('professors/', include('professors.urls')),
+    path('courses/', include('courses.urls')),
 ]
