@@ -28,8 +28,6 @@ def search_by_id_func(request: HttpRequest):
     try:
         search_by = request.GET['search_by']
         query = request.GET['query']
-        print(search_by)
-        print(query)
         if search_by == 'CourseID':
             try:
                 course_subject_code = re.search(
