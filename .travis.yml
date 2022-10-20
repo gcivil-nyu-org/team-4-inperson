@@ -1,0 +1,25 @@
+language: python
+python:
+  - "3.8"
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - black ratenyu/
+  - coverage run ratenyu/manage.py test courses.tests
+  - coverage run ratenyu/manage.py test professors.tests
+
+after_success:
+  coveralls
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  region: "us-east-1"
+  app: "ratenyu"
+  env: "ratenyu-dev"
+  bucket_name: "elasticbeanstalk-us-east-1-384537145874"
+  on:
+    branch: develop
