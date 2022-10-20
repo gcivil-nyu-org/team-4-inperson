@@ -37,7 +37,7 @@ def search_by_id_func(request: HttpRequest):
                         '-' + course_subject_code[2:]
                 elif len(course_subject_code) == 5 and course_subject_code[2] == ' ':
                     course_subject_code = course_subject_code[:2] + \
-                        '-' + course_subject_code[2:]
+                        '-' + course_subject_code[3:]
                 catalog_number = re.search(r'[0-9]{4}', query).group(0)
                 course_id = Course.objects.get(
                     course_subject_code=course_subject_code, catalog_number=catalog_number)
