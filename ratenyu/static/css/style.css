@@ -1,8 +1,5 @@
-body {
-  text-align: center;
-}
-
 /* For navbar   */
+
 
 /*nav bar class*/
 .navbar {
@@ -101,6 +98,11 @@ h2.welcome {
   display: flex;
   justify-content: center;
   padding-bottom: 15px;
+}
+
+/* Align index page search bar in center */
+.searchbar {
+  text-align: center;
 }
 
 form.search {
@@ -203,6 +205,11 @@ ul.detail-side-links {
   padding: 50px;
 }
 
+/* Add spacing between detail name and detail rating */
+.detail-name {
+  margin-right: 15px;
+}
+
 /*format course id and number of reviews to be right under name and average rating in a smaller font*/
 .detail-sub-title {
   margin: -110px auto 50px auto;
@@ -218,6 +225,7 @@ ul.detail-side-links {
   width: 70%;
   text-align: left;
 }
+
 
 /*put the dropdown for sorting under the name title, course id, course description, */
 .detail-dropdown {
@@ -248,6 +256,7 @@ div.review {
 .review > p {
   margin-right: 20px;
 }
+
 
 /*review takes up 10/11 of width; grade, review date, rating take up 1/11*/
 div.review > p:nth-of-type(2) {
