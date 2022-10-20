@@ -15,4 +15,3 @@ class ProfessorCreateTest(TestCase):
     def testProfessorCreate(self) -> None:
         professor = Professor.objects.get(professor_id="1")
         self.assertEqual(professor.name, "John Doe", "Failed to create test professor.")
-
