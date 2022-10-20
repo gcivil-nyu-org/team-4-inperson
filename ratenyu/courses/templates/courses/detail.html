@@ -47,8 +47,8 @@
         <div class="review">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
                 {{ review.review_obj.rating }}.0/5.0</p>
-            <p><span class="rev-title">Course:<a href=""> {{ review.course_obj.course_title }}</a>
-                | Professor: {{ review.professor_obj.name }}</span><br>
+            <p><span class="rev-title">Course: {{ course.course_title }}
+                | Professor: <a href= {{review.professor_link}} >{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
         </div>
         {% endfor %}
