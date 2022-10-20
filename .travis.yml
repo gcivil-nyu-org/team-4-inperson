@@ -2,6 +2,12 @@ language: python
 python:
   - "3.8"
 
+branches:
+  only:
+    - master
+    - develop
+    - /^feature.*$/
+
 install:
   - pip install -r requirements.txt
 
@@ -22,4 +28,4 @@ deploy:
   env: "ratenyu-dev"
   bucket_name: "elasticbeanstalk-us-east-1-384537145874"
   on:
-    branch: travis-dev
+    branch: develop
