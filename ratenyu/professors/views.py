@@ -13,14 +13,12 @@ def professor_detail(request: HttpRequest, professor_id: int):
             courses_list.append(cl.course)
         reviews_list = []
         reviews_rating_list = []
-        course_link = "/courses/"
         for cl in classes:
             review_set = Review.objects.filter(class_id=cl.class_id)
             for rev in review_set:
                 current_review = {
                     'review_obj': rev,
-                    'course_obj': Course.objects.get(pk=cl.course_id),
-                    'course_link': course_link + cl.course_id,
+                    'course_obj': Course.objects.get(pk=cl.course_id)
                 }
                 reviews_list.append(current_review)
                 reviews_rating_list.append(rev.rating)

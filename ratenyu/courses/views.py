@@ -12,19 +12,17 @@ def course_detail(request: HttpRequest, course_id: str):
             professors_list.append(cl.professor)
         reviews_list = []
         reviews_rating_list = []
-        professor_link = "/professors/"
         for cl in classes:
             review_set = Review.objects.filter(class_id=cl.class_id)
             for rev in review_set:
                 current_review = {
                     'review_obj': rev,
-                    'professor_obj': cl.professor,
-                    'professor_link': professor_link + cl.professor.professor_id,
+                    'professor_obj': cl.professor
                 }
                 reviews_list.append(current_review)
                 reviews_rating_list.append(rev.rating)
         if len(reviews_rating_list) > 0:
-            reviews_avg = round(float(sum(reviews_rating_list) / len(reviews_rating_list)), 1)
+            reviews_avg = round(float(sum(reviews_rating_list)/len(reviews_rating_list)), 1)
         else:
             reviews_avg = 0
         context = {
