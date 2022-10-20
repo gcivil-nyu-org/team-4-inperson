@@ -22,4 +22,4 @@ deploy:
   env: "ratenyu-dev"
   bucket_name: "elasticbeanstalk-us-east-1-384537145874"
   on:
-    branch: develop
+    branch: travis-dev
