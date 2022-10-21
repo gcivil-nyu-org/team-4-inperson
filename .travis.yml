@@ -29,4 +29,4 @@ deploy:
     bucket_name: "elasticbeanstalk-us-east-1-384537145874"
     on:
       branch: $BRANCH
-      condition: $BRANCH = DEV || $BRANCH = PROD
+      condition: $BRANCH = develop || $BRANCH = master
