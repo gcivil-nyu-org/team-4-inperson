@@ -22,16 +22,8 @@ deploy:
     secret_access_key: $AWS_SECRET_KEY
     region: "us-east-1"
     app: "ratenyu"
-    env: "ratenyu-dev"
+    env: "$EB_ENV"
     bucket_name: "elasticbeanstalk-us-east-1-384537145874"
     on:
-      branch: develop
-  - provider: elasticbeanstalk
-      access_key_id: $AWS_ACCESS_KEY
-      secret_access_key: $AWS_SECRET_KEY
-      region: "us-east-1"
-      app: "ratenyu"
-      env: "ratenyu"
-      bucket_name: "elasticbeanstalk-us-east-1-384537145874"
-      on:
-        branch: master
+      branch: $BRANCH
+      condition: $BRANCH = DEV || $BRANCH = PROD
