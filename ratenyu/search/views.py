@@ -1,9 +1,5 @@
 from django.shortcuts import render
 
-'''
-This is the home page
-'''
-
 
 def index(request):
     return render(request, "search/index.html")
