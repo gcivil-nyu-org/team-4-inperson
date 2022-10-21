@@ -6,6 +6,7 @@ __pycache__/
 /ratenyu/static/admin
 .env
 .DS_store
+.coverage
 /ratenyu/courses/migrations/
 /ratenyu/professors/migrations/
 
