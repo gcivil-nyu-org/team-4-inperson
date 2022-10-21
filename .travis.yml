@@ -11,7 +11,8 @@ install:
 
 script:
   - black ratenyu/
-  - coverage run ratenyu/manage.py test
+  - coverage run ratenyu/manage.py test courses.tests
+  - coverage run ratenyu/manage.py test professors.tests
 
 after_success:
   coveralls
