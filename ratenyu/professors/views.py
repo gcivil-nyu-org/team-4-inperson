@@ -18,21 +18,23 @@ def professor_detail(request: HttpRequest, professor_id: int):
             review_set = Review.objects.filter(class_id=cl.class_id)
             for rev in review_set:
                 current_review = {
-                    'review_obj': rev,
-                    'course_obj': Course.objects.get(pk=cl.course_id),
-                    'course_link': course_link + cl.course_id,
+                    "review_obj": rev,
+                    "course_obj": Course.objects.get(pk=cl.course_id),
+                    "course_link": course_link + cl.course_id,
                 }
                 reviews_list.append(current_review)
                 reviews_rating_list.append(rev.rating)
         if len(reviews_rating_list) > 0:
-            reviews_avg = round(float(sum(reviews_rating_list)/len(reviews_rating_list)), 1)
+            reviews_avg = round(
+                float(sum(reviews_rating_list) / len(reviews_rating_list)), 1
+            )
         else:
             reviews_avg = 0
         context = {
-            'professor': professor,
-            'courses_list': courses_list,
-            'reviews_list': reviews_list,
-            'reviews_avg': reviews_avg
+            "professor": professor,
+            "courses_list": courses_list,
+            "reviews_list": reviews_list,
+            "reviews_avg": reviews_avg,
         }
         return render(request, "professors/detail.html", context)
     except Professor.DoesNotExist:

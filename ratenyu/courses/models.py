@@ -28,16 +28,12 @@ class Class(models.Model):
 
 class Review(models.Model):
     review_text = models.TextField()
-    rating = models.PositiveIntegerField(choices=(
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5')
-    ))
+    rating = models.PositiveIntegerField(
+        choices=((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"))
+    )
     class_id = models.ForeignKey(to=Class, on_delete=models.CASCADE)
     user = models.CharField(max_length=250)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField("date published")
 
     def __str__(self):
         return self.review_text

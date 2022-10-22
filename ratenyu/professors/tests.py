@@ -6,10 +6,7 @@ from .models import Professor
 class ProfessorCreateTest(TestCase):
     def setUp(self) -> None:
         Professor.objects.create(
-            professor_id="1",
-            name="John Doe",
-            net_id="jd123",
-            role="Test Role"
+            professor_id="1", name="John Doe", net_id="jd123", role="Test Role"
         )
 
     def testProfessorCreate(self) -> None:

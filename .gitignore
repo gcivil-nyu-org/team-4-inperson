@@ -10,6 +10,6 @@ __pycache__/
 /ratenyu/courses/migrations/
 /ratenyu/professors/migrations/
 
-/ratenyu/.elasticbeanstalk/*
-/ratenyu/!.elasticbeanstalk/*.cfg.yml
-/ratenyu/!.elasticbeanstalk/*.global.yml
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
