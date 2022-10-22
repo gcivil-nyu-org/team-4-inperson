@@ -19,6 +19,14 @@ script:
 after_success:
   coveralls
 
+before_deploy:
+  if ! [[ $BRANCH = develop ]]; then
+    rm .ebextensions/02_django_prod.config
+  fi
+  if ! [[ $BRANCH = master ]]; then
+    rm .ebextensions/02_django_dev.config
+  fi
+
 deploy:
   - provider: elasticbeanstalk
     access_key_id: $AWS_ACCESS_KEY
