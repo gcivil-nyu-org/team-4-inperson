@@ -1,1 +1,14 @@
-<p>this is course result page</p>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for i in courses %}
+
+<p>{{ i.course_title }}</p>
+
+{% endfor %}
+
+
+
+{% endblock %}
+

@@ -1,1 +1,14 @@
-<p>this is professor result page</p>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for i in professors %}
+
+<p>{{ i.name }}</p>
+
+{% endfor %}
+
+
+
+{% endblock %}
+
