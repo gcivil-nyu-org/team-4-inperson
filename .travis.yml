@@ -22,11 +22,11 @@ after_success:
 before_deploy:
   - |
     if [[ $BRANCH == develop ]]; then
-      rm .ebextensions/02_django_prod.config
+      rm .ebextensions/django_prod.config
     fi
   - |
     if [[ $BRANCH == master ]]; then
-      rm .ebextensions/02_django_dev.config
+      rm .ebextensions/django_dev.config
     fi
 
 deploy:
