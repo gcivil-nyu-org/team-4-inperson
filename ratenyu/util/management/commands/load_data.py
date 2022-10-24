@@ -28,7 +28,7 @@ def create_new_course(row: "list[str]") -> None:
         course_title=row[1],
         course_subject_code=row[2],
         catalog_number=row[3],
-        course_description=row[4]
+        course_description=row[4],
     )
     try:
         new_course.save()
@@ -38,10 +38,7 @@ def create_new_course(row: "list[str]") -> None:
 
 def create_new_professor(row: "list[str]") -> None:
     new_professor = Professor(
-        professor_id=row[0],
-        name=row[1],
-        net_id=row[2],
-        role=row[3]
+        professor_id=row[0], name=row[1], net_id=row[2], role=row[3]
     )
     try:
         new_professor.save()
@@ -59,7 +56,7 @@ def create_new_class(row: "list[str]") -> None:
         term=row[5],
         last_offered=row[6],
         location=row[7],
-        enroll_capacity=int(row[8])
+        enroll_capacity=int(row[8]),
     )
     try:
         new_class.save()
@@ -73,7 +70,7 @@ def create_new_review(row: "list[str]") -> None:
         rating=int(row[1]),
         class_id=Class.objects.get(class_id=row[2]),
         user=row[3],
-        pub_date=timezone.now()
+        pub_date=timezone.now(),
     )
     try:
         new_review.save()
@@ -82,8 +79,8 @@ def create_new_review(row: "list[str]") -> None:
 
 
 def create_data(filename: str, model: str) -> None:
-    with open(file=filename, newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
+    with open(file=filename, newline="") as csvfile:
+        reader = csv.reader(csvfile, delimiter=",")
         if model == "course":
             for row in reader:
                 create_new_course(row=row)
@@ -109,4 +106,3 @@ class Command(BaseCommand):
         create_data(filename=PROFESSORS, model="professor")
         create_data(filename=CLASSES, model="class")
         create_data(filename=REVIEWS, model="review")
-
