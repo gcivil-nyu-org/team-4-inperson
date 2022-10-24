@@ -52,17 +52,17 @@ def search_by_course_name(request: HttpRequest):
             else:
                 reviews_avg = 0
 
-            course_current = {
+            current_course = {
                     "course_id": i.course_id,
                     "course_title":i.course_title,
                     "course_subject_code":i.course_subject_code,
-                    "calatog_number":i.catalog_number,
+                    "catalog_number":i.catalog_number,
                     "course_description":i.course_description,
-                    "reviews_list":reviews_rating_list,
+                    "reviews_list":reviews_list,
                     "reviews_avg":reviews_avg
                 }
 
-            filtered_courses.append(course_current)
+            filtered_courses.append(current_course)
         context = {
             "courses":  filtered_courses,
             "query" : query,
