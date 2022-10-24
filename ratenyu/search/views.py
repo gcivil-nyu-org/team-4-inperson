@@ -32,12 +32,8 @@ def search_by_course_name(request: HttpRequest):
             Q(course_title__endswith=f" {query}")
         )
 
-        course_reviews = []
-        course_ratings = []
         filtered_courses = []
         for i in courses:
-  
-
             reviews_list = []
             reviews_rating_list = []
             classes = Class.objects.filter(course=i.course_id)
