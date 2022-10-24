@@ -2,12 +2,22 @@
 
 {% block content %}
 
+<div class="detail-title">
+    <h1 class="detail-name">Course Results for '{{query}}'</h1>
+</div>
+
 {% for i in courses %}
 
-<p>{{ i.course_title }}</p>
+<div class="detail-sub-course-desc">
+    <p style="margin-bottom:0;"> <a href=/courses/{{i.course_id}}>{{i.course_title}} : {{ i.course_subject_code }}{{ i.catalog_number }}</a> ({{i.reviews_avg}}/5.0 | {{i.reviews_list|length}} Reviews)</p>
+    <p style="margin : 0; padding-top:0;">{{ i.course_description }} </p>
+    <br>
+
+</div>
 
 {% endfor %}
 
 
 {% endblock %}
+
 

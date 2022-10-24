@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest, Http404
 from django.db.models import Q
-from courses.models import Course
+from courses.models import Course, Class, Review
 from professors.models import Professor
 
 
@@ -31,7 +31,46 @@ def search_by_course_name(request: HttpRequest):
             Q(course_title__contains=f" {query} ") |
             Q(course_title__endswith=f" {query}")
         )
-        context = {"courses":  courses}
+
+        course_reviews = []
+        course_ratings = []
+        filtered_courses = []
+        for i in courses:
+  
+
+            reviews_list = []
+            reviews_rating_list = []
+            classes = Class.objects.filter(course=i.course_id)
+            for cl in classes:
+                review_set = Review.objects.filter(class_id=cl.class_id)
+                for rev in review_set:
+                    current_review = {
+                        "review_obj": rev
+                    }
+                    reviews_list.append(current_review)
+                    reviews_rating_list.append(rev.rating)
+            if len(reviews_rating_list) > 0:
+                reviews_avg = round(
+                    float(sum(reviews_rating_list) / len(reviews_rating_list)), 1
+                )
+            else:
+                reviews_avg = 0
+
+            course_current = {
+                    "course_id": i.course_id,
+                    "course_title":i.course_title,
+                    "course_subject_code":i.course_subject_code,
+                    "calatog_number":i.catalog_number,
+                    "course_description":i.course_description,
+                    "reviews_list":reviews_rating_list,
+                    "reviews_avg":reviews_avg
+                }
+
+            filtered_courses.append(course_current)
+        context = {
+            "courses":  filtered_courses,
+            "query" : query,
+        }
         return render(request, "search/courseResult.html", context)
     except:
         raise Http404("Something went wrong")
