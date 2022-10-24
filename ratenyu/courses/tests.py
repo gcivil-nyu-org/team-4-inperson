@@ -1,21 +1,8 @@
-import requests
 from django.test import TestCase
 from django.utils import timezone
-from .models import Course, Class, Review
+from .models import Course
 from .course_util import *
 from professors.models import Professor
-
-
-class SimpleRequestTest(TestCase):
-    def setUp(self) -> None:
-        create_test_course()
-
-    def testRequest(self) -> None:
-        course = Course.objects.get(pk="170776")
-        self.assertIsInstance(course, Course, "Test course not created.")
-        req = f"http://localhost:8000/courses/{course.course_id}"
-        resp = requests.get(req)
-        self.assertEqual(200, resp.status_code, f"Request returned {resp.status_code} for request {req}")
 
 
 class CourseDetailHelpersTest(TestCase):
