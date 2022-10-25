@@ -6,7 +6,7 @@ from .course_util import *
 from professors.models import Professor
 
 
-class TestDetailPageRequest(TestCase):
+class TestCourseDetailPageRequest(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
         create_test_course()
