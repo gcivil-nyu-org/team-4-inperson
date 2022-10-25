@@ -6,20 +6,20 @@ from courses.course_util import *
 
 def course_query(query: str) -> Class:
     courses = Course.objects.filter(
-        Q(course_title__startswith=f"{query} ") |
-        Q(course_title__contains=f" {query} ") |
-        Q(course_title__endswith=f" {query}") |
-        (Q(course_title__startswith=f"{query}") & Q(course_title__endswith=f"{query}"))
+        Q(course_title__istartswith=f"{query} ") |
+        Q(course_title__icontains=f" {query} ") |
+        Q(course_title__iendswith=f" {query}") |
+        Q(course_title__iexact=query)
     )
     return courses
 
 
 def professor_query(query: str) -> Class:
     professors = Professor.objects.filter(
-        Q(name__startswith=f"{query} ") |
-        Q(name__contains=f" {query} ") |
-        Q(name__endswith=f" {query}") |
-        (Q(name__startswith=f"{query}") & Q(name__endswith=f"{query}"))
+        Q(name__istartswith=f"{query} ") |
+        Q(name__icontains=f" {query} ") |
+        Q(name__iendswith=f" {query}") |
+        Q(name__iexact=query)
     )
     return professors
 
