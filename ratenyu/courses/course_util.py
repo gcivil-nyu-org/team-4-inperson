@@ -7,7 +7,8 @@ def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     for review in Review.objects.filter(class_id=class_obj.class_id):
         review_objects.append({
             "review_obj": review,
-            "professor_obj": review.class_id.professor
+            "professor_obj": review.class_id.professor,
+            "course_obj": review.class_id.course
         })
     return review_objects
 
