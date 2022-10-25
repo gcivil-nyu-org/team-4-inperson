@@ -29,7 +29,8 @@ def search_by_course_name(request: HttpRequest):
         courses = Course.objects.filter(
             Q(course_title__startswith=f"{query} ") |
             Q(course_title__contains=f" {query} ") |
-            Q(course_title__endswith=f" {query}")
+            Q(course_title__endswith=f" {query}") |
+            Q(course_title=query)
         )
 
         filtered_courses = []
