@@ -27,7 +27,8 @@ def search_by_course_id(request: HttpRequest):
 
 def search_by_course_name(request: HttpRequest):
     try:
-        query = request.GET["query"]
+        query = request.GET["query"].strip()
+        print(query)
         courses = course_query(query)
         filtered_courses = []
         for i in courses:
