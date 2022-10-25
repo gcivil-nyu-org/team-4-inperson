@@ -108,16 +108,12 @@ def search_by_id_func(request: HttpRequest):
         if search_by == 'CourseID':
             try:
                 course_subject_code = re.search(
-                    r'^[a-zA-Z]{4}|^[a-zA-Z]{2}[-\s][a-zA-Z]{2}', query).group(0)
-                if len(course_subject_code) == 4:
-                    course_subject_code = course_subject_code[:2] + \
-                        '-' + course_subject_code[2:]
-                elif len(course_subject_code) == 5 and course_subject_code[2] == ' ':
-                    course_subject_code = course_subject_code[:2] + \
-                        '-' + course_subject_code[3:]
+                    r'^[a-zA-Z]+[-\s][a-zA-Z]{2}', query).group(0)
+                if '-' not in course_subject_code:
+                    course_subject_code = course_subject_code.replace(' ', '-')
                 catalog_number = re.search(r'[0-9]{4}', query).group(0)
                 course_id = Course.objects.get(
-                    course_subject_code=course_subject_code, catalog_number=catalog_number)
+                    course_subject_code=course_subject_code.upper(), catalog_number=catalog_number)
                 return course_detail(request, course_id.course_id)
             except:
                 raise Http404("Invalid Course ID")
