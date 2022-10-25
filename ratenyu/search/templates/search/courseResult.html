@@ -107,6 +107,7 @@ span.rev-title, span.left-section {
 {% extends 'base.html' %}
 
 {% block content %}
+{% if courses %}
 <div class="detail-title">
     <h1 class="detail-name">Course Results for '{{query}}'</h1>
 </div>
@@ -159,7 +160,13 @@ span.rev-title, span.left-section {
 
 {% endfor %}
 
+{% else %}
 
+<div class="detail-title">
+    <h1 class="detail-name">No Results Found for '{{query}}'</h1>
+</div>
+
+{% endif %}
 {% endblock %}
 
 
