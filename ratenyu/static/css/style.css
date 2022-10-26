@@ -268,6 +268,114 @@ span.rev-title, span.left-section {
   font-family: inter-bold;
 }
 
+.error-page {
+  margin-top: 130px;
+  text-align: center;
+}
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #0a86e7;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 6px;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+ul.result-side-links {
+  float:left;
+  display: inline;
+  text-align: left;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  list-style: none;
+  overflow-wrap: break-word;
+  width:150px;
+}
+
+.result-side-links > li {
+  padding-bottom: 20px;
+}
+
+span.rev-title, span.left-section {
+  font-family: inter-bold;
+}
+
+/*put the dropdown for sorting under the name title, course id, course description, */
+.result-dropdown {
+    display: block;
+    width: 70%;
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: -50px;
+}
+
+/*set appropriate width for the dropdown to fit all the text*/
+#result-dropdown {
+  width: 200px;
+  font-size: 14px;
+}
+
 /* Fonts */
 
 @font-face {
