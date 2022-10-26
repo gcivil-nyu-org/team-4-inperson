@@ -15,11 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.shortcuts import redirect
 
 urlpatterns = [
-    path("", lambda request: redirect("/search", permanent=True)),
-    path("search/", include("search.urls")),
+    path("", include("search.urls")),
     path("admin/", admin.site.urls),
     path("professors/", include("professors.urls")),
     path("courses/", include("courses.urls")),

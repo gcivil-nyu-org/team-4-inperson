@@ -1,1 +1,67 @@
-<p>this is course result page</p>
+{% extends 'base.html' %}
+
+{% block content %}
+{% if courses %}
+<div class="detail-title">
+    <h1 class="detail-name">Course Results for '{{query}}'</h1>
+</div>
+
+<ul class="result-side-links">
+    <li class="result-side-links"><span class="rev-title">Program</span></li>
+
+    <label class="container">Undergraduate
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+
+    <label class="container">Graduate
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+
+    <!-- <li class="result-side-links"><span class="rev-title">Department</span></li>
+    <div class="result-dropdown">
+        <form class="search"  method="GET" action="">
+            <select class="dropdown" id="detail-dropdown">
+                <option value="RevDateDesc">CS</option>
+                <option value="RevDateDesc">CE</option>
+                <option value="RevDateDesc">MAT</option>
+                <option value="RevDateDesc">EE</option>
+            </select>
+        </form>
+    </div> -->
+
+    <li class="result-side-links"><span class="rev-title">Last Offered</span></li>
+
+    <label class="container">2022
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+    <label class="container">2021
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+    </label>
+</ul>
+
+{% for course in courses %}
+
+<div class="detail-sub-course-desc">
+    <p style="margin-bottom:0;"> <a href=/courses/{{course.course_obj.course_id}}>{{course.course_obj.course_title}}: {{ course.course_obj.course_subject_code }} {{ course.course_obj.catalog_number }}</a> ({{course.reviews_avg}}/5.0 | {{course.reviews_list|length}} Reviews)</p>
+    <p style="margin : 0; padding-top:0;">{{ course.course_obj.course_description }} </p>
+    <br>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<div class="detail-title">
+    <h1 class="detail-name">No Results Found for '{{query}}'</h1>
+</div>
+
+{% endif %}
+{% endblock %}
+
+
+
