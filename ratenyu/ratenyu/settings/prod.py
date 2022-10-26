@@ -2,7 +2,10 @@ from .base import *
 
 if "RDS_DB_NAME" in os.environ:
     DEBUG = False
-    ALLOWED_HOSTS = ["ratenyu.eba-apngxcqy.us-east-1.elasticbeanstalk.com", "ratenyu.com"]
+    ALLOWED_HOSTS = [
+        "ratenyu.eba-apngxcqy.us-east-1.elasticbeanstalk.com",
+        "ratenyu.com",
+    ]
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",

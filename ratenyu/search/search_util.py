@@ -6,20 +6,20 @@ from courses.course_util import *
 
 def course_query(query: str) -> Class:
     courses = Course.objects.filter(
-        Q(course_title__istartswith=f"{query} ") |
-        Q(course_title__icontains=f" {query} ") |
-        Q(course_title__iendswith=f" {query}") |
-        Q(course_title__iexact=query)
+        Q(course_title__istartswith=f"{query} ")
+        | Q(course_title__icontains=f" {query} ")
+        | Q(course_title__iendswith=f" {query}")
+        | Q(course_title__iexact=query)
     )
     return courses
 
 
 def professor_query(query: str) -> Class:
     professors = Professor.objects.filter(
-        Q(name__istartswith=f"{query} ") |
-        Q(name__icontains=f" {query} ") |
-        Q(name__iendswith=f" {query}") |
-        Q(name__iexact=query)
+        Q(name__istartswith=f"{query} ")
+        | Q(name__icontains=f" {query} ")
+        | Q(name__iendswith=f" {query}")
+        | Q(name__iexact=query)
     )
     return professors
 
@@ -30,7 +30,8 @@ def get_course_results_info(course: Class) -> dict:
     classes = Class.objects.filter(course=course.course_id)
     reviews_list = create_review_objects(classes)
     reviews_avg = calculate_rating_avg(reviews_list)
-    return {"course_obj": course,
-            "reviews_list": reviews_list,
-            "reviews_avg": reviews_avg
-            }
+    return {
+        "course_obj": course,
+        "reviews_list": reviews_list,
+        "reviews_avg": reviews_avg,
+    }

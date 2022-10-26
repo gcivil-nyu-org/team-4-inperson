@@ -5,11 +5,13 @@ from .models import Class, Review
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     review_objects = []
     for review in Review.objects.filter(class_id=class_obj.class_id):
-        review_objects.append({
-            "review_obj": review,
-            "professor_obj": review.class_id.professor,
-            "course_obj": review.class_id.course
-        })
+        review_objects.append(
+            {
+                "review_obj": review,
+                "professor_obj": review.class_id.professor,
+                "course_obj": review.class_id.course,
+            }
+        )
     return review_objects
 
 
@@ -26,4 +28,4 @@ def calculate_rating_avg(reviews_list: List[dict]) -> float:
     rating_sum = 0
     for review in reviews_list:
         rating_sum += review["review_obj"].rating
-    return round(rating_sum/len(reviews_list), 1)
+    return round(rating_sum / len(reviews_list), 1)
