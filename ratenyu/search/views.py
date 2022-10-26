@@ -1,10 +1,11 @@
+from django.http import HttpRequest, Http404
 from django.shortcuts import render
 from django.http import HttpRequest, Http404
 from django.db.models import Q
-from courses.models import Course, Class, Review
 from professors.models import Professor
 from .search_util import *
 from courses.course_util import *
+from courses.views import course_detail
 
 
 def index(request):
@@ -21,8 +22,14 @@ def search_by_select(request: HttpRequest):
         return search_by_professor_name(request)
 
 
-def search_by_course_id(request: HttpRequest):
-    return render(request, "search/courseResult.html")
+def search_by_course_id(request: HttpRequest) -> render:
+    try:
+        query = request.GET["query"].strip()
+        course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
+        course_id = course_id_query(course_subject_code, catalog_number)
+        return course_detail(request, course_id.course_id)
+    except:
+        raise Http404("Something went wrong")
 
 
 def search_by_course_name(request: HttpRequest):
