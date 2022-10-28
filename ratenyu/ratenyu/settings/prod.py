@@ -19,6 +19,8 @@ if "RDS_DB_NAME" in os.environ:
     STATICFILES_DIRS = []
     STATIC_ROOT = "static"
 
+PATH_TO_LOGS_FOLDER = '/var/log/app-logs'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

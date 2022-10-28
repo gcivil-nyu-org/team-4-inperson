@@ -6,6 +6,9 @@ from professors.models import Professor
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
+import logging
+
+logger = logging.getLogger('project')
 
 
 def index(request):
@@ -26,6 +29,7 @@ def search_by_select(request: HttpRequest):
 def search_by_course_id(request: HttpRequest) -> render:
     try:
         query = request.GET["query"].strip()
+        logger.debug(f"query: {query}")
         course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
         course_id = course_id_query(course_subject_code, catalog_number)
         return course_detail(request, course_id.course_id)
