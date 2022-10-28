@@ -64,7 +64,7 @@ def create_test_course() -> Course:
     )
 
 
-def create_test_professor() -> Profes sor:
+def create_test_professor() -> Professor:
     return Professor.objects.create(
         professor_id="1", name="John Doe", net_id="jd123", role="01"
     )
