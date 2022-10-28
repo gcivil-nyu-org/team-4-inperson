@@ -1,17 +1,19 @@
 from django.test import TestCase, RequestFactory
 from .search_util import *
 from courses.models import Course
-from .views import search_by_course_name
+from courses.tests import create_test_course
+from .views import *
 
 
 class TestSearchPageRequests(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
+        create_test_course()
 
     def testCourseNameRequest(self) -> None:
-        request_str = f"search/search?search_by=CourseName&query=Foundations"
+        request_str = f"/search?search_by=CourseName&query=Foundations"
         request = self.factory.get(request_str)
-        response = search_by_course_name(request=request)
+        response = search_by_select(request=request)
         self.assertEqual(
             200,
             response.status_code,
@@ -19,9 +21,9 @@ class TestSearchPageRequests(TestCase):
         )
 
     def testCourseIDRequest(self) -> None:
-        request_str = f"search/search?search_by=CourseID&query=cs+gy+6003"
+        request_str = f"/search?search_by=CourseID&query=ts+uy+1000"
         request = self.factory.get(request_str)
-        response = search_by_course_name(request=request)
+        response = search_by_select(request=request)
         self.assertEqual(
             200,
             response.status_code,
