@@ -5,6 +5,20 @@ from courses.tests import create_test_course
 from .views import *
 
 
+class TestHomePageRequest(TestCase):
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+
+    def testHomePageRequest(self) -> None:
+        request = self.factory.get("/")
+        response = index(request=request)
+        self.assertEqual(
+            200,
+            response.status_code,
+            f"Request returned {response.status_code} for request '/'",
+        )
+
+
 class TestSearchPageRequests(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
@@ -12,23 +26,11 @@ class TestSearchPageRequests(TestCase):
 
     def testCourseNameRequest(self) -> None:
         request_str = f"/search?search_by=CourseName&query=Foundations"
-        request = self.factory.get(request_str)
-        response = search_by_select(request=request)
-        self.assertEqual(
-            200,
-            response.status_code,
-            f"Request returned {response.status_code} for request {request_str}",
-        )
+        test_search_request(self, request_str)
 
     def testCourseIDRequest(self) -> None:
         request_str = f"/search?search_by=CourseID&query=ts+uy+1000"
-        request = self.factory.get(request_str)
-        response = search_by_select(request=request)
-        self.assertEqual(
-            200,
-            response.status_code,
-            f"Request returned {response.status_code} for request {request_str}",
-        )
+        test_search_request(self, request_str)
 
 
 class TestSearchFiltering(TestCase):
@@ -49,3 +51,13 @@ class TestSearchFiltering(TestCase):
         """if a query is valid, it should return courses which contain the query"""
         query = "Software"
         self.assertQuerysetEqual(course_query(query), [])
+
+
+def test_search_request(obj, request_str: str) -> None:
+    request = obj.factory.get(request_str)
+    response = search_by_select(request=request)
+    obj.assertEqual(
+        200,
+        response.status_code,
+        f"Request returned {response.status_code} for request {request_str}",
+    )
