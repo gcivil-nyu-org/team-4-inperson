@@ -2,10 +2,12 @@ from django.http import HttpRequest, Http404
 from django.shortcuts import render
 from django.http import HttpRequest, Http404
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from professors.models import Professor
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
+from util.views import error404
 
 
 def index(request):
@@ -28,8 +30,10 @@ def search_by_course_id(request: HttpRequest) -> render:
         course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
         course_id = course_id_query(course_subject_code, catalog_number)
         return course_detail(request, course_id.course_id)
+    except ObjectDoesNotExist as e:
+        return error404(request, "CourseID not found")
     except:
-        raise Http404("Something went wrong")
+        return error404(request, "Something went wrong")
 
 
 def search_by_course_name(request: HttpRequest):
