@@ -14,3 +14,30 @@ if "RDS_DB_NAME" in os.environ:
     }
     STATICFILES_DIRS = []
     STATIC_ROOT = "static"
+
+PATH_TO_LOGS_FOLDER = '/var/log/app-logs'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s %(filename)s %(message)s'
+        }
+    },
+    'handlers': {
+        'debug1': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': PATH_TO_LOGS_FOLDER + '/django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'project': {
+            'handlers': ['debug1'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

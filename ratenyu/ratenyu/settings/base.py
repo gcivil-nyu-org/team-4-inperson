@@ -123,6 +123,33 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+PATH_TO_LOGS_FOLDER = BASE_DIR.parent.parent / "logs"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s %(filename)s %(message)s'
+        }
+    },
+    'handlers': {
+        'debug1': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': str(PATH_TO_LOGS_FOLDER) + '/django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'project': {
+            'handlers': ['debug1'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 # OAuth settings
 
 AUTHENTICATION_BACKENDS = [
