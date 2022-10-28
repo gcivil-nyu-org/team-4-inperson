@@ -17,6 +17,7 @@ def index(request):
 
 def search_by_select(request: HttpRequest):
     search_by = request.GET["search_by"]
+    logger.debug(f"search_by: {search_by}")
     if search_by == "CourseID":
         return search_by_course_id(request)
     elif search_by == "CourseName":
@@ -40,6 +41,7 @@ def search_by_course_id(request: HttpRequest) -> render:
 def search_by_course_name(request: HttpRequest):
     try:
         query = request.GET["query"].strip()
+        logger.debug(f"query: {query}")
         courses = course_query(query)
         filtered_courses = []
         for i in courses:
@@ -50,19 +52,21 @@ def search_by_course_name(request: HttpRequest):
             "query": query,
         }
         return render(request, "search/courseResult.html", context)
-    except:
+    except Exception as e:
+        logger.error(e)
         raise Http404("Something went wrong")
 
 
 def search_by_professor_name(request):
     try:
-        query = request.GET["query"].strip()
-        professors = professor_query(query)
-        filtered_professors = []
-        for p in professors:
-            current_prof_info = get_professor_results_info(p)
-            filtered_professors.append(current_prof_info)
-        context = {"professors": filtered_professors, "query": query}
+        query = request.GET["query"]
+        logger.debug(f"query: {query}")
+        professors = Professor.objects.filter(
+            Q(name__startswith=f"{query} ")
+            | Q(name__contains=f" {query} ")
+            | Q(name__endswith=f" {query}")
+        )
+        context = {"professors": professors}
         return render(request, "search/professorResult.html", context)
     except:
         raise Http404("Something went wrong")
