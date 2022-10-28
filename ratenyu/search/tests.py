@@ -4,16 +4,22 @@ from courses.models import Course
 from .views import search_by_course_name
 
 
-# Create your tests here.
-
-
-class TestCourseResultsPageRequest(TestCase):
+class TestSearchPageRequests(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
 
-    def testValidRequest(self) -> None:
-        course_id = "1"
+    def testCourseNameRequest(self) -> None:
         request_str = f"search/search?search_by=CourseName&query=Foundations"
+        request = self.factory.get(request_str)
+        response = search_by_course_name(request=request)
+        self.assertEqual(
+            200,
+            response.status_code,
+            f"Request returned {response.status_code} for request {request_str}",
+        )
+
+    def testCourseIDRequest(self) -> None:
+        request_str = f"search/search?search_by=CourseID&query=cs+gy+6003"
         request = self.factory.get(request_str)
         response = search_by_course_name(request=request)
         self.assertEqual(
