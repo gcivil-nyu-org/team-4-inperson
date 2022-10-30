@@ -1,17 +1,28 @@
-<h3>Register here</h3>
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{%  static "css/users.css" %}">
 <hr>
 
-<form action="" method="POST">
+<p class="register">Register here</p>
+<form class="register-page" action="" method="POST">
     {% csrf_token %}
 
     {% for field in form %}
     <div>
-        <p>{{ field.label }}: <br> {{ field }}</p>
+        <p>
+        <div class="register-label">{{ field.label }}:</div>
+        <div>{{ field }}</div>
+        </p>
 
         {% for error in field.errors %}
-        <small style="color: red">{{ error }}</small>
+        <small style=" color: red">{{ error }}</small>
         {% endfor %}
     </div>
     {% endfor %}
-    <button type="submit">Register</button>
+    <br>
+    <button class="register-button" type="submit">Create Account</button>
 </form>
+
+{% endblock %}

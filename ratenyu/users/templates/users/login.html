@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{%  static "css/users.css" %}">
+<h3>login</h3>
+
+<form class="register-page" action="" method="POST">
+    {% csrf_token %}
+    <p>Username: <br> <input class="input-box" type="text" name="username" autofocus autocapitalize="none"
+            autocomplete="username" maxlength="150" required id="id_username" placeholder="Username"></p>
+
+    <p>Password: <br> <input class="input-box" type="password" name="password" autocomplete="current-password" required
+            id="id_password" placeholder="Password"></p>
+    <p align="center"><a href="{% url 'users:register' %}">Forgot Password?</a></p>
+    <button class="register-button" type="submit">Login</button>
+</form>
+
+<p align="center">Not registered yet? <a href="{% url 'users:register' %}">Create Account</a></p>
+
+{% endblock %}
