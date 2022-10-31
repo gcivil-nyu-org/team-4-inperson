@@ -46,6 +46,16 @@ def get_course_results_info(course: Class) -> dict:
         "reviews_avg": reviews_avg,
     }
 
+def get_professor_results_info(professor: Class) -> dict:
+    classes = Class.objects.filter(professor=professor.professor_id)
+    reviews_list = create_review_objects(classes)
+    reviews_avg = calculate_rating_avg(reviews_list)
+    return {
+        "professor_obj": professor,
+        "reviews_list": reviews_list,
+        "reviews_avg": reviews_avg
+    }
+
 
 def get_sub_code_and_cat_num(query: str) -> tuple:
     course_subject_code = re.search(
