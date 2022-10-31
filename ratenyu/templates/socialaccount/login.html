@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load socialaccount %}
+    <div class="oauth">
+        <h1 class="oauth-title">Login with Google</h1>
+        <p class="oauth-description">
+            To create an account, you must sign up with your NYU email.
+            Please authenticate your NYU email with Google.
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <button class="oauth-button" type="submit">Login with Google</button>
+        </form>
+    </div>
+
+{% if user.is_authenticated %}
+  <p>Welcome, You are logged in as {{ user.username }}</p>
+{% endif %}
+
+{% endblock %}
