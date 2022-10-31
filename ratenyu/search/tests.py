@@ -2,12 +2,23 @@ from django.test import TestCase, RequestFactory
 from .search_util import *
 from courses.models import Course, Class
 from professors.models import Professor
-from .views import search_by_course_name
+from .views import search_by_course_name, search_by_professor_name, index
 from courses.tests import *
 
 
 # Create your tests here.
 
+class TestSearchPageRequest(TestCase):
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+
+    def testValidRequest(self) -> None:
+        request = self.factory.get(f"search")
+        response = index(request)
+        self.assertEqual(
+            200,
+            response.status_code
+        )
 
 class TestCourseResultsPageRequest(TestCase):
     def setUp(self) -> None:
@@ -31,12 +42,13 @@ class TestProfessorResultsPageRequest(TestCase):
     def testValidReqeust(self) -> None:
         request_str = f"search/search?search_by=ProfessorName&query=John"
         request = self.factory.get(request_str)
-        response = search_by_course_name(request=request)
+        response = search_by_professor_name(request=request)
         self.assertEqual(
             200,
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
+
 
 
 
@@ -89,11 +101,13 @@ class TestSearchPageHelpers(TestCase):
     def test_course_helper_function(self) -> None:
         test_course = Course.objects.get(pk="1")
         d = get_course_results_info(test_course)
+        self.assertEqual(test_course, d['course_obj'])
         self.assertEqual(2, len(d['reviews_list']))
         self.assertEqual(3.0, d['reviews_avg'])
 
     def test_professor_helper_function(self) -> None:
         test_professor = Professor.objects.get(pk="1")
         d = get_professor_results_info(test_professor)
+        self.assertEqual(test_professor, d['professor_obj'])
         self.assertEqual(2, len(d['reviews_list']))
         self.assertEqual(3.0, d['reviews_avg'])
