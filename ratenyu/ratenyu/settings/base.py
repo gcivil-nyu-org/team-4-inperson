@@ -131,8 +131,8 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
-        "APP": {"client_id": "201344836366-36qdvdcod8tgi8hosbf3367go5h5jk52.apps.googleusercontent.com",
-                "secret": "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",
+        "APP": {"client_id": config("GOOGLE_API_CLIENT_ID"),
+                "secret": config("GOOGLE_API_SECRET_KEY"),
                 "key": ""},
         "SCOPE": [
             "email",
