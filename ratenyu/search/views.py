@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpRequest, Http404
 from django.db.models import Q
 from professors.models import Professor
+from courses.models import Course, Class, Review
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
@@ -35,7 +36,6 @@ def search_by_course_id(request: HttpRequest) -> render:
 def search_by_course_name(request: HttpRequest):
     try:
         query = request.GET["query"].strip()
-        print(query)
         courses = course_query(query)
         filtered_courses = []
         for i in courses:
@@ -52,13 +52,13 @@ def search_by_course_name(request: HttpRequest):
 
 def search_by_professor_name(request):
     try:
-        query = request.GET["query"]
-        professors = Professor.objects.filter(
-            Q(name__startswith=f"{query} ")
-            | Q(name__contains=f" {query} ")
-            | Q(name__endswith=f" {query}")
-        )
-        context = {"professors": professors}
+        query = request.GET["query"].strip()
+        professors = professor_query(query)
+        filtered_professors = []
+        for p in professors:
+            current_prof_info = get_professor_results_info(p)
+            filtered_professors.append(current_prof_info)
+        context = {"professors": filtered_professors, "query": query}
         return render(request, "search/professorResult.html", context)
     except:
         raise Http404("Something went wrong")
