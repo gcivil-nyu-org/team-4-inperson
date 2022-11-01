@@ -123,7 +123,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-PATH_TO_LOGS_FOLDER = BASE_DIR.parent.parent / "logs"
+PATH_TO_LOGS_FOLDER = BASE_DIR.parent / "logs"
 
 LOGGING = {
     'version': 1,

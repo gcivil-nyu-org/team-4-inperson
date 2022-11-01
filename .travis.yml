@@ -11,7 +11,7 @@ install:
 
 script:
   - mkdir logs
-  - sh ratenyu/util/management/commands/create_log_folder.sh
+  - echo > logs/django.log
   - black ratenyu/
   - ratenyu/manage.py makemigrations
   - ratenyu/manage.py migrate
