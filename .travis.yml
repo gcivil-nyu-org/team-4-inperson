@@ -16,7 +16,7 @@ script:
   - coverage run ratenyu/manage.py test courses.tests
   - coverage run ratenyu/manage.py test professors.tests
   - coverage run ratenyu/manage.py test search.tests
-  - coverage run ratenyu/manage.py test users.test
+  - coverage run ratenyu/manage.py test users.tests
 
 after_success:
   coveralls
