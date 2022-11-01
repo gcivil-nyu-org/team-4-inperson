@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="register-page">
+    <h2 class="register">Register Here</h2>
+    <form class="register" action="" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            <div>{{ field }}</div>
+            {% for error in field.errors %}
+            <small style=" color: red">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <br>
+        <button class="register" type="submit">Create Account</button>
+    </form>
+</div>
+
+{% endblock %}
