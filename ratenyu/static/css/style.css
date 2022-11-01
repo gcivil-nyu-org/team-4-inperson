@@ -1,3 +1,8 @@
+/* Generic */
+* {
+  font-family: inter-regular;
+}
+
 /* For navbar   */
 
 
@@ -14,6 +19,19 @@
 
 /*navbar links*/
 .navbar a {
+  float: left;
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100px;
+  height: 60px;
+}
+
+.navbar-user {
   float: left;
   color: #FFFFFF;
   text-align: center;
@@ -49,6 +67,7 @@
 }
 
 /*to put login button on upper right of navbar*/
+
 .navbar-right {
   float: right;
   padding-right: 5px;
@@ -70,7 +89,6 @@ ul.navbar {
 }
 
 .navbar li {
-  font-family: inter-regular;
   float: left;
 }
 
@@ -115,7 +133,6 @@ form.search {
 .dropdown {
   width: 25%;
   font-size: 18px;
-  font-family: inter-regular;
   background: #FFFFFF;
   cursor: pointer;
   border: 1px solid darkgrey;
@@ -134,7 +151,6 @@ form.search {
 }
 
 input {
-  font-family: inter-regular;
   outline: none;
   border: 1px solid lightgrey;
   border-radius: 4px;
@@ -149,12 +165,9 @@ input.search {
 }
 
 button {
-  font-family: inter-regular;
-  background: #FFFFFF;
+  background: #702B9D;
+  color: #FFFFFF;
   cursor: pointer;
-}
-
-button.search {
   font-size: 18px;
   outline: none;
   border: 1px solid darkgrey;
@@ -162,12 +175,11 @@ button.search {
   padding: 7px;
 }
 
+button.search {
+}
+
 
 /* For Detail Pages */
-
-p, ul {
-  font-family: inter-regular;
-}
 
 ul.detail-left-section {
   font-size: 15px;
@@ -264,9 +276,6 @@ div.review > p:nth-of-type(2) {
 }
 
 /*bold the title section of each review*/
-span.rev-title, span.left-section {
-  font-family: inter-bold;
-}
 
 .error-page {
   margin-top: 130px;
@@ -357,10 +366,6 @@ ul.result-side-links {
   padding-bottom: 20px;
 }
 
-span.rev-title, span.left-section {
-  font-family: inter-bold;
-}
-
 /*put the dropdown for sorting under the name title, course id, course description, */
 .result-dropdown {
     display: block;
@@ -421,11 +426,6 @@ button.register {
   height: 42px;
 }
 
-p.register {
-  text-align: left;
-  margin-left: 5px;
-}
-
 .dropdown-register {
   font-size: 18px;
   background: #FFFFFF;
@@ -444,28 +444,27 @@ p.register {
   text-align: center;
 }
 
-h1.oauth-title {
+h2.oauth-title {
   font-size: 35px;
+  /*font-size: 2.0vw;*/ /* uncomment for text resizing */
   color: black;
   display: flex;
   justify-content: center;
-  padding-top: 150px;
-  padding-bottom: 15px;
+  padding-top: 200px;
   line-height: 40%;
 }
 
 p.oauth-description {
+  font-size: 18px;
   padding-bottom: 15px;
+  display: inline-block;
+  width: 50%;
 }
 
 button.oauth-button {
-  font-size: 16px;
   text-align: right;
-  width: 190px;
-  cursor: pointer;
-  outline: none;
-  border: 1px solid gray;
-  border-radius: 4px;
+  color: black;
+  width: 17%;
   padding: 10px;
   background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png') no-repeat left;
   background-size: 24px;
