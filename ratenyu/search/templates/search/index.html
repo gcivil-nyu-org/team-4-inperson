@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
+{% if user.is_authenticated %}
+<h1 class="welcome">Welcome to RateNYU {{ user.username }}!</h1>
+{% else %}
 <h1 class="welcome">Welcome to RateNYU!</h1>
+{% endif %}
+
+
 <h2 class="welcome">Search for reviews by course name, course id, or professor name.</h2>
 
 <div class="searchbar">
