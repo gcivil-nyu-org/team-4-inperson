@@ -5,11 +5,6 @@ from django.contrib import messages
 from .models import UserDetails
 from .forms import UserRegistrationForm
 
-
-def home(request):
-    return render(request, "users/home.html")
-
-
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
