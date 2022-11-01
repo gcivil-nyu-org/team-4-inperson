@@ -47,6 +47,7 @@ def get_course_results_info(course: Class) -> dict:
         "reviews_avg": reviews_avg,
     }
 
+
 def get_professor_results_info(professor: Class) -> dict:
     classes = Class.objects.filter(professor=professor.professor_id)
     reviews_list = create_review_objects(classes)
@@ -54,7 +55,7 @@ def get_professor_results_info(professor: Class) -> dict:
     return {
         "professor_obj": professor,
         "reviews_list": reviews_list,
-        "reviews_avg": reviews_avg
+        "reviews_avg": reviews_avg,
     }
 
 

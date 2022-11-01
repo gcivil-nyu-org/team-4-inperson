@@ -23,7 +23,7 @@ urlpatterns = [
     path("professors/", include("professors.urls")),
     path("courses/", include("courses.urls")),
     path("error/", include("util.urls")),
-    path('accounts/', include('allauth.urls')),
+    path("accounts/", include("allauth.urls")),
     path("logout_social/", LogoutView.as_view()),
     path("", include("users.urls")),
 ]
