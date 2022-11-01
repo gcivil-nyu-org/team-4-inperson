@@ -12,7 +12,7 @@ class UserDetails(models.Model):
         ("senior", "Senior"),
         ("master1", "Master1"),
         ("master2", "Master2"),
-        ("phd", "PHD")
+        ("phd", "PHD"),
     ]
     name = models.CharField(max_length=100)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -2,27 +2,22 @@
 
 {% block content %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{%  static "css/users.css" %}">
-<hr>
 
-<p class="register">Register here</p>
-<form class="register-page" action="" method="POST">
-    {% csrf_token %}
-
-    {% for field in form %}
-    <div>
-        <p>
-        <div class="register-label">{{ field.label }}:</div>
-        <div>{{ field }}</div>
-        </p>
-
-        {% for error in field.errors %}
-        <small style=" color: red">{{ error }}</small>
+<div class="register-page">
+    <h2 class="register">Register Here</h2>
+    <form class="register" action="" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            <div>{{ field }}</div>
+            {% for error in field.errors %}
+            <small style=" color: red">{{ error }}</small>
+            {% endfor %}
+        </div>
         {% endfor %}
-    </div>
-    {% endfor %}
-    <br>
-    <button class="register-button" type="submit">Create Account</button>
-</form>
+        <br>
+        <button class="register" type="submit">Create Account</button>
+    </form>
+</div>
 
 {% endblock %}
