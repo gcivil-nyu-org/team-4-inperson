@@ -8,7 +8,7 @@ from django.contrib.sites.models import Site
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        site_name = "ratenyu-dev.eba-apngxcqy.us-east-1.elasticbeanstalk.com"
+        site_name = "newsite"
         if not Site.objects.filter(domain=site_name).exists():
             Site.objects.create(domain=site_name, name=site_name)
         print(f"Site {site_name} has been created.")
