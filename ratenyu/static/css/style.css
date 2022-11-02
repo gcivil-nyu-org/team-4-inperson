@@ -1,5 +1,4 @@
-/* Generic Classes */
-
+/* Generic */
 * {
   font-family: inter-regular;
 }
@@ -20,6 +19,19 @@
 
 /*navbar links*/
 .navbar a {
+  float: left;
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100px;
+  height: 60px;
+}
+
+.navbar-user {
   float: left;
   color: #FFFFFF;
   text-align: center;
@@ -55,6 +67,7 @@
 }
 
 /*to put login button on upper right of navbar*/
+
 .navbar-right {
   float: right;
   padding-right: 5px;
@@ -102,6 +115,7 @@ h2.welcome {
   color: black;
   display: flex;
   justify-content: center;
+  padding-bottom: 15px;
 }
 
 /* Align index page search bar in center */
@@ -164,6 +178,7 @@ button {
 button.search {
 }
 
+
 /* For Detail Pages */
 
 ul.detail-left-section {
@@ -223,6 +238,7 @@ ul.detail-side-links {
   text-align: left;
 }
 
+
 /*put the dropdown for sorting under the name title, course id, course description, */
 .detail-dropdown {
   margin: auto;
@@ -253,12 +269,14 @@ div.review {
   margin-right: 20px;
 }
 
+
 /*review takes up 10/11 of width; grade, review date, rating take up 1/11*/
 div.review > p:nth-of-type(2) {
   flex: 10;
 }
 
 /*bold the title section of each review*/
+
 .error-page {
   margin-top: 130px;
   text-align: center;
@@ -408,11 +426,6 @@ button.register {
   height: 42px;
 }
 
-p.register {
-  text-align: left;
-  margin-left: 5px;
-}
-
 .dropdown-register {
   font-size: 18px;
   background: #FFFFFF;
@@ -423,8 +436,40 @@ p.register {
   width: 99%;
   height: 42px;
 }
+
+/* For OAuth page */
+.oauth {
+  margin: -50px auto 50px auto;
+  width: 70%;
+  text-align: center;
 }
 
+h2.oauth-title {
+  font-size: 35px;
+  /*font-size: 2.0vw;*/ /* uncomment for text resizing */
+  color: black;
+  display: flex;
+  justify-content: center;
+  padding-top: 200px;
+  line-height: 40%;
+}
+
+p.oauth-description {
+  font-size: 18px;
+  padding-bottom: 15px;
+  display: inline-block;
+  width: 50%;
+}
+
+button.oauth-button {
+  text-align: right;
+  color: black;
+  width: 17%;
+  padding: 10px;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png') no-repeat left;
+  background-size: 24px;
+  background-origin: content-box;
+}
 
 /* Fonts */
 

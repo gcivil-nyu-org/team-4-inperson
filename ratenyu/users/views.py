@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
 from django.contrib import messages
-
+from django.contrib.auth.models import User, AnonymousUser
 from .models import UserDetails
 from .forms import UserRegistrationForm
+
 
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = update_initial_user(old_username=request.user, form=form)
             user.refresh_from_db()
             user_details = UserDetails(
                 name=form.cleaned_data.get("name"),
@@ -26,6 +26,17 @@ def register(request):
             )
             return redirect("users:login")
     else:
-        form = UserRegistrationForm()
+        form = UserRegistrationForm(initial={"email": request.user.email})
     context = {"form": form}
     return render(request, "users/register.html", context)
+
+
+def update_initial_user(old_username: str, form: UserRegistrationForm) -> User:
+    user = User.objects.get(username=old_username)
+    user.name = form.cleaned_data["name"]
+    user.username = form.cleaned_data["username"]
+    user.set_password(form.cleaned_data["password1"])
+    user.major = form.cleaned_data["major"]
+    user.student_status = form.cleaned_data["student_status"]
+    user.save()
+    return user

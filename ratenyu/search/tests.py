@@ -2,11 +2,17 @@ from django.test import TestCase, RequestFactory
 from .search_util import *
 from courses.models import Course, Class
 from professors.models import Professor
-from .views import search_by_course_name, search_by_professor_name, index, search_by_select
+from .views import (
+    search_by_course_name,
+    search_by_professor_name,
+    index,
+    search_by_select,
+)
 from courses.tests import *
 
 
 # Create your tests here.
+
 
 class TestSearchPageRequest(TestCase):
     def setUp(self) -> None:
@@ -15,10 +21,8 @@ class TestSearchPageRequest(TestCase):
     def testValidRequest(self) -> None:
         request = self.factory.get(f"search")
         response = index(request)
-        self.assertEqual(
-            200,
-            response.status_code
-        )
+        self.assertEqual(200, response.status_code)
+
 
 class TestCourseResultsPageRequest(TestCase):
     def setUp(self) -> None:
@@ -35,6 +39,7 @@ class TestCourseResultsPageRequest(TestCase):
             f"Request returned {response.status_code} for request {request_str}",
         )
 
+
 class TestProfessorResultsPageRequest(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
@@ -50,8 +55,6 @@ class TestProfessorResultsPageRequest(TestCase):
         )
 
 
-
-
 class TestSearchFiltering(TestCase):
     def test_matching_course_name_query(self) -> None:
         """if a query is valid, it should return courses which contain the query"""
@@ -64,8 +67,7 @@ class TestSearchFiltering(TestCase):
             course_description="abc",
         )
         course.save()
-        self.assertEqual(
-            int(course_query(query)[0].course_id), int(course.course_id))
+        self.assertEqual(int(course_query(query)[0].course_id), int(course.course_id))
 
     def test_non_matching_course_name_query(self) -> None:
         """if a query is valid, it should return courses which contain the query"""
@@ -74,17 +76,16 @@ class TestSearchFiltering(TestCase):
 
     def test_matching_professor_name_query(self) -> None:
         query = "John"
-        professor = Professor(professor_id=1,
-                              name="John Smith",
-                              net_id="1",
-                              role="1"
-                              )
+        professor = Professor(professor_id=1, name="John Smith", net_id="1", role="1")
         professor.save()
-        self.assertEqual(int(professor_query(query)[0].professor_id),int(professor.professor_id))
+        self.assertEqual(
+            int(professor_query(query)[0].professor_id), int(professor.professor_id)
+        )
 
     def test_non_matching_professor_name_query(self) -> None:
         query = "John"
         self.assertQuerysetEqual(professor_query(query), [])
+
 
 class TestSearchPageHelpers(TestCase):
     def setUp(self) -> None:
@@ -102,16 +103,16 @@ class TestSearchPageHelpers(TestCase):
     def test_course_helper_function(self) -> None:
         test_course = Course.objects.get(pk="1")
         d = get_course_results_info(test_course)
-        self.assertEqual(test_course, d['course_obj'])
-        self.assertEqual(2, len(d['reviews_list']))
-        self.assertEqual(3.0, d['reviews_avg'])
+        self.assertEqual(test_course, d["course_obj"])
+        self.assertEqual(2, len(d["reviews_list"]))
+        self.assertEqual(3.0, d["reviews_avg"])
 
     def test_professor_helper_function(self) -> None:
         test_professor = Professor.objects.get(pk="1")
         d = get_professor_results_info(test_professor)
-        self.assertEqual(test_professor, d['professor_obj'])
-        self.assertEqual(2, len(d['reviews_list']))
-        self.assertEqual(3.0, d['reviews_avg'])
+        self.assertEqual(test_professor, d["professor_obj"])
+        self.assertEqual(2, len(d["reviews_list"]))
+        self.assertEqual(3.0, d["reviews_avg"])
 
 
 class TestCourseIdSearch(TestCase):
@@ -128,8 +129,8 @@ class TestCourseIdSearch(TestCase):
         self.courseId = "BT-GY 6093"
 
     def test_valid_course_id_case_1(self) -> None:
-        """if a valid course id is passed, it should return the course details page """
-        #request_str = f"search?search_by=CourseID&query=BT-GY6093"
+        """if a valid course id is passed, it should return the course details page"""
+        # request_str = f"search?search_by=CourseID&query=BT-GY6093"
         # Testing the get view for search_by_select
         request_str = f"search/search?search_by=CourseID&query=BT-GY6093"
         request = self.factory.get(request_str)
@@ -142,7 +143,7 @@ class TestCourseIdSearch(TestCase):
         self.assertContains(response, self.courseId)
 
     def test_valid_course_id_case_2(self) -> None:
-        """if a valid course id is passed, it should return the course details page """
+        """if a valid course id is passed, it should return the course details page"""
         # Testing the get view for search_by_course_id
         request_str = f"search/search?search_by=CourseID&query=BT-GY 6093"
         request = self.factory.get(request_str)

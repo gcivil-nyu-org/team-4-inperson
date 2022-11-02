@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class UserRegistrationForm(UserCreationForm):
+
     STATUS_CHOICES = [
         ("", "-- Grade Level --"),
         ("freshman", "Freshman"),
@@ -74,6 +75,3 @@ class UserRegistrationForm(UserCreationForm):
             "major",
             "student_status",
         ]
-
-    def student_status_selected(self) -> bool:
-        return self.fields["student_status"] != ""

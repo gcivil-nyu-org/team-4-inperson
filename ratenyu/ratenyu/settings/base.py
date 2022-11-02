@@ -27,6 +27,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "search",
     "courses",
     "professors",
@@ -118,4 +123,30 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "search:index"
+# OAuth settings
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": config("GOOGLE_API_CLIENT_ID"),
+            "secret": config("GOOGLE_API_SECRET_KEY"),
+            "key": "",
+        },
+        "SCOPE": [
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
+
+SITE_ID = 2
+
+ACCOUNT_SIGNUP_REDIRECT_URL = "/register"
+LOGIN_REDIRECT_URL = "/"
