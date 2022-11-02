@@ -6,6 +6,10 @@ from .course_util import *
 from professors.models import Professor
 
 
+class TestHomePage(TestCase):
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+
 class TestCourseDetailPageRequest(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
@@ -53,7 +57,7 @@ def create_test_course() -> Course:
     return Course.objects.create(
         course_id="1",
         course_title="test course",
-        course_subject_code="TS",
+        course_subject_code="TS-UY",
         catalog_number="1000",
         course_description="course_description",
     )
