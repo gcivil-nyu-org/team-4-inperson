@@ -10,7 +10,6 @@ class TestHomePage(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
 
-
 class TestCourseDetailPageRequest(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
