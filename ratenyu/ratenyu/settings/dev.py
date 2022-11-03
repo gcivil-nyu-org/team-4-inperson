@@ -29,7 +29,7 @@ LOGGING = {
         'debug1': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': PATH_TO_LOGS_FOLDER + '/django.log',
+            'filename': str(PATH_TO_LOGS_FOLDER) + '/django.log',
             'formatter': 'verbose',
         },
     },
