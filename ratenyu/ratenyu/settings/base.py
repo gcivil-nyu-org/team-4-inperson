@@ -130,7 +130,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(asctime)s %(levelname)s %(filename)s %(message)s'
+            'format': '[%(asctime)s] [%(levelname)s] %(filename)s %(message)s'
         }
     },
     'handlers': {
@@ -140,10 +140,16 @@ LOGGING = {
             'filename': str(PATH_TO_LOGS_FOLDER) + '/django.log',
             'formatter': 'verbose',
         },
+        'console1': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'stream': 'ext://sys.stdout'
+        }
     },
     'loggers': {
         'project': {
-            'handlers': ['debug1'],
+            'handlers': ['debug1', 'console1'],
             'level': 'DEBUG',
             'propagate': True,
         },
