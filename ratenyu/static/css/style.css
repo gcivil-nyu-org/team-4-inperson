@@ -386,8 +386,23 @@ ul.result-side-links {
   text-align: center;
 }
 
+p.register{
+  text-align: center;
+}
+
 h2.register {
   font-size: 35px;
+  /*font-size: 2.0vw;*/ /* uncomment for text resizing */
+  color: black;
+  display: flex;
+  justify-content: center;
+  padding-top: 150px;
+  padding-bottom: 15px;
+  line-height: 40%;
+}
+
+h3.register{
+    font-size: 35px;
   /*font-size: 2.0vw;*/ /* uncomment for text resizing */
   color: black;
   display: flex;
@@ -423,6 +438,11 @@ input.register {
 
 button.register {
   width: 99%;
+  height: 42px;
+}
+
+button.reset_password{
+  width: 9%;
   height: 42px;
 }
 
