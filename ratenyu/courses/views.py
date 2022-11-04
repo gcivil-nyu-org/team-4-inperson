@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpRequest, Http404
 from .models import Course
 from .course_util import *
-from .forms import ReviewForm, CourseForm, ProfessorForm
 
 
 def course_detail(request: HttpRequest, course_id: str):
