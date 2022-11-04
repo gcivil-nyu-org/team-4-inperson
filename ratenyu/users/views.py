@@ -52,7 +52,7 @@ def update_initial_user(old_username: str, form: UserRegistrationForm) -> User:
 def get_profile(request: HttpRequest, user_name : str) -> render:
     if request.user.is_authenticated:
         if request.user.username != user_name:
-            raise error404("You are not authorized to view this page.")
+            return error404(request, "You are not authorized to view this page.")
         context = {"user" : user_name}
         user_details = get_user_details(user_name)
         reviews = get_reviews_by_user(user_name)
