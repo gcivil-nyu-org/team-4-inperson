@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="detail-title"><h2>Add your review:</h2></div>
+
+<div class="all-reviews">
+<form method="POST">
+    {% csrf_token %}
+       <p>
+           <label for="course_name">Course Name:</label>
+           <input id="course_name" type="text" name="course_name">
+       </p>
+       <p>
+           <label for="course_id">Course ID:</label>
+           <input id="course_id" type="text" name="course_id">
+       </p>
+       <p>
+           <label for="professor_name">Professor Name:</label>
+           <input id="professor_name" type="text" name="professor_name">
+       </p>
+       <p>
+           <label for="review_rating">Review Rating:</label>
+           <input id="review_rating" type="number" name="review_rating">
+       </p>
+       <p>
+           <label for="review_text">Review Text:</label>
+           <textarea id="review_text" name="review_text"></textarea>
+       </p>
+        <p>
+            <input type="submit">
+        </p>
+</form>
+</div>
+
+{% endblock %}
+
+

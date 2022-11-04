@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpRequest, Http404
 from .models import Course
 from .course_util import *
+from .forms import ReviewForm, CourseForm, ProfessorForm
 
 
 def course_detail(request: HttpRequest, course_id: str):
@@ -21,3 +22,6 @@ def course_detail(request: HttpRequest, course_id: str):
         return render(request, "courses/detail.html", context)
     except Exception:
         raise Http404("Course does not exist")
+
+def add_review(request):
+    return render(request, 'courses/add_review.html')
