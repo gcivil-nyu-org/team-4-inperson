@@ -3,12 +3,12 @@
 {% block content %}
 
 <div class="detail-title add-reviews"><h2>Add your review:</h2></div>
-    {% if review_saved and review_saved == True %}
-        Review was saved!
+    {% if review_saved == True %}
+            <p>Review was saved!</p>
     {% endif %}
 
-    {% if review_saved and review_saved == False %}
-        Review could not be saved.
+    {% if review_saved == False %}
+        <p> Review could not be saved.</p>
     {% endif %}
 
 <div class="add-reviews">
@@ -16,7 +16,12 @@
     {% csrf_token %}
        <p>
            <label for="course_title" class="add_review_label">Course Title:</label>
-           <input id="course_title" type="text" name="course_title" class="add_review_input" placeholder="ex: Software Engineering">
+           <input id="course_title" type="text" name="course_title" list="courses" class="add_review_input" placeholder="ex: Software Engineering">
+           <datalist id="courses">
+               {% for c in courses %}
+               <option value="{{c.course_title}}"></option>
+                {% endfor %}
+           </datalist>
        </p>
        <p>
            <label for="course_id" class="add_review_label">Course ID:</label>
@@ -24,7 +29,13 @@
        </p>
        <p>
            <label for="professor_name" class="add_review_label">Professor Name:</label>
-           <input id="professor_name" type="text" name="professor_name" class="add_review_input" placeholder="ex: Gennadiy Civil">
+           <input id="professor_name" type="text" name="professor_name" list="professors" class="add_review_input" placeholder="ex: Gennadiy Civil">
+           <datalist id="professors">
+               {% for p in professors %}
+               <option value="{{p.name}}"></option>
+               {% endfor %}
+           </datalist>
+
        </p>
        <p>
            <label for="review_rating" class="add_review_label">Review Rating:</label>
@@ -42,4 +53,3 @@
 </div>
 
 {% endblock %}
-
