@@ -46,7 +46,7 @@ def add_review(request):
                 review_rating=request.POST["review_rating"],
                 review_text=request.POST["review_text"],
             )
-        except Class.DoesNotExist:
+        except:
             context["review_saved"] = False
             return render(request, 'courses/add_review.html', context)
         context["review_saved"] = True
