@@ -1,7 +1,7 @@
 <ul class="navbar">
     <li class="title" href="">RateNYU</li>
     <li><a href="{% url 'search:index' %}">Search</a></li>
-    <li><a href="">Contact Us</a></li>
+    <li><a href="{% url 'courses:add_review'  %}">Write a Review</a></li>
     <div class="navbar-right">
         <li class="navbar-user"><a href="{% url 'users:profile' user_name=user.username %}">{{  user.username }}</a></li>
         <li><a href="{% url 'users:logout' %}?next={% url 'search:index' %}">Logout</a></li>

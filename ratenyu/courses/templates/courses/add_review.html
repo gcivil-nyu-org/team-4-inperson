@@ -3,13 +3,20 @@
 {% block content %}
 
 <div class="detail-title"><h2>Add your review:</h2></div>
+    {% if review_saved and review_saved == True %}
+        Review was saved!
+    {% endif %}
+
+    {% if review_saved and review_saved == False %}
+        Review could not be saved.
+    {% endif %}
 
 <div class="all-reviews">
 <form method="POST">
     {% csrf_token %}
        <p>
-           <label for="course_name">Course Name:</label>
-           <input id="course_name" type="text" name="course_name">
+           <label for="course_title">Course Title:</label>
+           <input id="course_title" type="text" name="course_title">
        </p>
        <p>
            <label for="course_id">Course ID:</label>

@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, Http404
-from .models import Course
+from django.urls import reverse
+from .models import Course, Review
+from professors.models import Professor
 from .course_util import *
 
 
@@ -22,5 +24,30 @@ def course_detail(request: HttpRequest, course_id: str):
     except Exception:
         raise Http404("Course does not exist")
 
+
 def add_review(request):
-    return render(request, 'courses/add_review.html')
+    # Assuming we'll need all courses and professors in the context for auto-fill
+    all_courses = Course.objects.only("course_id", "course_title")
+    all_professors = Professor.objects.only("professor_id", "name")
+    context = {
+        "courses": all_courses,
+        "professors": all_professors
+    }
+    if request.method == "GET":
+        if request.user.id is None:
+            return redirect(reverse('search:index'))
+        return render(request, 'courses/add_review.html', context)
+    elif request.method == "POST":
+        try:
+            save_new_review(
+                user=request.user,
+                user_entered_course_id=request.POST["course_id"],
+                professor_name=request.POST["professor_name"],
+                review_rating=request.POST["review_rating"],
+                review_text=request.POST["review_text"],
+            )
+        except Class.DoesNotExist:
+            context["review_saved"] = False
+            return render(request, 'courses/add_review.html', context)
+        context["review_saved"] = True
+        return render(request, 'courses/add_review.html', context)
