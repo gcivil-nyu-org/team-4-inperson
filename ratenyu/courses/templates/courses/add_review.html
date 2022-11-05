@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="detail-title"><h2>Add your review:</h2></div>
+<div class="detail-title add-reviews"><h2>Add your review:</h2></div>
     {% if review_saved and review_saved == True %}
         Review was saved!
     {% endif %}
@@ -11,35 +11,35 @@
         Review could not be saved.
     {% endif %}
 
-<div class="all-reviews">
+<div class="add-reviews">
 <form method="POST">
     {% csrf_token %}
        <p>
-           <label for="course_title">Course Title:</label>
-           <input id="course_title" type="text" name="course_title">
+           <label for="course_title" class="add_review_label">Course Title:</label>
+           <input id="course_title" type="text" name="course_title" class="add_review_input" placeholder="ex: Software Engineering">
        </p>
        <p>
-           <label for="course_id">Course ID:</label>
-           <input id="course_id" type="text" name="course_id">
+           <label for="course_id" class="add_review_label">Course ID:</label>
+           <input id="course_id" type="text" name="course_id" class="add_review_input" placeholder="ex: CS-GY 6063">
        </p>
        <p>
-           <label for="professor_name">Professor Name:</label>
-           <input id="professor_name" type="text" name="professor_name">
+           <label for="professor_name" class="add_review_label">Professor Name:</label>
+           <input id="professor_name" type="text" name="professor_name" class="add_review_input" placeholder="ex: Gennaidiy Civil">
        </p>
        <p>
-           <label for="review_rating">Review Rating:</label>
-           <input id="review_rating" type="number" name="review_rating">
+           <label for="review_rating" class="add_review_label">Review Rating:</label>
+           <input id="review_rating" type="number"  class="add_review_input" name="review_rating">
        </p>
        <p>
-           <label for="review_text">Review Text:</label>
-           <textarea id="review_text" name="review_text"></textarea>
+           <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
+           <textarea id="review_text" name="review_text"  class="add_review_textarea" placeholder="Enter Review Here"></textarea>
        </p>
         <p>
-            <input type="submit">
+            <label class="add_review_label"></label>
+            <input type="submit" class="add_review_submit">
         </p>
 </form>
 </div>
 
 {% endblock %}
-
 

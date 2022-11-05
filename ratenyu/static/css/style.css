@@ -704,6 +704,57 @@ div.user-review > p:nth-of-type(2) {
   flex: 10;
 }
 
+.add-reviews{
+  display: flex;
+  justify-content: center;
+}
+
+
+.add_review_title {
+  display: inline-block;
+  width: 200px;
+  margin-right: 30px;
+  margin-left: 300px;
+}
+
+.add_review_label {
+  display:inline-block;
+  width: 200px;
+  /*margin-right: 30px;*/
+  text-align: right;
+  margin: 0px auto;
+  padding-right: 30px;
+}
+
+#add_review_label2 {
+  vertical-align: top;
+  height: 200px;
+}
+
+.add_review_input {
+  border:none;
+  width:200px;
+  margin:0px auto;
+}
+
+.add_review_submit {
+  background: #702B9D;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
+}
+
+.add_review_textarea {
+  border:none;
+  margin:0px auto;
+  width: 400px;
+  height: 200px;
+}
+
 /* Fonts */
 
 @font-face {
