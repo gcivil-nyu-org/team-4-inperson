@@ -54,6 +54,7 @@ class TestProfessorResultsPageRequest(TestCase):
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
+        self.assertContains(response, "John")
 
 
 class TestSearchFiltering(TestCase):
