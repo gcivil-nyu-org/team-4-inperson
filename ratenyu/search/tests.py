@@ -43,6 +43,7 @@ class TestCourseResultsPageRequest(TestCase):
 
 class TestProfessorResultsPageRequest(TestCase):
     def setUp(self) -> None:
+        create_test_professor()
         self.factory = RequestFactory()
 
     def testValidReqeust(self) -> None:
