@@ -22,7 +22,7 @@ def get_reviews_by_user(user_name: str) -> list:
     try:
         logger.debug(f"get_reviews_by_user({user_name})")
         review_objects = []
-        for review in Review.objects.filter(user=user_name):
+        for review in Review.objects.filter(user = User.objects.get(username=user_name)):
             review_objects.append(
                 {
                     "review_obj": review,
