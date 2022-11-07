@@ -19,7 +19,7 @@ if "RDS_DB_NAME" in os.environ:
     STATICFILES_DIRS = []
     STATIC_ROOT = "static"
 
-PATH_TO_LOGS_FOLDER =  "/logs"
+PATH_TO_LOGS_FOLDER = BASE_DIR.parent / "logs"
 
 LOGGING = {
     'version': 1,
