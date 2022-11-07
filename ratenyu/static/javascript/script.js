@@ -1,3 +1,6 @@
+/*
+Handlers for Course/Professor Result Filtering
+ */
 function getListOfChecked() {
   var listOfChecked = [];
   var checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
@@ -6,10 +9,11 @@ function getListOfChecked() {
   }
   return listOfChecked;
 }
+
 function resultCheckBoxClicked() {
-  var listOfChecked = getListOfChecked();
-  console.log(listOfChecked);
-  var listOfItems = document.getElementsByClassName("detail-sub-course-desc")
+    var listOfChecked = getListOfChecked();
+    console.log(listOfChecked);
+    var listOfItems = document.getElementsByClassName("detail-sub-course-desc");
     for (var i = 0; i < listOfItems.length; i++) {
         var element = listOfItems[i];
         var isFound = false;
