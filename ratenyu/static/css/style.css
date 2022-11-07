@@ -440,11 +440,6 @@ button.register {
   height: 42px;
 }
 
-button.reset_password{
-  width: 9%;
-  height: 42px;
-}
-
 .dropdown-register {
   font-size: 18px;
   background: #FFFFFF;
