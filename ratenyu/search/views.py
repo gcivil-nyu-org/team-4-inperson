@@ -63,14 +63,14 @@ def search_by_course_name(request: HttpRequest):
 
 def search_by_professor_name(request):
     try:
-        query = request.GET["query"]
-        logger.debug(f"query: {query}")
-        professors = Professor.objects.filter(
-            Q(name__startswith=f"{query} ")
-            | Q(name__contains=f" {query} ")
-            | Q(name__endswith=f" {query}")
-        )
-        context = {"professors": professors}
+        query = request.GET["query"].strip()
+        professors = professor_query(query)
+        filtered_professors = []
+        for p in professors:
+            current_prof_info = get_professor_results_info(p)
+            filtered_professors.append(current_prof_info)
+        context = {"professors": filtered_professors, "query": query}
+        logger.debug(context)
         return render(request, "search/professorResult.html", context)
     except:
         raise Http404("Something went wrong")
