@@ -1,3 +1,4 @@
+from json import dumps
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, Http404
 from django.urls import reverse
@@ -16,9 +17,7 @@ def course_detail(request: HttpRequest, course_id: str):
         context = {
             "classes": classes,
             "course": course,
-            "reviews_list": reviews_list,
-            "reviews_avg": reviews_avg,
-            "professors_list": professors_list,
+            "reviews_list": reviews_list
         }
         return render(request, "courses/detail.html", context)
     except Exception:
@@ -27,11 +26,16 @@ def course_detail(request: HttpRequest, course_id: str):
 
 def add_review(request):
     # Assuming we'll need all courses and professors in the context for auto-fill
-    all_courses = Course.objects.only("course_id", "course_title")
+    all_courses = Course.objects.only("course_subject_code", "catalog_number", "course_title")
+    all_courses_list = [{
+        "course_title": course.course_title.replace("'", ""),
+        "course_id": f"{course.course_subject_code} {course.catalog_number}"
+    } for course in all_courses]
     all_professors = Professor.objects.only("professor_id", "name")
     context = {
         "courses": all_courses,
-        "professors": all_professors
+        "professors": all_professors,
+        "courses_json": dumps(all_courses_list)
     }
     if request.method == "GET":
         if request.user.id is None:

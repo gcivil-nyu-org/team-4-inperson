@@ -25,4 +25,25 @@ function resultCheckBoxClicked() {
             element.style.display = "none";
         }
     });
+/*
+Handlers for auto-populating Course Name and Course ID on Add Review Handler
+ */
+function populateAddReviewCourseId(e, addReviewCourseId, coursesData) {
+    let matchingCourse = coursesData.find((course) => {
+        return course['course_title'] === e.target.value;
+    });
+    console.log(matchingCourse);
+    if (matchingCourse) {
+        addReviewCourseId.value = matchingCourse['course_id'];
+    }
+}
+
+function populateAddReviewCourseName(e, addReviewCourseName, coursesData) {
+    let matchingCourse = coursesData.find((course) => {
+        return course['course_id'] === e.target.value;
+    });
+    console.log(matchingCourse);
+    if (matchingCourse) {
+        addReviewCourseName.value = matchingCourse['course_title'];
+    }
 }

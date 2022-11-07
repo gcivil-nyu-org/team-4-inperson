@@ -16,7 +16,7 @@
     {% csrf_token %}
        <p>
            <label for="course_title" class="add_review_label">Course Title:</label>
-           <input id="course_title" type="text" name="course_title" list="courses" class="add_review_input" placeholder="ex: Software Engineering">
+           <input id="course_title" type="text" name="add_review_course_title" list="courses" class="add_review_input" placeholder="ex: Software Engineering">
            <datalist id="courses">
                {% for c in courses %}
                <option value="{{c.course_title}}"></option>
@@ -25,11 +25,11 @@
        </p>
        <p>
            <label for="course_id" class="add_review_label">Course ID:</label>
-           <input id="course_id" type="text" name="course_id" class="add_review_input" placeholder="ex: CS-GY 6063">
+           <input id="course_id" type="text" name="add_review_course_id" class="add_review_input" placeholder="ex: CS-GY 6063">
        </p>
        <p>
            <label for="professor_name" class="add_review_label">Professor Name:</label>
-           <input id="professor_name" type="text" name="professor_name" list="professors" class="add_review_input" placeholder="ex: Gennadiy Civil">
+           <input id="professor_name" type="text" name="add_review_professor_name" list="professors" class="add_review_input" placeholder="ex: Gennadiy Civil">
            <datalist id="professors">
                {% for p in professors %}
                <option value="{{p.name}}"></option>
@@ -51,5 +51,17 @@
         </p>
 </form>
 </div>
+
+<script>
+    let coursesData = JSON.parse('{{ courses_json|safe }}');
+    let addReviewCourseId = document.querySelector('[name="add_review_course_id"]');
+    let addReviewCourseName = document.querySelector('[name="add_review_course_title"]');
+    addReviewCourseName.oninput = (e) => {
+        populateAddReviewCourseId(e, addReviewCourseId, coursesData);
+    }
+    addReviewCourseId.oninput = (e) => {
+        populateAddReviewCourseName(e, addReviewCourseName, coursesData);
+    }
+</script>
 
 {% endblock %}
