@@ -15,4 +15,5 @@ urlpatterns = [
         auth_views.LogoutView.as_view(template_name="search/index.html"),
         name="logout",
     ),
+    path("profile/<str:user_name>", views.get_profile, name="profile"),
 ]
