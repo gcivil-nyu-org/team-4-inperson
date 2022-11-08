@@ -8,6 +8,9 @@ from courses.models import Course, Class, Review
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
+import logging
+
+logger = logging.getLogger('project')
 from util.views import error404
 
 
@@ -17,6 +20,7 @@ def index(request):
 
 def search_by_select(request: HttpRequest):
     search_by = request.GET["search_by"]
+    logger.debug(f"search_by: {search_by}")
     if search_by == "CourseID":
         return search_by_course_id(request)
     elif search_by == "CourseName":
@@ -28,6 +32,7 @@ def search_by_select(request: HttpRequest):
 def search_by_course_id(request: HttpRequest) -> render:
     try:
         query = request.GET["query"].strip()
+        logger.debug(f"query: {query}")
         course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
         course_id = course_id_query(course_subject_code, catalog_number)
         return course_detail(request, course_id.course_id)
@@ -40,6 +45,7 @@ def search_by_course_id(request: HttpRequest) -> render:
 def search_by_course_name(request: HttpRequest):
     try:
         query = request.GET["query"].strip()
+        logger.debug(f"query: {query}")
         courses = course_query(query)
         filtered_courses = []
         for i in courses:
@@ -50,7 +56,8 @@ def search_by_course_name(request: HttpRequest):
             "query": query,
         }
         return render(request, "search/courseResult.html", context)
-    except:
+    except Exception as e:
+        logger.error(e)
         raise Http404("Something went wrong")
 
 
@@ -63,6 +70,7 @@ def search_by_professor_name(request):
             current_prof_info = get_professor_results_info(p)
             filtered_professors.append(current_prof_info)
         context = {"professors": filtered_professors, "query": query}
+        logger.debug(context)
         return render(request, "search/professorResult.html", context)
     except:
         raise Http404("Something went wrong")
