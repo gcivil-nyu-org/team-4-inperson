@@ -53,7 +53,7 @@ def get_profile(request: HttpRequest, user_name : str) -> render:
     if request.user.is_authenticated:
         if request.user.username != user_name:
             return error404(request, "You are not authorized to view this page.")
-        context = {"user" : user_name}
+        context = {"user_name" : user_name}
         user_details = get_user_details(user_name)
         reviews = get_reviews_by_user(user_name)
         context["user_details"] = user_details
