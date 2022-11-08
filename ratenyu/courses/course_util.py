@@ -43,9 +43,16 @@ def get_class(course_id: str, professor_name: str) -> str:
     return return_class
 
 
-def save_new_review(user: User, user_entered_course_id: str, professor_name: str, review_rating: str,
-                    review_text: str) -> Review:
-    course_subject_code, catalog_number = get_sub_code_and_cat_num(user_entered_course_id)
+def save_new_review(
+    user: User,
+    user_entered_course_id: str,
+    professor_name: str,
+    review_rating: str,
+    review_text: str,
+) -> Review:
+    course_subject_code, catalog_number = get_sub_code_and_cat_num(
+        user_entered_course_id
+    )
     course_id = course_id_query(course_subject_code, catalog_number).course_id
     class_obj = get_class(course_id=course_id, professor_name=professor_name)
     new_review = Review(
@@ -57,7 +64,6 @@ def save_new_review(user: User, user_entered_course_id: str, professor_name: str
     )
     new_review.save()
     return new_review
-
 
 
 def course_id_query(course_subject_code: str, catalog_number: str) -> Class:

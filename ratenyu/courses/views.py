@@ -18,34 +18,38 @@ def course_detail(request: HttpRequest, course_id: str):
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
-        context = {
-            "classes": classes,
-            "course": course,
-            "reviews_list": reviews_list
-        }
+        context = {"classes": classes, "course": course, "reviews_list": reviews_list}
         return render(request, "courses/detail.html", context)
     except Exception:
         raise Http404("Course does not exist")
 
 
 def add_review(request):
-    all_courses = Course.objects.only("course_subject_code", "catalog_number", "course_title")
-    all_courses_list = [{
-        "course_title": course.course_title.replace("'", ""),
-        "course_id": f"{course.course_subject_code} {course.catalog_number}"
-    } for course in all_courses]
-    all_course_ids = [f"{course.course_subject_code} {course.catalog_number}" for course in all_courses]
+    all_courses = Course.objects.only(
+        "course_subject_code", "catalog_number", "course_title"
+    )
+    all_courses_list = [
+        {
+            "course_title": course.course_title.replace("'", ""),
+            "course_id": f"{course.course_subject_code} {course.catalog_number}",
+        }
+        for course in all_courses
+    ]
+    all_course_ids = [
+        f"{course.course_subject_code} {course.catalog_number}"
+        for course in all_courses
+    ]
     all_professors = Professor.objects.only("professor_id", "name")
     context = {
         "courses": all_courses,
         "professors": all_professors,
         "course_ids": all_course_ids,
-        "courses_json": dumps(all_courses_list)
+        "courses_json": dumps(all_courses_list),
     }
     if request.method == "GET":
         if request.user.id is None:
-            return redirect(reverse('search:index'))
-        return render(request, 'courses/add_review.html', context)
+            return redirect(reverse("search:index"))
+        return render(request, "courses/add_review.html", context)
     elif request.method == "POST":
         user = User.objects.get(username=request.user)
         try:
