@@ -161,7 +161,7 @@ form.search {
   background-position: center;
   background-image: url('/static/images/nyu-logo-light.png');
   background-size: 100% 100%;
-  z-index: 3;
+  pointer-events: none;
 }
 
 input {
