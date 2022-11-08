@@ -147,8 +147,7 @@ form.search {
   height: 40%; 
   display: block;
   background-position: center;
-  margin-left: 5.3rem;
-  margin-top: 10rem;
+  margin-left: 25%;
   background-image: url('/static/images/nyulogo.png');
   background-size: 100% 100%;
   pointer-events: none;
