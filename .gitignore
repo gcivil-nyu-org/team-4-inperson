@@ -9,4 +9,5 @@ __pycache__/
 .coverage
 /ratenyu/courses/migrations/
 /ratenyu/professors/migrations/
-
+/logs/*
+!logs/.gitkeep 

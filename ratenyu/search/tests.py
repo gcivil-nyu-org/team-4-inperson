@@ -24,7 +24,6 @@ class TestSearchPageRequest(TestCase):
         self.assertEqual(200, response.status_code)
 
 
-
 class TestCourseResultsPageRequest(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
@@ -43,6 +42,7 @@ class TestCourseResultsPageRequest(TestCase):
 
 class TestProfessorResultsPageRequest(TestCase):
     def setUp(self) -> None:
+        create_test_professor()
         self.factory = RequestFactory()
 
     def testValidReqeust(self) -> None:
@@ -54,6 +54,7 @@ class TestProfessorResultsPageRequest(TestCase):
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
+        self.assertContains(response, "John")
 
 
 class TestSearchFiltering(TestCase):
