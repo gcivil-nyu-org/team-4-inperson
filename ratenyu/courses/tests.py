@@ -1,5 +1,6 @@
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
+from django.contrib.auth.models import User
 from .models import Course
 from .views import course_detail
 from .course_util import *
@@ -9,6 +10,7 @@ from professors.models import Professor
 class TestHomePage(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
+
 
 class TestCourseDetailPageRequest(TestCase):
     def setUp(self) -> None:
@@ -98,20 +100,22 @@ def create_test_class_2(course: Course, professor: Professor) -> Class:
 
 
 def create_test_review_1(class_id: Class) -> Review:
+    user = User.objects.create(username="hw2807", email="hw2807@nyu.edu")
     return Review.objects.create(
         review_text="I love this professor!",
         rating=5,
         class_id=class_id,
-        user="User1",
+        user=user,
         pub_date=timezone.now(),
     )
 
 
 def create_test_review_2(class_id: Class) -> Review:
+    user = User.objects.create(username="hw2808", email="hw2808@nyu.edu")
     return Review.objects.create(
         review_text="I hate this professor!",
         rating=1,
         class_id=class_id,
-        user="User2",
+        user=user,
         pub_date=timezone.now(),
     )

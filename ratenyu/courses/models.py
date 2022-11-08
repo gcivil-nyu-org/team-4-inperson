@@ -1,8 +1,7 @@
 import datetime
-
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 from professors.models import Professor
 
 
@@ -32,7 +31,7 @@ class Review(models.Model):
         choices=((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"))
     )
     class_id = models.ForeignKey(to=Class, on_delete=models.CASCADE)
-    user = models.CharField(max_length=250)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     pub_date = models.DateTimeField("date published")
 
     def __str__(self):
