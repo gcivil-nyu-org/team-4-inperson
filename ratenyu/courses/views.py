@@ -1,10 +1,14 @@
+import logging
 from json import dumps
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, Http404
 from django.urls import reverse
-from .models import Course, Review
+from courses.models import Review
 from professors.models import Professor
 from .course_util import *
+from users.user_util import get_user_details
+
+LOGGER = logging.getLogger("project")
 
 
 def course_detail(request: HttpRequest, course_id: str):
@@ -25,7 +29,6 @@ def course_detail(request: HttpRequest, course_id: str):
 
 
 def add_review(request):
-    # Assuming we'll need all courses and professors in the context for auto-fill
     all_courses = Course.objects.only("course_subject_code", "catalog_number", "course_title")
     all_courses_list = [{
         "course_title": course.course_title.replace("'", ""),
@@ -44,17 +47,19 @@ def add_review(request):
             return redirect(reverse('search:index'))
         return render(request, 'courses/add_review.html', context)
     elif request.method == "POST":
+        user = User.objects.get(username=request.user)
         try:
-            # print(request.POST['review_rating'])
-            save_new_review(
-                user=request.user,
+            new_review = save_new_review(
+                user=user,
                 user_entered_course_id=request.POST["add_review_course_id"],
                 professor_name=request.POST["add_review_professor_name"],
                 review_rating=request.POST["review_rating"],
                 review_text=request.POST["review_text"],
             )
-        except:
+            LOGGER.info(f"Created new Review: {new_review}")
+            context["review_saved"] = True
+            return render(request, "courses/add_review.html", context)
+        except Exception as e:
+            LOGGER.error(f"Could not create review, encountered error: {e}")
             context["review_saved"] = False
-            return render(request, 'courses/add_review.html', context)
-        context["review_saved"] = True
-        return render(request, 'courses/add_review.html', context)
+            return render(request, "courses/add_review.html", context)
