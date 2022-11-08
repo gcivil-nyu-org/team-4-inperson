@@ -31,10 +31,12 @@ def add_review(request):
         "course_title": course.course_title.replace("'", ""),
         "course_id": f"{course.course_subject_code} {course.catalog_number}"
     } for course in all_courses]
+    all_course_ids = [f"{course.course_subject_code} {course.catalog_number}" for course in all_courses]
     all_professors = Professor.objects.only("professor_id", "name")
     context = {
         "courses": all_courses,
         "professors": all_professors,
+        "course_ids": all_course_ids,
         "courses_json": dumps(all_courses_list)
     }
     if request.method == "GET":
