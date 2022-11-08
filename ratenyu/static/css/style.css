@@ -161,6 +161,7 @@ form.search {
   background-position: center;
   background-image: url('/static/images/nyu-logo-light.png');
   background-size: 100% 100%;
+  z-index: 3;
 }
 
 input {
@@ -570,7 +571,6 @@ ul.result-side-links {
 }
 
 span.rev-title, span.left-section {
-  display: inline;
   font-family: inter-bold;
 }
 
@@ -627,7 +627,7 @@ color: white;
 h4.user-form {
   font-size: 15px;
   margin-left: 30px;
-  margin-bottom: -15%;
+  margin-bottom: -13%;
   margin-top: 15%;
   color: white;
   text-align: left;
@@ -663,15 +663,13 @@ button.user-form{
 }
 
 span.user-title {
-  display: inline-block;
   font-family: inter-bold;
-  z-index: 2;
 }
 
 /*set appropriate settings for edit profile button*/
 .user-reviews {
-  margin-top: 8%;
-  margin-left: 25%;
+  margin-top: 7rem;
+  margin-left: 20rem;
   width: 70%;
   text-align: left;
 }
