@@ -45,6 +45,7 @@ def get_course_results_info(course: Class) -> dict:
         "course_obj": course,
         "reviews_list": reviews_list,
         "reviews_avg": reviews_avg,
+        "last_offered": max([cl.last_offered for cl in classes])
     }
 
 

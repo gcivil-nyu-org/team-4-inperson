@@ -45,11 +45,10 @@
 
 {% for course in courses %}
 
-<div class="detail-sub-course-desc">
+<div class="detail-sub-course-desc" data-level="{{ course.course_obj.course_subject_code  }}" data-offered="{{  course.last_offered }}">
     <p style="margin-bottom:0;"> <a href=/courses/{{course.course_obj.course_id}}>{{course.course_obj.course_title}}: {{ course.course_obj.course_subject_code }} {{ course.course_obj.catalog_number }}</a> ({{course.reviews_avg}}/5.0 | {{course.reviews_list|length}} Reviews)</p>
     <p style="margin : 0; padding-top:0;">{{ course.course_obj.course_description }} </p>
     <br>
-
 </div>
 
 {% endfor %}
@@ -62,6 +61,3 @@
 
 {% endif %}
 {% endblock %}
-
-
-

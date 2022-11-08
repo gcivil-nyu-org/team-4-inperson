@@ -2,31 +2,27 @@
 Handlers for Course/Professor Result Filtering
  */
 function getListOfChecked() {
-  var listOfChecked = [];
-  var checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
-  for (var i = 0; i < checkBoxes.length; i++) {
-    listOfChecked.push(checkBoxes[i].id);
-  }
+  let listOfChecked = [];
+  let checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
+  checkBoxes.forEach(checkBox => {
+      listOfChecked.push(checkBox.id);
+  })
   return listOfChecked;
 }
 
 function resultCheckBoxClicked() {
-    var listOfChecked = getListOfChecked();
-    console.log(listOfChecked);
-    var listOfItems = document.getElementsByClassName("detail-sub-course-desc");
-    for (var i = 0; i < listOfItems.length; i++) {
-        var element = listOfItems[i];
-        var isFound = false;
-        for (var j = 0; j < listOfChecked.length; j++) {
-            if (element.textContent.includes(listOfChecked[j])) {
-                isFound = true;
-                break;
-            }
-        }
-        if (isFound) {
+    let listOfChecked = getListOfChecked();
+    let listOfItems = document.querySelectorAll(".detail-sub-course-desc");
+    listOfItems.forEach(element => {
+        let level = element.getAttribute('data-level').slice(-2);
+        let last_offered = element.getAttribute('data-offered').slice(-4);
+        console.log(level);
+        console.log(last_offered);
+        console.log(listOfChecked);
+        if (listOfChecked.includes(level) && listOfChecked.includes(last_offered)) {
             element.style.display = "block";
         } else {
             element.style.display = "none";
         }
-    }
+    });
 }

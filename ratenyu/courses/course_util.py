@@ -29,8 +29,3 @@ def calculate_rating_avg(reviews_list: List[dict]) -> float:
     for review in reviews_list:
         rating_sum += review["review_obj"].rating
     return round(rating_sum / len(reviews_list), 1)
-
-
-def get_course_last_offered_term(course: Course) -> str:
-    all_classes = Class.objects.filter(course=course)
-    return max(all_classes.only("last_offered"))
