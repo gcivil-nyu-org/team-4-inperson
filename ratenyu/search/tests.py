@@ -24,7 +24,6 @@ class TestSearchPageRequest(TestCase):
         self.assertEqual(200, response.status_code)
 
 
-
 class TestCourseResultsPageRequest(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
