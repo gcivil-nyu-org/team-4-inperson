@@ -28,7 +28,7 @@
            <input id="course_id" type="text" name="add_review_course_id" class="add_review_input" list="course_ids" placeholder="ex: CS-GY 6063">
                <datalist id="course_ids">
                    {% for ci in course_ids %}
-                   <option value="{{ci}}"</option>
+                   <option value="{{ci}}"></option>
                    {% endfor %}
                </datalist>
        </p>
@@ -41,11 +41,16 @@
                {% endfor %}
            </datalist>
 
-       </p>
-       <p>
-           <label for="review_rating" class="add_review_label">Review Rating:</label>
-           <input id="review_rating" type="number"  class="add_review_input" name="review_rating">
-       </p>
+        </p>
+        <label for="review_rating" class="add_review_label">Review Rating:</label>
+            <div class="star-rating">
+                <i class="my-star star-1" data-star="1"></i>
+                <i class="my-star star-2" data-star="2"></i>
+                <i class="my-star star-3" data-star="3"></i>
+                <i class="my-star star-4" data-star="4"></i>
+                <i class="my-star star-5" data-star="5"></i>
+            </div>
+         <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True">
        <p>
            <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
            <textarea id="review_text" name="review_text"  class="add_review_textarea" placeholder="Enter Review Here"></textarea>

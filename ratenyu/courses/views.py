@@ -45,10 +45,11 @@ def add_review(request):
         return render(request, 'courses/add_review.html', context)
     elif request.method == "POST":
         try:
+            # print(request.POST['review_rating'])
             save_new_review(
                 user=request.user,
-                user_entered_course_id=request.POST["course_id"],
-                professor_name=request.POST["professor_name"],
+                user_entered_course_id=request.POST["add_review_course_id"],
+                professor_name=request.POST["add_review_professor_name"],
                 review_rating=request.POST["review_rating"],
                 review_text=request.POST["review_text"],
             )

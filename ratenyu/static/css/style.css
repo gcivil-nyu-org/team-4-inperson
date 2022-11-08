@@ -755,6 +755,29 @@ div.user-review > p:nth-of-type(2) {
   height: 200px;
 }
 
+/*set the default color of the stars*/
+.star-rating{
+    color: #bebebe;
+    font-size:2em;
+    display: inline;
+}
+/*create the star*/
+.my-star::before{
+    content:"\002605";
+}
+/*remove the default style (italic) of the star*/
+.my-star{
+    font-style: unset !important;
+}
+/*set active star color*/
+.is-active{
+    color:#702B9D;
+}
+/*set color on hover*/
+.my-star:not(.is-active):hover{
+    color: #702B9D;
+}
+
 /* Fonts */
 
 @font-face {
