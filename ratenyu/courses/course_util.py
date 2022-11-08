@@ -1,5 +1,5 @@
 from typing import List
-from .models import Class, Review
+from .models import Class, Review, Course
 
 
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:

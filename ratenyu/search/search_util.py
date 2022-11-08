@@ -39,12 +39,15 @@ def course_id_query(course_subject_code: str, catalog_number: str) -> Class:
 
 def get_course_results_info(course: Class) -> dict:
     classes = Class.objects.filter(course=course.course_id)
+    if len(classes) == 0:
+        return {}
     reviews_list = create_review_objects(classes)
     reviews_avg = calculate_rating_avg(reviews_list)
     return {
         "course_obj": course,
         "reviews_list": reviews_list,
         "reviews_avg": reviews_avg,
+        "last_offered": max([cl.last_offered for cl in classes])
     }
 
 
