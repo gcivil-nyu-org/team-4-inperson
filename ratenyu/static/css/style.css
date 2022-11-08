@@ -501,6 +501,14 @@ button.oauth-button {
   margin-top: 130px;
   text-align: center;
 }
+
+.error-page > h1{
+  font-size: 50px;
+}
+
+.error-page > h2{
+  font-size: 25px;
+}
 /* The container */
 .container {
   display: block;
