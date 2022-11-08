@@ -4,7 +4,7 @@
 {% load static %}
 
 <div class = "user-panel">
-    <h1 class = "user-details">Hello <br><br> {{user_details.name}}!</h1>
+    <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
     <div class="user-form">
         <h4 class = 'user-form'> Name </h4>
         <p> {{user_details.name}} </p>
@@ -23,7 +23,6 @@
     <div class="nyu-logo-light">
     </div>
     {% for review in reviews %}
-    
     <div class="user-review">
         <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
             {{ review.review_obj.rating }}.0/5.0 </p>
