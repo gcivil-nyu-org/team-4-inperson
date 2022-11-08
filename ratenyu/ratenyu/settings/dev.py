@@ -18,26 +18,24 @@ if "RDS_DB_NAME" in os.environ:
 PATH_TO_LOGS_FOLDER = BASE_DIR.parent / "logs"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(asctime)s %(levelname)s %(filename)s %(message)s'
-        }
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "%(asctime)s %(levelname)s %(filename)s %(message)s"}
     },
-    'handlers': {
-        'debug1': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': str(PATH_TO_LOGS_FOLDER) + '/django.log',
-            'formatter': 'verbose',
+    "handlers": {
+        "debug1": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": str(PATH_TO_LOGS_FOLDER) + "/django.log",
+            "formatter": "verbose",
         },
     },
-    'loggers': {
-        'project': {
-            'handlers': ['debug1'],
-            'level': 'DEBUG',
-            'propagate': True,
+    "loggers": {
+        "project": {
+            "handlers": ["debug1"],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
@@ -49,9 +47,9 @@ LOGIN_REDIRECT_URL = "/"
 
 # SMTP Configuration
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'ratenyuteam@gmail.com'
+EMAIL_HOST_USER = "ratenyuteam@gmail.com"
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
