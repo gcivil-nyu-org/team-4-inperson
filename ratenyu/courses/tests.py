@@ -161,6 +161,3 @@ def create_test_review_2(class_id: Class) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
-
-def login(self):
-    self.username
