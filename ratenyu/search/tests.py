@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase, RequestFactory
 from .search_util import *
 from courses.models import Course, Class
@@ -9,7 +10,6 @@ from .views import (
     search_by_select,
 )
 from courses.tests import *
-
 
 # Create your tests here.
 
@@ -162,21 +162,23 @@ class TestCourseIdSearch(TestCase):
         request_str = f"search/search?search_by=CourseID&query=VIP-GY 6094"
         request = self.factory.get(request_str)
         response = search_by_select(request=request)
+        response_str = response.content.decode(response.charset)
         self.assertEqual(
             200,
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
-        self.assertContains(response, "CourseID not found")
+        self.assertIn(f"No Results Found for Course ID 'VIP-GY 6094'", response_str)
 
     def test_no_course_id(self) -> None:
         """if no course id is passed, it should return the search page with no results"""
         request_str = f"search/search?search_by=CourseID&query="
         request = self.factory.get(request_str)
         response = search_by_select(request=request)
+        response_str = response.content.decode(response.charset)
         self.assertEqual(
             200,
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
-        self.assertContains(response, "Something went wrong")
+        self.assertIn(f"No Results Found for Course ID ''", response_str)
