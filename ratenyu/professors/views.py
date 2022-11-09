@@ -3,7 +3,7 @@ from django.http import HttpRequest, Http404
 from .models import Professor
 from courses.models import Class, Course, Review
 from courses.course_util import *
-
+from util.views import error404
 
 def professor_detail(request: HttpRequest, professor_id: str):
     try:
@@ -19,5 +19,5 @@ def professor_detail(request: HttpRequest, professor_id: str):
             "reviews_avg": reviews_avg,
         }
         return render(request, "professors/detail.html", context)
-    except Professor.DoesNotExist:
-        raise Http404("Professor does not exist")
+    except Exception as e:
+        return error404(request, error = e)
