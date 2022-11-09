@@ -84,6 +84,22 @@ class TestAddReviewPage(TestCase):
             f"Request returned {response.status_code} for request {request_str}",
         )
 
+
+
+class TestAddReviewPageHelpers(TestCase):
+    def setUp(self) -> None:
+        create_test_course()
+        create_test_professor()
+        create_test_class_1(
+            course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
+        )
+        self.factory = RequestFactory()
+
+    def test_get_class(self):
+        test_class = Class.objects.get(pk=1)
+        found_class = get_class(1,"John Doe")
+        self.assertEqual(test_class.class_id, found_class.class_id)
+
     # def test_save_review(self):
     #     user = User.objects.create(username="hw2808", email="hw2808@nyu.edu")
     #     course_id = ' CS-GY 6063 '
@@ -96,6 +112,9 @@ class TestAddReviewPage(TestCase):
     #             review_rating=review_rating,
     #             review_text=review_text)
     #     # self.assertEqual(r, Review.objects.get(pk=1))
+
+
+
 
 def create_test_course() -> Course:
     return Course.objects.create(
