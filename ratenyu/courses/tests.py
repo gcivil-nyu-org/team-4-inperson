@@ -1,8 +1,8 @@
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
 from django.contrib.auth.models import User
-from .models import Course
-from .views import course_detail
+from .models import Course, Review
+from .views import course_detail, add_review
 from .course_util import *
 from professors.models import Professor
 
@@ -54,6 +54,48 @@ class TestDetailPageHelpers(TestCase):
         )
         self.assertEqual(3.0, calculate_rating_avg(review_objects))
 
+class TestAddReviewPage(TestCase):
+
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+    def testValidRequestGet(self) -> None:
+        user = User.objects.create(username="hw2808", email="hw2808@nyu.edu")
+        request_str = f"http://127.0.0.1:8000/courses/add_review"
+        request = self.factory.get(request_str)
+        request.user = User.objects.get(pk=1)
+        response = add_review(request=request)
+        self.assertEqual(
+            200,
+            response.status_code,
+            f"Request returned {response.status_code} for request {request_str}",
+        )
+
+    def testValidRequestPost(self) -> None:
+        user = User.objects.create(username="hw2808", email="hw2808@nyu.edu")
+        request_str = f"http://127.0.0.1:8000/courses/add_review"
+        request = self.factory.post(request_str, {'user': user,'add_review_course_id': ' CS-GY 6003 ',
+                                                  'add_review_professor_name': ' Erin McLeish ','review_rating': ' 5 ',
+                                                 'review_text': ' Great '})
+        request.user = User.objects.get(pk=1)
+        response = add_review(request)
+        self.assertEqual(
+            200,
+            response.status_code,
+            f"Request returned {response.status_code} for request {request_str}",
+        )
+
+    # def test_save_review(self):
+    #     user = User.objects.create(username="hw2808", email="hw2808@nyu.edu")
+    #     course_id = ' CS-GY 6063 '
+    #     professor_name = ' Gennadiy Civil '
+    #     review_rating = ' 5 '
+    #     review_text = ' test '
+    #     r = save_new_review(user=user,
+    #             user_entered_course_id=course_id,
+    #             professor_name=professor_name,
+    #             review_rating=review_rating,
+    #             review_text=review_text)
+    #     # self.assertEqual(r, Review.objects.get(pk=1))
 
 def create_test_course() -> Course:
     return Course.objects.create(
@@ -119,3 +161,6 @@ def create_test_review_2(class_id: Class) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
+def login(self):
+    self.username
