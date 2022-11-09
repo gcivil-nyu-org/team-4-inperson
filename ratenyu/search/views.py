@@ -10,7 +10,7 @@ from courses.course_util import *
 from courses.views import course_detail
 import logging
 
-logger = logging.getLogger('project')
+logger = logging.getLogger("project")
 from util.views import error404
 
 
