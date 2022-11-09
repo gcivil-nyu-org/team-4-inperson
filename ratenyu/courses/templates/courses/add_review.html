@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="detail-title add-reviews">
+    <h2 class="add-reviews-title">Add your review:</h2>
+</div>
+
+
+
+<div class="add-reviews-status">
+    {% if review_saved == True %}
+        <h3>Your review was saved! <a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
+    {% endif %}
+    {% if review_saved == False %}
+        <h3>Uh Oh, something went wrong. Your review could not be saved.</h3>
+    {% endif %}
+</div>
+
+<div class="add-reviews">
+    <form method="POST">
+        {% csrf_token %}
+           <p>
+               <label for="course_title" class="add_review_label">Course Title:</label>
+               <input id="course_title" type="text" name="add_review_course_title" list="courses" class="add_review_input" placeholder="ex: Software Engineering">
+               <datalist id="courses">
+                   {% for c in courses %}
+                   <option value="{{c.course_title}}"></option>
+                    {% endfor %}
+               </datalist>
+           </p>
+           <p>
+               <label for="course_id" class="add_review_label">Course ID:</label>
+               <input id="course_id" type="text" name="add_review_course_id" class="add_review_input" list="course_ids" placeholder="ex: CS-GY 6063">
+                   <datalist id="course_ids">
+                       {% for ci in course_ids %}
+                       <option value="{{ci}}"></option>
+                       {% endfor %}
+                   </datalist>
+           </p>
+           <p>
+               <label for="professor_name" class="add_review_label">Professor Name:</label>
+               <input id="professor_name" type="text" name="add_review_professor_name" list="professors" class="add_review_input" placeholder="ex: Gennadiy Civil">
+               <datalist id="professors">
+                   {% for p in professors %}
+                   <option value="{{p.name}}"></option>
+                   {% endfor %}
+               </datalist>
+
+            </p>
+            <label for="review_rating" class="add_review_label">Review Rating:</label>
+                <div class="star-rating">
+                    <i class="my-star star-1" data-star="1"></i>
+                    <i class="my-star star-2" data-star="2"></i>
+                    <i class="my-star star-3" data-star="3"></i>
+                    <i class="my-star star-4" data-star="4"></i>
+                    <i class="my-star star-5" data-star="5"></i>
+                </div>
+             <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True">
+           <p>
+               <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
+               <textarea id="review_text" name="review_text"  class="add_review_textarea" placeholder="Enter Review Here"></textarea>
+           </p>
+            <p>
+                <label class="add_review_label"></label>
+                <input type="submit" class="add_review_submit">
+            </p>
+    </form>
+</div>
+
+<script>
+    let coursesData = JSON.parse('{{ courses_json|safe }}');
+    let addReviewCourseId = document.querySelector('[name="add_review_course_id"]');
+    let addReviewCourseName = document.querySelector('[name="add_review_course_title"]');
+    addReviewCourseName.oninput = (e) => {
+        populateAddReviewCourseId(e, addReviewCourseId, coursesData);
+    }
+    addReviewCourseId.oninput = (e) => {
+        populateAddReviewCourseName(e, addReviewCourseName, coursesData);
+    }
+</script>
+
+{% endblock %}

@@ -12,9 +12,10 @@
   overflow: hidden;
   margin: -0.1%;
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   width: 100.5%;
+  z-index: 1;
 }
 
 /*navbar links*/
@@ -27,7 +28,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100px;
+  width: 110px;
   height: 60px;
 }
 
@@ -60,8 +61,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 0px 10px;
-  padding-left: 30px;
+  padding: 0 10px 0 30px;
   width: 100px;
   height: 60px;
 }
@@ -141,14 +141,43 @@ form.search {
 }
 
 .nyu-logo {
+  position: fixed;
+  width: 50%;
+  height: 40%;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 900px;
-  height: 300px;
+  background-position: center;
+  margin-left: 25%;
   background-image: url('/static/images/nyulogo.png');
   background-size: 100% 100%;
+  pointer-events: none;
 }
+
+.nyu-logo-light {
+  position: fixed;
+  width: 50%;
+  height: 40%; 
+  display: block;
+  background-position: center;
+  margin-left: 5.3rem;
+  margin-top: 10rem;
+  background-image: url('/static/images/nyu-logo-light.png');
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.nyu-logo-light {
+  position: fixed;
+  width: 50%;
+  height: 40%;
+  display: block;
+  background-position: center;
+  margin-left: 5.3rem;
+  margin-top: 10rem;
+  background-image: url('/static/images/nyu-logo-light.png');
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
 
 input {
   outline: none;
@@ -174,10 +203,6 @@ button {
   border-radius: 4px;
   padding: 7px;
 }
-
-button.search {
-}
-
 
 /* For Detail Pages */
 
@@ -386,8 +411,23 @@ ul.result-side-links {
   text-align: center;
 }
 
+p.register{
+  text-align: center;
+}
+
 h2.register {
   font-size: 35px;
+  /*font-size: 2.0vw;*/ /* uncomment for text resizing */
+  color: black;
+  display: flex;
+  justify-content: center;
+  padding-top: 150px;
+  padding-bottom: 15px;
+  line-height: 40%;
+}
+
+h3.register{
+    font-size: 35px;
   /*font-size: 2.0vw;*/ /* uncomment for text resizing */
   color: black;
   display: flex;
@@ -577,6 +617,175 @@ span.rev-title, span.left-section {
 #result-dropdown {
   width: 200px;
   font-size: 14px;
+}
+
+/*set appropriate area for the left panel on user profile*/
+.user-panel{
+  position: fixed;
+  width: 264px;
+  height: auto;
+  left: 0px;
+  top: 6%;
+  bottom: 0px;
+  background: #350554;
+  /* mix-blend-mode:multiply; */
+}
+
+/*set the user details area in user panel*/
+.user-details{
+position: absolute;
+width: 217px;
+height: 49px;
+left: 24px;
+top: 45px;
+font-size: 28px;
+line-height: 20px;
+text-align: center;
+color: white;
+}
+
+/*set appropriate area for the user form*/
+.user-form{
+  width: 200px;
+  height: 20%;
+  left: 24px;
+  margin-top: 70%;
+  text-align: center;
+}
+
+/*set appropriate area for the heading on user profile*/
+h4.user-form {
+  font-size: 15px;
+  margin-left: 30px;
+  margin-bottom: -13%;
+  margin-top: 15%;
+  color: white;
+  text-align: left;
+}
+
+/*set appropriate font and settings for the values of user profile*/
+.user-form > p{
+  font-size: 14px;
+  width: 200px;
+  height: 15%;
+  margin-top: 8%;
+  margin-left: 30px;
+  border: 1px solid white;
+  border-radius: 4px;
+  background: #350554;
+  color: white;
+  padding-top: 5%;
+}
+
+/*set appropriate button settings for edit profile button*/
+button.user-form{
+  box-sizing: border-box;
+  position: absolute;
+  width: 186px;
+  height: 40px;
+  margin-top: 4%;
+  margin-bottom: 10px;
+  margin-left: 4%;
+  background: #000000;
+  border: 1px solid #000000;
+  border-radius: 4px;
+
+}
+
+span.user-title {
+  font-family: inter-bold;
+}
+
+/*set appropriate settings for edit profile button*/
+.user-reviews {
+  margin-top: 7rem;
+  margin-left: 20rem;
+  width: 70%;
+  text-align: left;
+}
+
+div.user-review {
+  display: flex;
+}
+
+.user-review > p {
+  margin-right: 20px;
+}
+
+
+/*review takes up 10/11 of width; grade, review date, rating take up 1/11*/
+div.user-review > p:nth-of-type(2) {
+  flex: 10;
+}
+
+.add-reviews{
+  display: flex;
+  justify-content: center;
+}
+
+.add-reviews-status {
+  text-align: center;
+}
+
+.add_review_label {
+  display:inline-block;
+  width: 200px;
+  /*margin-right: 30px;*/
+  text-align: right;
+  margin: 0px auto;
+  padding-right: 30px;
+}
+
+#add_review_label2 {
+  vertical-align: top;
+  height: 200px;
+}
+
+.add_review_input {
+  border:none;
+  width:200px;
+  margin:0px auto;
+}
+
+.add_review_submit {
+  background: #702B9D;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
+}
+
+.add_review_textarea {
+  border:none;
+  margin:0px auto;
+  width: 400px;
+  height: 200px;
+}
+
+/*set the default color of the stars*/
+.star-rating{
+    color: #bebebe;
+    font-size:2em;
+    display: inline;
+}
+/*create the star*/
+.my-star::before{
+    content:"\002605";
+}
+/*remove the default style (italic) of the star*/
+.my-star{
+    font-style: unset !important;
+}
+/*set active star color*/
+.is-active{
+    color:#702B9D;
+}
+/*set color on hover*/
+.my-star:not(.is-active):hover{
+    color: #702B9D;
 }
 
 /* Fonts */

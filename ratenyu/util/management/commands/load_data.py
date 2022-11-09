@@ -68,11 +68,7 @@ def create_new_class(row: "list[str]") -> None:
 def create_new_user(row: "list[str]") -> None:
     if len(User.objects.filter(username=row[0])) > 0:
         return
-    new_user = User(
-        username=row[0],
-        password=row[1],
-        email=row[2]
-    )
+    new_user = User(username=row[0], password=row[1], email=row[2])
     try:
         new_user.save()
     except Exception as e:

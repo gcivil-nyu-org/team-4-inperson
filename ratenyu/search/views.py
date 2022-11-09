@@ -10,7 +10,7 @@ from courses.course_util import *
 from courses.views import course_detail
 import logging
 
-logger = logging.getLogger('project')
+logger = logging.getLogger("project")
 from util.views import error404
 
 
@@ -50,7 +50,8 @@ def search_by_course_name(request: HttpRequest):
         filtered_courses = []
         for i in courses:
             current_course_info = get_course_results_info(i)
-            filtered_courses.append(current_course_info)
+            if len(current_course_info) > 0:
+                filtered_courses.append(current_course_info)
         context = {
             "courses": filtered_courses,
             "query": query,
