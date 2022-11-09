@@ -22,7 +22,7 @@ def course_detail(request: HttpRequest, course_id: str):
         context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
         return render(request, "courses/detail.html", context)
     except Exception as e:
-        raise error404(request, error = e)
+        return error404(request, error = e)
 
 
 def add_review(request):

@@ -20,4 +20,4 @@ def professor_detail(request: HttpRequest, professor_id: str):
         }
         return render(request, "professors/detail.html", context)
     except Exception as e:
-        raise error404(request, error = e)
+        return error404(request, error = e)

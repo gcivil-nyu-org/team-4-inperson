@@ -57,7 +57,7 @@ def search_by_course_name(request: HttpRequest):
         return render(request, "search/courseResult.html", context)
     except Exception as e:
         logger.error(e)
-        raise error404(request, error = e)
+        return error404(request, error = e)
 
 
 def search_by_professor_name(request):
@@ -73,4 +73,4 @@ def search_by_professor_name(request):
         return render(request, "search/professorResult.html", context)
     except Exception as e:
         logger.error(e)
-        raise error404(request, error = e)
+        return error404(request, error = e)
