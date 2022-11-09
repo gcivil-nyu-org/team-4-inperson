@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from django.http import HttpRequest, Http404
+from django.urls import reverse
 
 from util.views import error404
+from search.views import index
 from .models import UserDetails
 from courses.models import Review
 from .forms import UserRegistrationForm
@@ -52,6 +54,12 @@ def update_initial_user(old_username: str, form: UserRegistrationForm) -> User:
 
 
 def get_profile(request: HttpRequest, user_name: str) -> render:
+    '''
+    This function loads details of the user and the reviews that the user has written.
+    The function only loads the details of the user if the user is logged in and for that user only.
+    It will redirect to index page if the user is not logged in.
+    it will redirect to error page if the user is logged in but is trying to view details of another user.
+    '''
     if request.user.is_authenticated:
         if request.user.username != user_name:
             return error404(request, "You are not authorized to view this page.")
@@ -61,4 +69,6 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
         context["user_details"] = user_details
         context["reviews"] = reviews
         logger.debug(f"context : {context}")
-    return render(request, "users/profile.html", context)
+        return render(request, "users/profile.html", context)
+    else:
+        return redirect(reverse("search:index"))
