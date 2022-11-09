@@ -7,6 +7,7 @@ from courses.models import Review
 from professors.models import Professor
 from .course_util import *
 from users.user_util import get_user_details
+from util.views import error404
 
 LOGGER = logging.getLogger("project")
 
@@ -20,8 +21,8 @@ def course_detail(request: HttpRequest, course_id: str):
         reviews_avg = calculate_rating_avg(reviews_list)
         context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
         return render(request, "courses/detail.html", context)
-    except Exception:
-        raise Http404("Course does not exist")
+    except Exception as e:
+        raise error404(request, error = e)
 
 
 def add_review(request):

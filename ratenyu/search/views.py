@@ -36,10 +36,8 @@ def search_by_course_id(request: HttpRequest) -> render:
         course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
         course_id = course_id_query(course_subject_code, catalog_number)
         return course_detail(request, course_id.course_id)
-    except ObjectDoesNotExist as e:
-        return error404(request, "CourseID not found")
     except:
-        return error404(request, "Something went wrong")
+        return render(request, "search/courseId.html",{"query": request.GET["query"].strip()})
 
 
 def search_by_course_name(request: HttpRequest):
@@ -59,7 +57,7 @@ def search_by_course_name(request: HttpRequest):
         return render(request, "search/courseResult.html", context)
     except Exception as e:
         logger.error(e)
-        raise Http404("Something went wrong")
+        raise error404(request, error = e)
 
 
 def search_by_professor_name(request):
@@ -73,5 +71,6 @@ def search_by_professor_name(request):
         context = {"professors": filtered_professors, "query": query}
         logger.debug(context)
         return render(request, "search/professorResult.html", context)
-    except:
-        raise Http404("Something went wrong")
+    except Exception as e:
+        logger.error(e)
+        raise error404(request, error = e)

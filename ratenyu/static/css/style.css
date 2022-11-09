@@ -633,7 +633,7 @@ span.rev-title, span.left-section {
   width: 264px;
   height: auto;
   left: 0px;
-  top: 6%;
+  top: 0;
   bottom: 0px;
   background: #350554;
   /* mix-blend-mode:multiply; */
@@ -641,11 +641,12 @@ span.rev-title, span.left-section {
 
 /*set the user details area in user panel*/
 .user-details{
-position: absolute;
+position: relative;
 width: 217px;
 height: 49px;
 left: 24px;
 top: 45px;
+padding-top: 20%;
 font-size: 28px;
 line-height: 20px;
 text-align: center;
@@ -657,15 +658,17 @@ color: white;
   width: 200px;
   height: 20%;
   left: 24px;
-  margin-top: 70%;
+  margin-top: 50%;
   text-align: center;
 }
 
 /*set appropriate area for the heading on user profile*/
 h4.user-form {
+  position: relative;
+  display: inline-block;
   font-size: 15px;
-  margin-left: 30px;
-  margin-bottom: -13%;
+  margin-left: 5%;
+  margin-bottom: -15%;
   margin-top: 15%;
   color: white;
   text-align: left;
@@ -673,10 +676,11 @@ h4.user-form {
 
 /*set appropriate font and settings for the values of user profile*/
 .user-form > p{
+  position: relative;
   font-size: 14px;
   width: 200px;
   height: 15%;
-  margin-top: 8%;
+  margin-top: 0%;
   margin-left: 30px;
   border: 1px solid white;
   border-radius: 4px;
