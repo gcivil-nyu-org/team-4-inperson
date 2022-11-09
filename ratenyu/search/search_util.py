@@ -1,11 +1,12 @@
 from django.db.models import Q
+from django.db.models.query import QuerySet
 from courses.models import Course, Class, Review
 from professors.models import Professor
 from courses.course_util import *
 import re
 
 
-def course_query(query: str) -> Class:
+def course_query(query: str) -> QuerySet[Course]:
     courses = Course.objects.filter(
         Q(course_title__istartswith=f"{query} ")
         | Q(course_title__icontains=f" {query} ")
@@ -15,7 +16,7 @@ def course_query(query: str) -> Class:
     return courses
 
 
-def professor_query(query: str) -> Class:
+def professor_query(query: str) -> QuerySet[Professor]:
     professors = Professor.objects.filter(
         Q(name__istartswith=f"{query} ")
         | Q(name__icontains=f" {query} ")
@@ -25,7 +26,7 @@ def professor_query(query: str) -> Class:
     return professors
 
 
-def course_id_query(course_subject_code: str, catalog_number: str) -> Class:
+def course_id_query(course_subject_code: str, catalog_number: str) -> Course:
     course = Course.objects.get(
         course_subject_code=course_subject_code.upper(),
         catalog_number=catalog_number.upper(),

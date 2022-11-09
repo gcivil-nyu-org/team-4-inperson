@@ -1,4 +1,3 @@
-
 from django.contrib.auth.models import User
 from .models import UserDetails
 from util.views import error404
@@ -6,6 +5,7 @@ from courses.models import Review
 import logging
 
 logger = logging.getLogger("project")
+
 
 def get_user_details(user_name: str) -> UserDetails:
     try:
