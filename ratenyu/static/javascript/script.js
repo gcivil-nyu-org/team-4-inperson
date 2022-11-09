@@ -25,6 +25,7 @@ function resultCheckBoxClicked() {
             element.style.display = "none";
         }
     });
+}
 /*
 Handlers for auto-populating Course Name and Course ID on Add Review Handler
  */
