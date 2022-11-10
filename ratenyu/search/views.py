@@ -36,7 +36,8 @@ def search_by_course_id(request: HttpRequest) -> render:
         course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
         course_id = course_id_query(course_subject_code, catalog_number)
         return course_detail(request, course_id.course_id)
-    except:
+    except Exception as e:
+        logger.exception(e)
         return render(request, "search/courseId.html",{"query": request.GET["query"].strip()})
 
 
@@ -56,13 +57,14 @@ def search_by_course_name(request: HttpRequest):
         }
         return render(request, "search/courseResult.html", context)
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
         return error404(request, error = e)
 
 
 def search_by_professor_name(request):
     try:
         query = request.GET["query"].strip()
+        logger.debug(f"query: {query}")
         professors = professor_query(query)
         filtered_professors = []
         for p in professors:
@@ -72,5 +74,5 @@ def search_by_professor_name(request):
         logger.debug(context)
         return render(request, "search/professorResult.html", context)
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
         return error404(request, error = e)

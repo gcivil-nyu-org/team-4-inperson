@@ -65,6 +65,6 @@ def add_review(request):
             context["review_saved"] = True
             return render(request, "courses/add_review.html", context)
         except Exception as e:
-            LOGGER.error(f"Could not create review, encountered error: {e}")
+            LOGGER.exception(f"Could not create review, encountered error: {e}")
             context["review_saved"] = False
             return render(request, "courses/add_review.html", context)
