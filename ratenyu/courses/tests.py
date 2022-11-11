@@ -121,6 +121,16 @@ class TestAddReviewPageHelpers(TestCase):
         self.assertEqual(r, Review.objects.get(pk=1))
 
 
+class TestReviewTextValidation(TestCase):
+    def setUp(self):
+        self.review_text_invalid = "This teacher is a bitch."
+        self.review_text_valid = "I do not like this teacher."
+
+    def test_validation_function(self):
+        self.assertFalse(text_is_valid(self.review_text_invalid))
+        self.assertTrue(text_is_valid(self.review_text_valid))
+
+
 def create_test_course() -> Course:
     return Course.objects.create(
         course_id="1",
