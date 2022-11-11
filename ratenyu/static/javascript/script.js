@@ -1,6 +1,11 @@
 /*
 Handlers for Course/Professor Result Filtering
  */
+
+await function successFunction() {
+    alert("Registration successful");
+  }
+
 function getListOfChecked() {
   let listOfChecked = [];
   let checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
