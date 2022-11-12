@@ -9,50 +9,107 @@
 {#        <li>Class Capacity: <span class="left-section">{{ classes.enroll_capacity }}</span></li>#}
 {#    </ul>#}
 
-    <div class="detail-title">
-        <h1 class="detail-name">{{ course.course_title }}</h1>
-        <h1 class="detail-rating">{{ reviews_avg }}/5.0</h1>
-    </div>
+<div class="detail-title">
+    <h1 class="detail-name">{{ course.course_title }}</h1>
+    <h1 class="detail-rating">{{ reviews_avg }}/5.0</h1>
+</div>
 
-    <div class="detail-sub-title">
-        <h2>{{ course.course_subject_code }} {{ course.catalog_number }}</h2>
-        <h2>{{ reviews_list|length }} Reviews</h2>
-    </div>
+<div class="detail-sub-title">
+    <h2>{{ course.course_subject_code }} {{ course.catalog_number }}</h2>
+    <h2>{{ reviews_list|length }} Reviews</h2>
+</div>
 
-    <div class="detail-sub-course-desc">
-        <p>{{ course.course_description }}</p>
-    </div>
+<div class="detail-sub-course-desc">
+    <p>{{ course.course_description }}</p>
+</div>
 
-    <div class="detail-dropdown">
-        <form class="search"  method="GET" action="">
-            <select class="dropdown" id="detail-dropdown">
-                <option value="RevDateDesc">Review Date Descending</option>
-                <option value="RevDateDesc">Review Date Ascending</option>
-                <option value="RevDateDesc">Rating Descending</option>
-                <option value="RevDateDesc">Rating Ascending</option>
-                <option value="RevDateDesc">Class Level</option>
-            </select>
+<div class="detail-dropdown">
+    <form class="search"  method="GET" action="">
+        <select class="dropdown" id="detail-dropdown">
+            <option value="RevDateDesc">Review Date Descending</option>
+            <option value="RevDateDesc">Review Date Ascending</option>
+            <option value="RevDateDesc">Rating Descending</option>
+            <option value="RevDateDesc">Rating Ascending</option>
+            <option value="RevDateDesc">Class Level</option>
+        </select>
+    </form>
+    {% if user.is_authenticated %}
+        <button onclick="showReviewForm()" style="float: right;">Add Review</button>
+    {% endif %}
+
+
+</div>
+
+<ul class="detail-side-links">
+    <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
+    {% for professor in professors_list %}
+    <li class="detail-side-links"><a href="">{{ professor.name }}</a></li>
+    {% endfor %}
+</ul>
+
+<!-- <div class="add-reviews-status">
+    {% if review_saved == True %}
+        <h3>Your review was saved! <a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
+    {% endif %}
+    {% if review_saved == False %}
+        <h3>Uh Oh, something went wrong. Your review could not be saved.</h3>
+    {% endif %}
+</div> -->
+
+<div class="all-reviews">
+    <div id="add-review" class="add-reviews" style="display: none; border:2px solid #702B9D;">
+        <form class="review-form" method="POST" action="">
+            {% csrf_token %}
+            <br>
+            <div>
+                <label for="course_title" class="add_review_label">Course:</label>
+                <input id="course_title" type="text" name="add_review_course_title"
+                    class="add_review_input" value="{{course.course_title}}" readonly="readonly">
+                <input type="hidden" name="course_id" value="{{ course.course_subject_code }}-{{ course.catalog_number}}">
+
+            </div>
+            <br>
+            <div>
+                <label for="professor_name" class="add_review_label">Professor:</label>
+                <select id="detail-dropdown" style="padding: 10px;">
+                    {% for professor in professors_list %}
+                    <option value="{{professor.name}}" >{{professor.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <label for="review_rating" class="add_review_label">Review Rating:</label>
+            <div class="star-rating">
+                <i class="my-star star-1" data-star="1"></i>
+                <i class="my-star star-2" data-star="2"></i>
+                <i class="my-star star-3" data-star="3"></i>
+                <i class="my-star star-4" data-star="4"></i>
+                <i class="my-star star-5" data-star="5"></i>
+            </div>
+            <div>
+            <input id="review_rating" type="number" class="add_review_input" name="review_rating" hidden="True">
+            <p>
+                <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
+                <textarea id="review_text" name="review_text" class="add_review_textarea"
+                    placeholder="Enter Review Here"></textarea>
+            </p>
+            </div>
+            <div style="text-align: center;">
+                <button type="button" class="add_review_button" onclick="hideReviewForm()" >Cancel</button>
+                <button type="submit" class="add_review_button" name="submit">Submit</button>
+            </div>
         </form>
     </div>
-
-    <ul class="detail-side-links">
-        <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
-        {% for professor in professors_list %}
-        <li class="detail-side-links"><a href="">{{ professor.name }}</a></li>
-        {% endfor %}
-    </ul>
-
-    <div class="all-reviews">
-        {% for review in reviews_list %}
-        <div class="review">
+    {% for review in reviews_list %}
+    <div class="review">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
-                {{ review.review_obj.rating }}.0/5.0</p>
-            <p><span class="rev-title">Course: {{ course.course_title }}
+            {{ review.review_obj.rating }}.0/5.0</p>
+        <p><span class="rev-title">Course: {{ course.course_title }}
                 | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
-        </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+</div>
 
 
 {% endblock %}
