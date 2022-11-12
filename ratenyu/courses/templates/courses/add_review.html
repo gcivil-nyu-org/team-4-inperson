@@ -15,6 +15,9 @@
     {% if review_saved == False %}
         <h3>Uh Oh, something went wrong. Your review could not be saved.</h3>
     {% endif %}
+    {% if review_text_invalid == True %}
+        <h4 class="review_text_invalid">Review not saved. Review text failed to meet RateNYU standards.</h4>
+    {% endif %}
 </div>
 
 <div class="add-reviews">
@@ -59,7 +62,7 @@
              <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True">
            <p>
                <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
-               <textarea id="review_text" name="review_text"  class="add_review_textarea" placeholder="Enter Review Here"></textarea>
+               <textarea id="review_text" name="review_text"  class="add_review_textarea" placeholder="Must adhere to RateNYU standards: No profanity."></textarea>
            </p>
             <p>
                 <label class="add_review_label"></label>
