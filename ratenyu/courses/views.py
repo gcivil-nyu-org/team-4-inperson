@@ -1,7 +1,7 @@
 import logging
 from json import dumps
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest, Http404, HttpResponse
 from django.urls import reverse
 from courses.models import Review
 from professors.models import Professor
@@ -13,13 +13,29 @@ LOGGER = logging.getLogger("project")
 
 
 def course_detail(request: HttpRequest, course_id: str):
+    LOGGER.debug(f"course_detail: {course_id}")
+    try:
+        if request.method == "GET":
+            return load_course_deatail(request, course_id)
+        elif request.method == "POST" and "submit" in request.POST:
+            review, message = add_review_from_details(request)
+            return load_course_deatail(request, course_id, review, message)
+    except Exception as e:
+        return error404(request, error = e)
+
+
+def load_course_deatail(request: HttpRequest, course_id: str, review: bool = None, review_message: str = "")-> HttpResponse:
     try:
         course = Course.objects.get(course_id=course_id)
         classes = Class.objects.filter(course=course)
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
-        context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
+        if review is not None:
+            context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list, "review_saved": review, "review_message" : review_message}
+        else :
+            context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
+        LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
     except Exception as e:
         return error404(request, error = e)

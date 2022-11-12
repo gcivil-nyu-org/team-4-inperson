@@ -33,9 +33,9 @@
             <option value="RevDateDesc">Class Level</option>
         </select>
     </form>
-    {% if user.is_authenticated %}
-        <button onclick="showReviewForm()" style="float: right;">Add Review</button>
-    {% endif %}
+        {% if user.is_authenticated %}
+            <button onclick="showReviewForm()" style="float: right;">Add Review</button>
+        {% endif %}
 
 
 </div>
@@ -47,14 +47,14 @@
     {% endfor %}
 </ul>
 
-<!-- <div class="add-reviews-status">
+<div class="add-reviews-status">
     {% if review_saved == True %}
-        <h3>Your review was saved! <a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
+        <h3>{{ review_message }}<a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
     {% endif %}
     {% if review_saved == False %}
-        <h3>Uh Oh, something went wrong. Your review could not be saved.</h3>
+        <h3>{{ review_message }}</h3>
     {% endif %}
-</div> -->
+</div>
 
 <div class="all-reviews">
     <div id="add-review" class="add-reviews" style="display: none; border:2px solid #702B9D;">
@@ -65,13 +65,12 @@
                 <label for="course_title" class="add_review_label">Course:</label>
                 <input id="course_title" type="text" name="add_review_course_title"
                     class="add_review_input" value="{{course.course_title}}" readonly="readonly">
-                <input type="hidden" name="course_id" value="{{ course.course_subject_code }}-{{ course.catalog_number}}">
-
+                <input type="hidden" name="course_id" value="{{ course.course_id}}">
             </div>
             <br>
             <div>
                 <label for="professor_name" class="add_review_label">Professor:</label>
-                <select id="detail-dropdown" style="padding: 10px;">
+                <select id="detail-dropdown" name="add_review_professor_name" style="padding: 5px;">
                     {% for professor in professors_list %}
                     <option value="{{professor.name}}" >{{professor.name}}</option>
                     {% endfor %}
@@ -87,11 +86,11 @@
                 <i class="my-star star-5" data-star="5"></i>
             </div>
             <div>
-            <input id="review_rating" type="number" class="add_review_input" name="review_rating" hidden="True">
+            <input id="review_rating" type="number" class="add_review_input" name="review_rating" hidden="True" required="True">
             <p>
                 <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
                 <textarea id="review_text" name="review_text" class="add_review_textarea"
-                    placeholder="Enter Review Here"></textarea>
+                    placeholder="Enter Review Here" required="True"></textarea>
             </p>
             </div>
             <div style="text-align: center;">
