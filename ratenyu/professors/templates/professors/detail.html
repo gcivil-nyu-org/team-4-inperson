@@ -22,6 +22,9 @@
                 <option value="RevDateDesc">Class Level</option>
             </select>
         </form>
+        {% if user.is_authenticated %}
+            <button onclick="showReviewForm()" style="float: right;">Add Review</button>
+        {% endif %}
     </div>
 
     <ul class="detail-side-links">
@@ -32,6 +35,47 @@
     </ul>
 
     <div class="all-reviews">
+        <div id="add-review" style="display: none; border:2px solid #702B9D;">
+            {% csrf_token %}
+            <form class="review-form" method="POST" action="">
+                <br>
+                <div>
+                    <label for="professor_name" class="add_review_label">Professor:</label>
+                    <input id="professor_name" type="text" name="add_review_professor_name" list="courses"
+                        class="add_review_input" value="{{professor.name}}" readonly="readonly">
+                </div>
+                <br>
+                <div>
+                    <label for="course_title" class="add_review_label">Course:</label>
+                    <select class="dropdown" id="detail-dropdown">
+                        {% for course in courses_list %}
+                        <option value="{{course.course_title}}">{{course.course_title}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                <label for="review_rating" class="add_review_label">Review Rating:</label>
+                <div class="star-rating">
+                    <i class="my-star star-1" data-star="1"></i>
+                    <i class="my-star star-2" data-star="2"></i>
+                    <i class="my-star star-3" data-star="3"></i>
+                    <i class="my-star star-4" data-star="4"></i>
+                    <i class="my-star star-5" data-star="5"></i>
+                </div>
+                <div>
+                <input id="review_rating" type="number" class="add_review_input" name="review_rating" hidden="True">
+                <p>
+                    <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
+                    <textarea id="review_text" name="review_text" class="add_review_textarea"
+                        placeholder="Enter Review Here"></textarea>
+                </p>
+                </div>
+                <div style="position: relative;">
+                    <button type="button" class="add_review_button" style="margin-right:1px;" onclick="hideReviewForm()" >Cancel</button>
+                    <button type="submit" class="add_review_button" style="margin-right:1px;">Submit</button>
+                </div>
+            </form>
+        </div>
         {% for review in reviews_list %}
         <div class="review">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
