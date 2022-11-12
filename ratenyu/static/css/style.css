@@ -800,6 +800,13 @@ div.user-review > p:nth-of-type(2) {
     color: #702B9D;
 }
 
+.edit-review {
+  background-color: #702B9D;
+  color: white;
+  font-size: 10px;
+  /*height: 10px;*/
+}
+
 /* Fonts */
 
 @font-face {

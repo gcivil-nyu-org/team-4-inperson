@@ -24,10 +24,15 @@
     </div>
     {% for review in reviews %}
     <div class="user-review">
-        <p>{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }} <br>
-            {{ review.rating }}.0/5.0 </p>
+        <p  style="padding-top: 3px;">{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }} <br>
+            {{ review.rating }}.0/5.0 <br></p>
+<!--            <button class="edit-review">Edit Review</button><br>-->
+<!--            <button class="edit-review">Delete Review</button>-->
+<!--            <a href="" class="edit-review"> Edit Review </a></p>-->
         <p><span class="user-title"> Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
-        | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span><br>
+            | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
+            <button class="edit-review">Edit Review</button> <button class="edit-review">Delete Review</button><br>
+
         {{ review.review_text }}</p>
     </div>
     {% endfor %}
