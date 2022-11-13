@@ -904,11 +904,11 @@ h4.review_text_invalid {
   margin-top: -25px;
 }
 
-.edit-review {
-  background-color: #702B9D;
-  color: white;
-  font-size: 10px;
-  /*height: 10px;*/
+
+.review-text-box {
+  display: none;
+  margin-top: -25px;
+  /*display: block;*/
 }
 
 /* Fonts */

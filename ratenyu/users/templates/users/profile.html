@@ -69,6 +69,28 @@
                 <br>
                 <span>{{ review.review_text }}<br></span></p>
         </div>
+                <button class="edit-review-btn">Edit Review</button>
+                <button class="delete-review-btn">Delete Review</button><br>
+                <span>{{ review.review_text }}<br></span></p>
+        </div>
+
+        <div class="user-review">
+            <p></p>
+            <form class="review-text-box" action="{% url 'courses:edit_review' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="review_id" value={{review.id}}>
+                <div class="star-rating">
+                    <i class="my-star prof-star star-1" data-star="1"></i>
+                    <i class="my-star prof-star star-2" data-star="2"></i>
+                    <i class="my-star prof-star star-3" data-star="3"></i>
+                    <i class="my-star prof-star star-4" data-star="4"></i>
+                    <i class="my-star prof-star star-5" data-star="5"></i>
+                </div><br>
+                <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True" value="{{review.rating}}">
+                <textarea name="new_review_text">{{review.review_text}}</textarea><br>
+                <button>Save</button>
+            </form>
+        </div>
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews %} none  {% else %} block {% endif %};">You have not written any reviews. </h3>
 </div>

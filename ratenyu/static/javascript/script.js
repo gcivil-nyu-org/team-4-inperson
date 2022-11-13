@@ -218,7 +218,7 @@ function removeErrorMessage(divId, errorMessageId) {
 //adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
 document.addEventListener('DOMContentLoaded', function(){
     (function(){
-        let sr = document.querySelectorAll('.my-star');
+        let sr = document.querySelectorAll('.add-star');
         let i = 0;
         //loop through stars
         while (i < sr.length){
@@ -348,5 +348,6 @@ function save(elements){
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
    }
-    
+
+
 
