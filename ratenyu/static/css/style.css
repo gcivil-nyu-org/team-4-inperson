@@ -800,16 +800,6 @@ div.user-review > p:nth-of-type(2) {
     color: #702B9D;
 }
 
-p.success{
-  position: fixed;
-  display: inline;
-  font-size: 20px;
-  color:  black;
-  padding-top: 3rem;
-  margin-left: -14rem;
-  margin-right: 15%;
-  justify-content: center;
-  }
 /* Fonts */
 
 @font-face {
