@@ -337,6 +337,7 @@ function hideProfile(elements) {
     }
 }
 
+
 function save(elements){
     elements = elements.length ? elements : [elements];
     for (let index = 0; index < elements.length; index++) {
@@ -344,6 +345,7 @@ function save(elements){
     }
     document.getElementById('profile_div').style.display = 'block'
 }
+
 
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
