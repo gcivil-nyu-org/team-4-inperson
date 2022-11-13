@@ -117,6 +117,17 @@ document.querySelectorAll(".edit-review-btn").forEach(btn => {
         let stars_sec = f.children[2];
 
         let sr = stars_sec.querySelectorAll('.prof-star');
+
+        let curr_rating = rating_val.value;
+        let max_star = curr_rating;
+
+        while(1 <= max_star){
+            if(!stars_sec.querySelector('.star-'+max_star).classList.contains('is-active')){
+                stars_sec.querySelector('.star-'+max_star).classList.add('is-active');
+            }
+            --max_star;
+    }
+
         let i = 0;
         //loop through stars
         while (i < sr.length) {
@@ -140,8 +151,8 @@ document.querySelectorAll(".edit-review-btn").forEach(btn => {
                 let succ = cs+1;
                 while(5 >= succ){
                     //check if the classlist contains the active class, if yes, remove the class
-                    if(c.querySelector('.star-'+succ).classList.contains('is-active')){
-                        c.querySelector('.star-'+succ).classList.remove('is-active');
+                    if(stars_sec.querySelector('.star-'+succ).classList.contains('is-active')){
+                        stars_sec.querySelector('.star-'+succ).classList.remove('is-active');
                     }
                     //increment current index
                     ++succ;
