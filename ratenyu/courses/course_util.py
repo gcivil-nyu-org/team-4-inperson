@@ -1,5 +1,5 @@
 from typing import List
-from profanity_filter import ProfanityFilter
+# from profanity_filter import ProfanityFilter
 from .models import Class, Review, Course
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -89,5 +89,6 @@ def text_is_valid(review_text: str) -> bool:
     Returns false if given text string contains profanity
     Else returns true
     """
-    pf = ProfanityFilter()
-    return pf.censor(review_text) == review_text
+    # pf = ProfanityFilter()
+    # return pf.censor(review_text) == review_text
+    return True

@@ -7,14 +7,14 @@
     <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
     <div class="user-form">
         <h4 class = 'user-form'> Name </h4>
-        <p> {{user_details.name}} </p>
+        <p id='user_name' contenteditable="false"> {{user_details.name}} </p>
         <h4 class = 'user-form'> Username </h4>
-        <p> {{user_details.user}} </p>
+        <p id="user_username" contenteditable="false"> {{user_details.user}} </p>
         <h4 class = 'user-form'> Major </h4>
-        <p> {{user_details.major}} </p>
+        <p id="user_major" contenteditable="false"> {{user_details.major}} </p>
         <h4 class = 'user-form'> Student Status </h4>
-        <p> {{user_details.student_status}} </p>
-            <button type="submit" class="user-form">Edit Profile</button>
+        <p id="user_status" contenteditable="false"> {{user_details.student_status}} </p>
+        <button type="submit" class="user-form" onclick="setP()" id="edit_profile">Edit Profile</button>
     </div>
 </div>
 
@@ -32,5 +32,31 @@
     </div>
     {% endfor %}
 </div>
+
+<script>
+	let setP = () => {
+        let userName = document.getElementById('user_name');
+        let userUserName = document.getElementById('user_username');
+        let userMajor = document.getElementById('user_major');
+        let userStatus = document.getElementById('user_status');
+        let editProfileButton = document.getElementById('edit_profile');
+
+        if (editProfileButton.innerHTML === 'Save') {
+            userName.contentEditable = 'false';
+            userName.innerHTML =
+            userUserName.contentEditable = 'false';
+            userMajor.contentEditable = 'false';
+            userStatus.contentEditable ='false';
+            editProfileButton.innerHTML = 'Edit Profile';
+        }
+        else {
+            userName.contentEditable = 'true';
+            userUserName.contentEditable = 'true';
+            userMajor.contentEditable = 'true';
+            userStatus.contentEditable ='true';
+            editProfileButton.innerHTML = 'Save';
+        }
+    }
+</script>
 
 {% endblock %}

@@ -54,12 +54,12 @@ def update_initial_user(old_username: str, form: UserRegistrationForm) -> User:
 
 
 def get_profile(request: HttpRequest, user_name: str) -> render:
-    '''
+    """
     This function loads details of the user and the reviews that the user has written.
     The function only loads the details of the user if the user is logged in and for that user only.
     It will redirect to index page if the user is not logged in.
     it will redirect to error page if the user is logged in but is trying to view details of another user.
-    '''
+    """
     if request.user.is_authenticated:
         if request.user.username != user_name:
             return error404(request, "You are not authorized to view this page.")
@@ -72,3 +72,15 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
         return render(request, "users/profile.html", context)
     else:
         return redirect(reverse("search:index"))
+
+
+def edit_profile(request: HttpRequest) -> render:
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            user = User.objects.get(username=request.user)
+            user.name = request.POST["user_name"]
+            user.username = request.POST["user_username"]
+            user.major = request.POST["user_major"]
+            user.student_status = request.POST["user_status"]
+            user.save()
+        return redirect('users:profile', user_name=request.user)
