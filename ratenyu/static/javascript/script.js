@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function(){
 })
 
 
-//on user profile: to make 'edit' button show a text box
+//on user profile: to make 'edit' button show a text box and stars
 document.querySelectorAll(".edit-review-btn").forEach(btn => {
 
     btn.addEventListener('click', () => {
@@ -111,10 +111,12 @@ document.querySelectorAll(".edit-review-btn").forEach(btn => {
         }
         t.style.display = 'none';
 
-        let x = f.children[4];
-        let c = f.children[2];
+        //rating val is the value that is passed to the view to update the review rating
+        let rating_val = f.children[4];
+        //stars sec is the div which contains the stars
+        let stars_sec = f.children[2];
 
-        let sr = c.querySelectorAll('.prof-star');
+        let sr = stars_sec.querySelectorAll('.prof-star');
         let i = 0;
         //loop through stars
         while (i < sr.length) {
@@ -123,13 +125,13 @@ document.querySelectorAll(".edit-review-btn").forEach(btn => {
                 //current star
                 let cs = parseInt(this.getAttribute("data-star"));
                 //output current clicked star value
-                x.value = cs;
+                rating_val.value = cs;
                 let pre = cs;
 
                 while(1 <= pre){
                     //check if the classlist contains the active class, if not, add the class
-                    if(!c.querySelector('.star-'+pre).classList.contains('is-active')){
-                        c.querySelector('.star-'+pre).classList.add('is-active');
+                    if(!stars_sec.querySelector('.star-'+pre).classList.contains('is-active')){
+                        stars_sec.querySelector('.star-'+pre).classList.add('is-active');
                     }
                     //decrement our current index
                     --pre;
