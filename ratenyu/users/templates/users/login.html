@@ -18,7 +18,6 @@
                 autocomplete="username" maxlength="150" required id="id_username" placeholder="Username">
         <input type="password" class="register" name="password" autocomplete="current-password" required
                 id="id_password" placeholder="Password">
-                <span id="error"></span>
         <p><a href="{% url 'users:reset_password' %}">Forgot Password?</a></p>
         <button type="submit" class="register">Login</button>
         <p>Not registered yet? <a href="/accounts/google/login">Create Account</a></p>
