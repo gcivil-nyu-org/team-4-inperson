@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest
 from django.urls import reverse
 
 from util.views import error404
@@ -37,7 +37,7 @@ def register(request):
             messages.success(
                 request, "Your account has been created. You can log in now!"
             )
-            return redirect('users:login')
+            return redirect("users:login")
     else:
         form = UserRegistrationForm(initial={"email": request.user.email})
     context = {"form": form}
