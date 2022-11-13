@@ -5,6 +5,13 @@
 
 <div class="register-page">
     <h2 class="register">Login</h2>
+    <div class="add-reviews-status">
+        {% if messages %}
+            {% for message in messages %}
+            <h3> {{ message }} </h3>
+            {% endfor %}
+        {% endif %}
+    </div>
     <form class="register" action="" method="POST">
         {% csrf_token %}
         <input type="text" class="register" name="username" autofocus autocapitalize="none"
