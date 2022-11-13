@@ -52,7 +52,7 @@ function populateAddReviewCourseName(e, addReviewCourseName, coursesData) {
 //adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
 document.addEventListener('DOMContentLoaded', function(){
     (function(){
-        let sr = document.querySelectorAll('.my-star');
+        let sr = document.querySelectorAll('.add-star');
         let i = 0;
         //loop through stars
         while (i < sr.length){
@@ -92,3 +92,62 @@ document.addEventListener('DOMContentLoaded', function(){
         }//end of while loop
     })();//end of function
 })
+
+
+//on user profile: to make 'edit' button show a text box
+document.querySelectorAll(".edit-review-btn").forEach(btn => {
+
+    btn.addEventListener('click', () => {
+        //form element containing text area to edit the review text
+        let f = btn.parentElement.parentElement.nextElementSibling.childNodes[3];
+        //text element containing review text before editing
+        let t = btn.nextElementSibling.nextElementSibling.nextElementSibling;
+
+        // const form = document.getElementById('review-text-box')
+        if (f.style.display === 'none') {
+            f.style.display = 'block';
+        } else {
+            f.style.display = 'block';
+        }
+        t.style.display = 'none';
+
+        let x = f.children[4];
+        let c = f.children[2];
+
+        let sr = c.querySelectorAll('.prof-star');
+        let i = 0;
+        //loop through stars
+        while (i < sr.length) {
+            //attach click event
+            sr[i].addEventListener('click', function () {
+                //current star
+                let cs = parseInt(this.getAttribute("data-star"));
+                //output current clicked star value
+                x.value = cs;
+                let pre = cs;
+
+                while(1 <= pre){
+                    //check if the classlist contains the active class, if not, add the class
+                    if(!c.querySelector('.star-'+pre).classList.contains('is-active')){
+                        c.querySelector('.star-'+pre).classList.add('is-active');
+                    }
+                    //decrement our current index
+                    --pre;
+                }
+
+                let succ = cs+1;
+                while(5 >= succ){
+                    //check if the classlist contains the active class, if yes, remove the class
+                    if(c.querySelector('.star-'+succ).classList.contains('is-active')){
+                        c.querySelector('.star-'+succ).classList.remove('is-active');
+                    }
+                    //increment current index
+                    ++succ;
+                }
+            })//end of click event
+            i++;
+        }//end of while loop
+
+    })
+})
+

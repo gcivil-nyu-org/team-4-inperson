@@ -730,6 +730,12 @@ div.user-review > p:nth-of-type(2) {
   flex: 10;
 }
 
+div.user-review > form {
+  flex: 10;
+  margin-left:82px;
+  margin-top: -30px;
+}
+
 .add-reviews{
   display: flex;
   justify-content: center;
@@ -800,11 +806,17 @@ div.user-review > p:nth-of-type(2) {
     color: #702B9D;
 }
 
-.edit-review {
+.edit-review-btn, .delete-review-btn {
   background-color: #702B9D;
   color: white;
   font-size: 10px;
   /*height: 10px;*/
+}
+
+.review-text-box {
+  display: none;
+  margin-top: -25px;
+  /*display: block;*/
 }
 
 /* Fonts */

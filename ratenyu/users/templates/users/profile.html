@@ -23,18 +23,34 @@
     <div class="nyu-logo-light">
     </div>
     {% for review in reviews %}
-    <div class="user-review">
-        <p  style="padding-top: 3px;">{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }} <br>
-            {{ review.rating }}.0/5.0 <br></p>
-<!--            <button class="edit-review">Edit Review</button><br>-->
-<!--            <button class="edit-review">Delete Review</button>-->
-<!--            <a href="" class="edit-review"> Edit Review </a></p>-->
-        <p><span class="user-title"> Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
-            | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
-            <button class="edit-review">Edit Review</button> <button class="edit-review">Delete Review</button><br>
+        <div class="user-review">
+            <p style="padding-top: 3px;">{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }}<br>
+                {{ review.rating }}.0/5.0<br></p>
+            <p><span class="user-title">
+                Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
+                | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
+                <button class="edit-review-btn">Edit Review</button>
+                <button class="delete-review-btn">Delete Review</button><br>
+                <span>{{ review.review_text }}<br></span></p>
+        </div>
 
-        {{ review.review_text }}</p>
-    </div>
+        <div class="user-review">
+            <p></p>
+            <form class="review-text-box" action="{% url 'courses:edit_review' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="review_id" value={{review.id}}>
+                <div class="star-rating">
+                    <i class="my-star prof-star star-1" data-star="1"></i>
+                    <i class="my-star prof-star star-2" data-star="2"></i>
+                    <i class="my-star prof-star star-3" data-star="3"></i>
+                    <i class="my-star prof-star star-4" data-star="4"></i>
+                    <i class="my-star prof-star star-5" data-star="5"></i>
+                </div><br>
+                <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True" value="{{review.rating}}">
+                <textarea name="new_review_text">{{review.review_text}}</textarea><br>
+                <button>Save</button>
+            </form>
+        </div>
     {% endfor %}
 </div>
 

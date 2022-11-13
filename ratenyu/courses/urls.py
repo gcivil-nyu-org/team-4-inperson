@@ -6,5 +6,6 @@ app_name = "courses"
 urlpatterns = [
     path("add_review/", views.add_review, name="add_review"),
     path("add_review", views.add_review, name="add_review"),
+    path("edit_review", views.edit_review, name="edit_review"),
     path("<str:course_id>", views.course_detail, name="course_detail"),
 ]
