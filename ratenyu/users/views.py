@@ -35,7 +35,7 @@ def register(request):
             messages.success(
                 request, f"Your account has been created. You can log in now!"
             )
-            return redirect("users:login")
+            return render(request, "users/login.html", context = {"review_saved": True})
     else:
         form = UserRegistrationForm(initial={"email": request.user.email})
     context = {"form": form}
