@@ -125,3 +125,4 @@ def edit_review(request):
         r.rating = request.POST['review_rating']
         r.save()
     return redirect('users:profile', user_name=request.user)
+      
