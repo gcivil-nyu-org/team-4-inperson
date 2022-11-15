@@ -138,3 +138,28 @@ function courseSelect(course)
         }
     });
 }
+
+function hideProfile(elements) {
+    elements = elements.length ? elements : [elements];
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].style.display = 'none';
+    }
+    document.getElementById('edit_profile_div').style.display = 'block'
+    let input_dropdown = document.getElementById('user_status_input')
+    let student_status = document.getElementById('user_status').innerHTML
+
+    for (let i, j = 0; i = input_dropdown.options[j]; j++) {
+        if (String(i.value).trim() === String(student_status).trim()) {
+            input_dropdown.selectedIndex = j;
+            break;
+        }
+    }
+}
+
+function save(elements){
+    elements = elements.length ? elements : [elements];
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].style.display = 'none';
+    }
+    document.getElementById('profile_div').style.display = 'block'
+}
