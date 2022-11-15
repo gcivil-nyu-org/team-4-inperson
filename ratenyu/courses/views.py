@@ -119,10 +119,12 @@ def delete_review(request, review_id: str):
     except Exception as e:
         return error404(request, error=e)
 def edit_review(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         r = Review.objects.get(pk=request.POST.get('review_id'))
         r.review_text = request.POST.get('new_review_text')
         r.rating = request.POST['review_rating']
         r.save()
     return redirect('users:profile', user_name=request.user)
       
+
+

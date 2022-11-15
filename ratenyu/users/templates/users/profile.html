@@ -70,7 +70,9 @@
                 <span>{{ review.review_text }}<br></span></p>
         </div>
                 <button class="edit-review-btn">Edit Review</button>
+                <span hidden="True" id="csrf">{{csrf_token}}</span>
                 <button class="delete-review-btn">Delete Review</button><br>
+
                 <span>{{ review.review_text }}<br></span></p>
         </div>
 
