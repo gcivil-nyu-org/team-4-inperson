@@ -50,7 +50,7 @@ function populateAddReviewCourseName(e, addReviewCourseName, coursesData) {
     }
 }
 
-// adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
+//adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
 document.addEventListener('DOMContentLoaded', function(){
     (function(){
         let sr = document.querySelectorAll('.my-star');
@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
+/*
+Handlers for Course Detail Filtering
+ */
 function professorSelect(professor)
 {
         let listOfReviews = document.querySelectorAll(".review");
@@ -107,6 +110,9 @@ function professorSelect(professor)
     });
 }
 
+/*
+Handlers for Professor Detail Filtering
+ */
 function courseSelect(course)
 {
         let listOfReviews = document.querySelectorAll(".review");
