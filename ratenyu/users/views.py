@@ -64,6 +64,16 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
         if request.user.username != user_name:
             return error404(request, "You are not authorized to view this page.")
         context = {}
+
+        if request.method == "POST":
+            user = get_user_details(request.user)
+            print(request.POST)
+            user.name = request.POST.get("user_name_input")
+            user.major = request.POST.get("user_major_input")
+            # request.user.username = request.POST.get("user_username_input")
+            user.student_status = request.POST.get("user_status_input")
+            user.save()
+
         user_details = get_user_details(request.user)
         reviews = Review.objects.filter(user=User.objects.get(username=user_name))
         context["user_details"] = user_details
@@ -72,15 +82,3 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
         return render(request, "users/profile.html", context)
     else:
         return redirect(reverse("search:index"))
-
-
-def edit_profile(request: HttpRequest) -> render:
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            user = User.objects.get(username=request.user)
-            user.name = request.POST["user_name"]
-            user.username = request.POST["user_username"]
-            user.major = request.POST["user_major"]
-            user.student_status = request.POST["user_status"]
-            user.save()
-        return redirect('users:profile', user_name=request.user)
