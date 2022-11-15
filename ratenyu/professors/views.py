@@ -4,15 +4,25 @@ from .models import Professor
 from courses.models import Class, Course, Review
 from courses.course_util import *
 from util.views import error404
+import logging
+
+LOGGER = logging.getLogger("project")
+
 
 def professor_detail(request: HttpRequest, professor_id: str):
+    LOGGER.debug(f"professor_detail: {professor_id}")
     try:
         if request.method == "GET":
             return load_professor_detail(request, professor_id)
         elif request.method == "POST" and "submit" in request.POST:
+            LOGGER.debug(request.POST)
             review, message = add_review_from_details(request)
             return load_professor_detail(request, professor_id, review, message)
+        else:
+            LOGGER.error(request.POST)
+            return error404(request, error = "Invalid request")
     except Exception as e:
+        LOGGER.exception(e)
         return error404(request, error = e)
 
 

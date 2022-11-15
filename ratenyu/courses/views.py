@@ -18,8 +18,12 @@ def course_detail(request: HttpRequest, course_id: str):
         if request.method == "GET":
             return load_course_deatail(request, course_id)
         elif request.method == "POST" and "submit" in request.POST:
+            LOGGER.debug(request.POST)
             review, message = add_review_from_details(request)
             return load_course_deatail(request, course_id, review, message)
+        else:
+            LOGGER.error(request.POST)
+            return error404(request, error = "Invalid request")
     except Exception as e:
         return error404(request, error = e)
 
