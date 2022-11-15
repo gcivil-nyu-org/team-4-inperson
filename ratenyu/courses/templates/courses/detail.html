@@ -49,9 +49,12 @@
 
 <div class="add-reviews-status">
     {% if review_saved == True %}
-        <h3>{{ review_message }}<a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
+        <h3> {{ review_message }} <a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
     {% endif %}
-    {% if review_saved == False %}
+    {% if review_saved == False  and  "Profane" in review_message %}
+        <h4 class="review_text_invalid">Review not saved. Review text failed to meet RateNYU standards.</h4>
+    {% endif %}
+    {% if review_saved == False and "Profane" not in review_message %}
         <h3>{{ review_message }}</h3>
     {% endif %}
 </div>

@@ -10,9 +10,9 @@ import logging
 
 LOGGER = logging.getLogger("project")
 
-REVIEW_ADDED = "Review added successfully!"
+REVIEW_ADDED = "Your review was saved!"
 REVIEW_CONTAINS_PROFANITY = "Profane review was not saved!"
-REVIEW_NOT_SAVED = "Review was not saved!"
+REVIEW_NOT_SAVED = "Uh Oh, something went wrong. Your review could not be saved."
 
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     review_objects = []

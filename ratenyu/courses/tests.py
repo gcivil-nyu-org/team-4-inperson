@@ -173,21 +173,21 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This is a test review")
         self.assertContains(response, "5.0")
-        self.assertContains(response, "Review added successfully!")
+        self.assertContains(response, REVIEW_ADDED)
 
     def test_review_from_details_page_2(self):
         self.client.login(username="viren", password="viren")
         request_str = f"http://127.0.0.1:8000/courses/1"
         response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "Shit is a abd word", "review_rating": "5", "submit":""})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Profane review was not saved!")
+        self.assertContains(response, "Review not saved. Review text failed to meet RateNYU standards.")
     
     def test_review_from_details_page_3(self):
         self.client.login(username="viren", password="viren")
         request_str = f"http://127.0.0.1:8000/courses/1"
         response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"Different Professor", "review_text": "This is a test review", "review_rating": "6", "submit":""})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Review was not saved!")
+        self.assertContains(response, REVIEW_NOT_SAVED)
 
     def test_review_from_details_page_4(self):
         self.client.login(username="viren", password="viren")
