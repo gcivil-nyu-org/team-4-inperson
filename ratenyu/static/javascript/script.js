@@ -164,3 +164,18 @@ document.querySelectorAll(".edit-review-btn").forEach(btn => {
     })
 })
 
+
+// bttn = document.getElementBy('delete-review-btn')
+// document.getElementById('delete-review-btn').onclick = () => {
+//     var csrftoken = bttn.previousSibling.previousSibling;
+//     const requestObj = new XMLHttpRequest()
+//     requestObj.onreadystatechange  = function () {
+//         if (this.readyState == 4 && this.status == 200) {
+//             console.log(this.responseText)
+//         }
+//     }
+//     requestObj.open("POST",'/courses/delete_review')
+//
+//     requestrequestObj.send()
+// };
+

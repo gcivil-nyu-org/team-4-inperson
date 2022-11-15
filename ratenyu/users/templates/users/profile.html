@@ -30,7 +30,9 @@
                 Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
                 | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
                 <button class="edit-review-btn">Edit Review</button>
+                <span hidden="True" id="csrf">{{csrf_token}}</span>
                 <button class="delete-review-btn">Delete Review</button><br>
+
                 <span>{{ review.review_text }}<br></span></p>
         </div>
 

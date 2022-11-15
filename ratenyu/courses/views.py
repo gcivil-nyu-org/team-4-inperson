@@ -70,7 +70,7 @@ def add_review(request):
             return render(request, "courses/add_review.html", context)
 
 def edit_review(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         r = Review.objects.get(pk=request.POST.get('review_id'))
         if (not request.POST.get('new_review_text')):
             pass
@@ -78,4 +78,10 @@ def edit_review(request):
             r.review_text = request.POST.get('new_review_text')
             r.rating = request.POST['review_rating']
             r.save()
+    return redirect('users:profile', user_name=request.user)
+
+def delete_review(request):
+    if request.method == 'POST':
+        r = Review.objects.get(pk=request.POST.get('review_id'))
+        r.delete()
     return redirect('users:profile', user_name=request.user)
