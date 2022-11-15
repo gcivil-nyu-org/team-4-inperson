@@ -228,16 +228,9 @@ ul.detail-side-links {
   width:120px;
 }
 
-.detail-side-links > button {
+.detail-side-links > li {
   padding-bottom: 20px;
-  padding-left: 0px;
-  background: none;
-  border: none;
-  text-align: left;
-  color: #0000EE;
-  font-size: medium;
 }
-
 
 /*format name and average rating to be in middle of page with appropriate font size*/
 .detail-title {
