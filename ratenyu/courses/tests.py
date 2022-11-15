@@ -1,5 +1,5 @@
 from django.test import TestCase, RequestFactory, Client
-from .views import course_detail, add_review
+from .views import course_detail, add_review, delete_review, edit_review
 from .course_util import *
 from professors.models import Professor
 import users.tests as user_tests
@@ -33,15 +33,7 @@ class TestCourseDetailPageRequest(TestCase):
 
 class TestDetailPageHelpers(TestCase):
     def setUp(self) -> None:
-        create_test_course()
-        create_test_professor()
-        create_test_class_1(
-            course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
-        )
-        create_test_class_2(
-            course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
-        )
-        create_test_review_1(Class.objects.get(pk="1"))
+        create_test_review_easy()
         create_test_review_2(Class.objects.get(pk="1"))
 
     def test_helper_functions(self) -> None:
@@ -152,6 +144,7 @@ class TestReviewTextValidation(TestCase):
         cl = Class.objects.get(pk=1)
         self.assertEqual(0, len(Review.objects.filter(class_id=cl)), "Profane review was saved!")
 
+
 class TestReviewFromDetailsPage(TestCase):
     def setUp(self):
         user_tests.create_test_course()
@@ -195,6 +188,20 @@ class TestReviewFromDetailsPage(TestCase):
         response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "6"})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Invalid request")
+
+
+class TestDeleteReview(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_delete_review(self):
+        review = create_test_review_easy()
+        self.assertEqual(1, len(Review.objects.filter(pk=review.id)), "Test Review was not created.")
+        url = f"http://127.0.0.1:8000/courses/{review.id}/delete"
+        request = self.factory.get(url)
+        delete_review(request, str(review.id))
+        self.assertEqual(0, len(Review.objects.filter(pk=review.id)), "Test Review was not deleted.")
+
 
 def create_test_course() -> Course:
     return Course.objects.create(
@@ -260,3 +267,14 @@ def create_test_review_2(class_id: Class) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
+def create_test_review_easy() -> Review:
+    create_test_course()
+    create_test_professor()
+    create_test_class_1(
+        course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
+    )
+    create_test_class_2(
+        course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
+    )
+    return create_test_review_1(Class.objects.get(pk="1"))
