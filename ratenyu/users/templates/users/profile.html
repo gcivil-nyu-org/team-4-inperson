@@ -30,14 +30,14 @@
             <label for="user_major_input" class = 'user-form'> Major </label>
             <input class="edit-form" id="user_major_input"  name="user_major_input" value="{{user_details.major}}"/>
             <label for="user_status_input" class = 'user-form'> Student Status </label>
-            <select class="edit-dropdown" id="user_status_input" name="user_status_input">
-                <option value="Freshman">Freshman</option>
-                <option value="Sophomore">Sophomore</option>
-                <option value="Junior">Junior</option>
-                <option value="Senior">Senior</option>
-                <option value="Master1">Master1</option>
-                <option value="Master2">Master2</option>
-                <option value="PHD">PHD</option>
+            <select name="user_status_input" class="edit-dropdown" required="" id="user_status_input">
+                <option value="freshman">Freshman</option>
+                <option value="sophomore">Sophomore</option>
+                <option value="junior">Junior</option>
+                <option value="senior">Senior</option>
+                <option value="master1">Master1</option>
+                <option value="master2">Master2</option>
+                <option value="phd">PHD</option>
             </select>
             <button type="submit" class="edit-profile-form" id="save_profile" onclick="save(document.querySelectorAll('.user-panel'))">Save</button>
         </div>
