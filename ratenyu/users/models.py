@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 
 class UserDetails(models.Model):
     STATUS_CHOICES = [
-        ("freshman", "Freshman"),
-        ("sophomore", "Sophomore"),
-        ("junior", "Junior"),
-        ("senior", "Senior"),
-        ("master1", "Master1"),
-        ("master2", "Master2"),
-        ("phd", "PHD"),
+        ("Freshman", "Freshman"),
+        ("Sophomore", "Sophomore"),
+        ("Junior", "Junior"),
+        ("Senior", "Senior"),
+        ("Master1", "Master1"),
+        ("Master2", "Master2"),
+        ("PHD", "PHD"),
     ]
     name = models.CharField(max_length=100)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

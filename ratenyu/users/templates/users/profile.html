@@ -24,20 +24,20 @@
         <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
         <div class="user-form">
             <label for="user_name_input" class = 'user-form'> Name </label>
-            <input class="edit-form" id='user_name_input' name="user_name_input" value=" {{user_details.name}}"/>
+            <input required="True" class="edit-form" id='user_name_input' name="user_name_input" value=" {{user_details.name}}"/>
             <label for="user_username_input" class = 'user-form'> Username </label>
-            <input readonly class="edit-form" id="user_username_input" name="user_username_input" value="{{user_details.user}}"/>
+            <input required="True" readonly class="edit-form" id="user_username_input" name="user_username_input" value="{{user_details.user}}"/>
             <label for="user_major_input" class = 'user-form'> Major </label>
-            <input class="edit-form" id="user_major_input"  name="user_major_input" value="{{user_details.major}}"/>
+            <input required="True" class="edit-form" id="user_major_input"  name="user_major_input" value="{{user_details.major}}"/>
             <label for="user_status_input" class = 'user-form'> Student Status </label>
-            <select name="user_status_input" class="edit-dropdown" required="" id="user_status_input">
-                <option value="freshman">Freshman</option>
-                <option value="sophomore">Sophomore</option>
-                <option value="junior">Junior</option>
-                <option value="senior">Senior</option>
-                <option value="master1">Master1</option>
-                <option value="master2">Master2</option>
-                <option value="phd">PHD</option>
+            <select value="user_details.student_status" name="user_status_input" class="edit-dropdown" required="" id="user_status_input">
+                <option value="Freshman">Freshman</option>
+                <option value="Sophomore">Sophomore</option>
+                <option value="Junior">Junior</option>
+                <option value="Senior">Senior</option>
+                <option value="Master1">Master1</option>
+                <option value="Master2">Master2</option>
+                <option value="PHD">PHD</option>
             </select>
             <button type="submit" class="edit-profile-form" id="save_profile" onclick="save(document.querySelectorAll('.user-panel'))">Save</button>
         </div>
@@ -60,12 +60,21 @@
 </div>
 
 <script>
-    function hideProfile(elements){
+    function hideProfile(elements) {
         elements = elements.length ? elements : [elements];
         for (let index = 0; index < elements.length; index++) {
             elements[index].style.display = 'none';
         }
         document.getElementById('edit_profile_div').style.display = 'block'
+        let input_dropdown = document.getElementById('user_status_input')
+        let student_status = document.getElementById('user_status').innerHTML
+
+        for (let i, j = 0; i = input_dropdown.options[j]; j++) {
+            if (String(i.value).trim() === String(student_status).trim()) {
+                input_dropdown.selectedIndex = j;
+                break;
+            }
+        }
     }
 
     function save(elements){
