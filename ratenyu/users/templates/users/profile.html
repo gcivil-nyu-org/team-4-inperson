@@ -20,6 +20,9 @@
 
 <div class="user-reviews">
     <h1>My Reviews</h1>
+    {% if invalid_review_text %}
+        <h4 class="review_text_invalid">Review not saved. Review text failed to meet RateNYU standards.</h4>
+    {%  endif %}
     <div class="nyu-logo-light">
     </div>
     {% for review in reviews %}
@@ -29,16 +32,16 @@
             <p><span class="user-title">
                 Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
                 | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
-                <button class="edit-review-btn">Edit Review</button>
+                <button class="edit-review-btn" onclick="showEditForm({{ review.id }})">Edit Review</button>
                 <span hidden="True" id="csrf">{{csrf_token}}</span>
-                <button class="delete-review-btn">Delete Review</button><br>
+                <a onclick="return confirm('Are you sure you want to delete this Review?')" href="{% url 'courses:delete_review' review.id %}" class="delete-review-btn">Delete Review</a><br>
 
-                <span>{{ review.review_text }}<br></span></p>
+                <span name="static-review-text-{{ review.id }}">{{ review.review_text }}<br></span></p>
         </div>
 
         <div class="user-review">
             <p></p>
-            <form class="review-text-box" action="{% url 'courses:edit_review' %}" method="POST">
+            <form name="edit-review-form-{{ review.id }}" class="review-text-box" action="{% url 'courses:edit_review' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="review_id" value={{review.id}}>
                 <div class="star-rating">
@@ -49,8 +52,10 @@
                     <i class="my-star prof-star star-5" data-star="5"></i>
                 </div><br>
                 <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True" value="{{review.rating}}">
-                <textarea name="new_review_text">{{review.review_text}}</textarea><br>
-                <button>Save</button>
+                <textarea required name="new_review_text" class="add_review_textarea"
+                          placeholder="Must adhere to RateNYU standards: No profanity." >{{review.review_text}}</textarea><br>
+                <button type="submit" class="edit-review-btn">Save</button>
+                <button class="edit-review-btn" onclick="hideEditForm({{ review.id }})">Cancel</button>
             </form>
         </div>
     {% endfor %}

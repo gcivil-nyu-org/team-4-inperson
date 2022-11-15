@@ -5,7 +5,6 @@ from django.http import HttpRequest
 from django.urls import reverse
 
 from util.views import error404
-from search.views import index
 from .models import UserDetails
 from courses.models import Review
 from .forms import UserRegistrationForm
@@ -65,11 +64,14 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
     if request.user.is_authenticated:
         if request.user.username != user_name:
             return error404(request, "You are not authorized to view this page.")
-        context = {}
         user_details = get_user_details(request.user)
         reviews = Review.objects.filter(user=User.objects.get(username=user_name))
-        context["user_details"] = user_details
-        context["reviews"] = reviews
+        context = {
+            "user_details": user_details,
+            "reviews": reviews
+        }
+        if request.GET.get("invalid_review_text"):
+            context["invalid_review_text"] = True
         logger.debug(f"context : {context}")
         return render(request, "users/profile.html", context)
     else:
