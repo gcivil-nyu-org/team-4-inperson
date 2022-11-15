@@ -38,13 +38,14 @@
     <ul class="detail-side-links">
         <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
         {% for professor in professors_list %}
-        <li class="detail-side-links"><a href="">{{ professor.name }}</a></li>
+            <button class="detail-side-links"><a onclick = "professorSelect('{{professor.name}}')">{{ professor.name }}</a></button>
         {% endfor %}
+        <button class="detail-side-links"><a onclick = "professorSelect('{{professors_list.name}}')">All</a></button>
     </ul>
 
     <div class="all-reviews">
         {% for review in reviews_list %}
-        <div class="review">
+        <div class="review" review_professor = "{{review.professor_obj.name}}">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
                 {{ review.review_obj.rating }}.0/5.0</p>
             <p><span class="rev-title">Course: {{ course.course_title }}
