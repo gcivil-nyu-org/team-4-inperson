@@ -55,7 +55,7 @@
                 <br>
                 <div>
                     <label for="course_title" class="add_review_label">Course:</label>
-                    <select class="dropdown" id="detail-dropdown" name="course_id">
+                    <select id="detail-dropdown" name="course_id" style="padding: 5px;">
                         {% for course in courses_list %}
                         <option value="{{course.course_id}}">{{course.course_title}}</option>
                         {% endfor %}
