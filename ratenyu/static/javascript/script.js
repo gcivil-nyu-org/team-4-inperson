@@ -10,7 +10,6 @@ function getListOfChecked() {
   return listOfChecked;
 }
 
-
 function resultCheckBoxClicked() {
     let listOfChecked = getListOfChecked();
     let listOfItems = document.querySelectorAll(".detail-sub-course-desc");
@@ -94,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
+
 //Function to display review form on course results page
 function showReviewForm() {
     let reviewForm = document.getElementById("add-review");
@@ -105,35 +105,4 @@ function hideReviewForm() {
     let reviewForm = document.getElementById("add-review");
     reviewForm.style.display = "none";
     console.log("Button clicked");
-
-/*
-Handlers for Course Detail Filtering
- */
-function professorSelect(professor)
-{
-        let listOfReviews = document.querySelectorAll(".review");
-        listOfReviews.forEach(element => {
-        let review_professor = element.getAttribute('review_professor');
-        if (review_professor.includes(professor)) {
-            element.style.display = "flex";
-        } else {
-            element.style.display = "none";
-        }
-    });
-}
-
-/*
-Handlers for Professor Detail Filtering
- */
-function courseSelect(course)
-{
-        let listOfReviews = document.querySelectorAll(".review");
-        listOfReviews.forEach(element => {
-        let review_course = element.getAttribute('review_course');
-        if (review_course.includes(course)) {
-            element.style.display = "flex";
-        } else {
-            element.style.display = "none";
-        }
-    });
 }
