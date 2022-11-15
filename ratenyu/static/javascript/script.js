@@ -10,7 +10,6 @@ function getListOfChecked() {
   return listOfChecked;
 }
 
-
 function resultCheckBoxClicked() {
     let listOfChecked = getListOfChecked();
     let listOfItems = document.querySelectorAll(".detail-sub-course-desc");
@@ -93,6 +92,20 @@ document.addEventListener('DOMContentLoaded', function(){
         }//end of while loop
     })();//end of function
 })
+
+
+//Function to display review form on course results page
+function showReviewForm() {
+    let reviewForm = document.getElementById("add-review");
+    reviewForm.style.display = "block";
+    console.log("Button clicked");
+}
+
+function hideReviewForm() {
+    let reviewForm = document.getElementById("add-review");
+    reviewForm.style.display = "none";
+    console.log("Button clicked");
+}
 
 /*
 Handlers for Course Detail Filtering
