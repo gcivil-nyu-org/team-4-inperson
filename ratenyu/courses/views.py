@@ -54,6 +54,11 @@ def add_review(request):
     elif request.method == "POST":
         user = User.objects.get(username=request.user)
         try:
+            # Validate Review Text
+            if not text_is_valid(request.POST["review_text"]):
+                context["review_text_invalid"] = True
+                return render(request, "courses/add_review.html", context)
+
             new_review = save_new_review(
                 user=user,
                 user_entered_course_id=request.POST["add_review_course_id"],

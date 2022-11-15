@@ -52,7 +52,7 @@ function populateAddReviewCourseName(e, addReviewCourseName, coursesData) {
 //adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
 document.addEventListener('DOMContentLoaded', function(){
     (function(){
-        let sr = document.querySelectorAll('.add-star');
+        let sr = document.querySelectorAll('.my-star');
         let i = 0;
         //loop through stars
         while (i < sr.length){
@@ -92,90 +92,3 @@ document.addEventListener('DOMContentLoaded', function(){
         }//end of while loop
     })();//end of function
 })
-
-
-//on user profile: to make 'edit' button show a text box and stars
-document.querySelectorAll(".edit-review-btn").forEach(btn => {
-
-    btn.addEventListener('click', () => {
-        //form element containing text area to edit the review text
-        let f = btn.parentElement.parentElement.nextElementSibling.childNodes[3];
-        //text element containing review text before editing
-        let t = btn.nextElementSibling.nextElementSibling.nextElementSibling;
-
-        // const form = document.getElementById('review-text-box')
-        if (f.style.display === 'none') {
-            f.style.display = 'block';
-        } else {
-            f.style.display = 'block';
-        }
-        t.style.display = 'none';
-
-        //rating val is the value that is passed to the view to update the review rating
-        let rating_val = f.children[4];
-        //stars sec is the div which contains the stars
-        let stars_sec = f.children[2];
-
-        let sr = stars_sec.querySelectorAll('.prof-star');
-
-        let curr_rating = rating_val.value;
-        let max_star = curr_rating;
-
-        while(1 <= max_star){
-            if(!stars_sec.querySelector('.star-'+max_star).classList.contains('is-active')){
-                stars_sec.querySelector('.star-'+max_star).classList.add('is-active');
-            }
-            --max_star;
-    }
-
-        let i = 0;
-        //loop through stars
-        while (i < sr.length) {
-            //attach click event
-            sr[i].addEventListener('click', function () {
-                //current star
-                let cs = parseInt(this.getAttribute("data-star"));
-                //output current clicked star value
-                rating_val.value = cs;
-                let pre = cs;
-
-                while(1 <= pre){
-                    //check if the classlist contains the active class, if not, add the class
-                    if(!stars_sec.querySelector('.star-'+pre).classList.contains('is-active')){
-                        stars_sec.querySelector('.star-'+pre).classList.add('is-active');
-                    }
-                    //decrement our current index
-                    --pre;
-                }
-
-                let succ = cs+1;
-                while(5 >= succ){
-                    //check if the classlist contains the active class, if yes, remove the class
-                    if(stars_sec.querySelector('.star-'+succ).classList.contains('is-active')){
-                        stars_sec.querySelector('.star-'+succ).classList.remove('is-active');
-                    }
-                    //increment current index
-                    ++succ;
-                }
-            })//end of click event
-            i++;
-        }//end of while loop
-
-    })
-})
-
-
-// bttn = document.getElementBy('delete-review-btn')
-// document.getElementById('delete-review-btn').onclick = () => {
-//     var csrftoken = bttn.previousSibling.previousSibling;
-//     const requestObj = new XMLHttpRequest()
-//     requestObj.onreadystatechange  = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log(this.responseText)
-//         }
-//     }
-//     requestObj.open("POST",'/courses/delete_review')
-//
-//     requestrequestObj.send()
-// };
-

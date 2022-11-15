@@ -228,9 +228,16 @@ ul.detail-side-links {
   width:120px;
 }
 
-.detail-side-links > li {
+.detail-side-links > button {
   padding-bottom: 20px;
+  padding-left: 0px;
+  background: none;
+  border: none;
+  text-align: left;
+  color: #0000EE;
+  font-size: medium;
 }
+
 
 /*format name and average rating to be in middle of page with appropriate font size*/
 .detail-title {
@@ -782,6 +789,12 @@ div.user-review > form {
   width: 400px;
   height: 200px;
 }
+
+/* Warning message for invalid Review Text */
+h4.review_text_invalid {
+  color: red;
+}
+
 
 /*set the default color of the stars*/
 .star-rating{

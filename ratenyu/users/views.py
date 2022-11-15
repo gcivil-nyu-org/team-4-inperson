@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest
 from django.urls import reverse
 
 from util.views import error404
@@ -32,8 +32,10 @@ def register(request):
                 user_details.save()
             except Exception as e:
                 print(e)
+            storage = messages.get_messages(request)
+            storage.used = True       
             messages.success(
-                request, f"Your account has been created. You can log in now!"
+                request, "Your account has been created. You can log in now!"
             )
             return redirect("users:login")
     else:

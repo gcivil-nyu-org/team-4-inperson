@@ -62,7 +62,7 @@ class TestAddReviewPage(TestCase):
             course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
         )
 
-    def testValidRequestGet(self) -> None:
+    def test_valid_request_get(self) -> None:
         request_str = f"http://127.0.0.1:8000/courses/add_review"
         request = self.factory.get(request_str)
         request.user = User.objects.get(pk=1)
@@ -73,7 +73,7 @@ class TestAddReviewPage(TestCase):
             f"Request returned {response.status_code} for request {request_str}",
         )
 
-    def testValidRequestPost(self) -> None:
+    def test_valid_request_post(self) -> None:
         request_str = f"http://127.0.0.1:8000/courses/add_review"
         request_body = {
             "add_review_course_id": "TS-UY 1000",
@@ -119,6 +119,37 @@ class TestAddReviewPageHelpers(TestCase):
             review_text=review_text,
         )
         self.assertEqual(r, Review.objects.get(pk=1))
+
+
+class TestReviewTextValidation(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.review_text_invalid = "This teacher is a bitch."
+        self.review_text_valid = "I do not like this teacher."
+        User.objects.create(username="testuser", email="testuser@nyu.edu")
+        create_test_course()
+        create_test_professor()
+        create_test_class_1(
+            course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
+        )
+
+    def test_validation_function(self):
+        self.assertFalse(text_is_valid(self.review_text_invalid))
+        self.assertTrue(text_is_valid(self.review_text_valid))
+
+    def test_invalid_review_submission(self) -> None:
+        request_str = f"http://127.0.0.1:8000/courses/add_review"
+        request_body = {
+            "add_review_course_id": "TS-UY 1000",
+            "add_review_professor_name": "John Doe",
+            "review_rating": "5",
+            "review_text": "Shit is a bad word",
+        }
+        request = self.factory.post(request_str, request_body)
+        request.user = User.objects.get(pk=1)
+        response = add_review(request)
+        cl = Class.objects.get(pk=1)
+        self.assertEqual(0, len(Review.objects.filter(class_id=cl)), "Profane review was saved!")
 
 
 def create_test_course() -> Course:

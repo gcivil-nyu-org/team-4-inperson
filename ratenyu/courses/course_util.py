@@ -1,4 +1,5 @@
 from typing import List
+from profanity_filter import ProfanityFilter
 from .models import Class, Review, Course
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -80,3 +81,13 @@ def get_sub_code_and_cat_num(query: str) -> tuple:
         course_subject_code = course_subject_code.replace(" ", "-")
     catalog_number = re.search(r"[0-9]{4}", query).group(0)
     return course_subject_code, catalog_number
+
+
+def text_is_valid(review_text: str) -> bool:
+    """
+    Review text moderation function
+    Returns false if given text string contains profanity
+    Else returns true
+    """
+    pf = ProfanityFilter()
+    return pf.censor(review_text) == review_text
