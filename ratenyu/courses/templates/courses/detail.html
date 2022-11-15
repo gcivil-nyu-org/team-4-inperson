@@ -38,9 +38,9 @@
     <ul class="detail-side-links">
         <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
         {% for professor in professors_list %}
-            <li class="detail-side-links"><a href='#' onclick = "professorSelect('{{professor.name}}')">{{ professor.name }}</a></li>
+            <button class="detail-side-links"><a onclick = "professorSelect('{{professor.name}}')">{{ professor.name }}</a></button>
         {% endfor %}
-        <li class="detail-side-links"><a href='#' onclick = "professorSelect('{{professors_list.name}}')">All</a></li>
+        <button class="detail-side-links"><a onclick = "professorSelect('{{professors_list.name}}')">All</a></button>
     </ul>
 
     <div class="all-reviews">

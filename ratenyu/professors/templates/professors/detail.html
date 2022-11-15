@@ -27,9 +27,9 @@
     <ul class="detail-side-links">
         <li class="detail-side-links"><span class="rev-title">Courses</span></li>
         {% for course in courses_list %}
-            <li class="detail-side-links"><a href='#' onclick = "courseSelect('{{course.course_title}}')">{{ course.course_title }}</a></li>
+            <button class="detail-side-links"><a onclick = "courseSelect('{{course.course_title}}')">{{ course.course_title }}</a></button>
         {% endfor %}
-        <li class="detail-side-links"><a href='#' onclick = "courseSelect('{{courses_list.course_title}}')">All</a></li>
+        <button class="detail-side-links"><a onclick = "courseSelect('{{courses_list.course_title}}')">All</a></button>
     </ul>
 
     <div class="all-reviews">
