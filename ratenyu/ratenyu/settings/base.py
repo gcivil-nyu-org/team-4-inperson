@@ -1,4 +1,6 @@
 import os
+import logging
+import sys
 from pathlib import Path
 from decouple import config
 
@@ -119,11 +121,30 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 PATH_TO_LOGS_FOLDER = BASE_DIR.parent / "logs"
 
+class PackagePathFilter(logging.Filter):
+    def filter(self, record):
+        pathname = record.pathname
+        record.relativepath = None
+        abs_sys_paths = map(os.path.abspath, sys.path)
+        for path in sorted(abs_sys_paths, key=len, reverse=True):
+            if not path.endswith(os.sep):
+                path += os.sep
+            if pathname.startswith(path):
+                record.relativepath = os.path.relpath(pathname, path)
+                break
+        return True
+
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "filters": {
+        "filter_path": {
+            "()": PackagePathFilter,
+        },
+    },
     "formatters": {
-        "verbose": {"format": "[%(asctime)s] [%(levelname)s] %(filename)s %(message)s"}
+        "verbose": {"format": "[%(asctime)s] [%(levelname)s] [%(relativepath)s:%(lineno)d] %(message)s"}
     },
     "handlers": {
         "debug1": {
@@ -131,12 +152,14 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": str(PATH_TO_LOGS_FOLDER) + "/django.log",
             "formatter": "verbose",
+            "filters": ["filter_path"],
         },
         "console1": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "verbose",
             "stream": "ext://sys.stdout",
+            "filters": ["filter_path"],
         },
     },
     "loggers": {

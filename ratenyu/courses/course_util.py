@@ -1,11 +1,19 @@
 from typing import List
-from .models import Class, Review, Course
+from profanity_filter import ProfanityFilter
+from django.http import HttpRequest
+from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import Course, Class, Review
 from professors.models import Professor
 import re
+import logging
 
+LOGGER = logging.getLogger("project")
+
+REVIEW_ADDED = "Your review was saved!"
+REVIEW_CONTAINS_PROFANITY = "Profane review was not saved!"
+REVIEW_NOT_SAVED = "Uh Oh, something went wrong. Your review could not be saved."
 
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     review_objects = []
@@ -80,3 +88,55 @@ def get_sub_code_and_cat_num(query: str) -> tuple:
         course_subject_code = course_subject_code.replace(" ", "-")
     catalog_number = re.search(r"[0-9]{4}", query).group(0)
     return course_subject_code, catalog_number
+
+
+def text_is_valid(review_text: str) -> bool:
+    """
+    Review text moderation function
+    Returns false if given text string contains profanity
+    Else returns true
+    """
+    pf = ProfanityFilter()
+    return pf.censor(review_text) == review_text
+
+
+def add_review_from_details(request) -> tuple:
+    """
+    Adds a review to the database
+    """
+    LOGGER.debug(request.POST)
+    course_id = request.POST["course_id"]
+    professor_name = request.POST["add_review_professor_name"]
+    review_rating = request.POST["review_rating"]
+    review_text = request.POST["review_text"]
+    if text_is_valid(review_text):
+        try:
+            new_review = Review(
+                review_text=review_text,
+                rating=review_rating,
+                class_id=get_class(course_id, professor_name),
+                user=request.user,
+                pub_date=timezone.now(),
+            )
+            new_review.save()
+            LOGGER.debug("Review saved successfully", review_text)
+            return True, REVIEW_ADDED
+        except Exception as e:
+            LOGGER.exception(e)
+            return False, REVIEW_NOT_SAVED
+    else:
+        LOGGER.debug("Review contains profanity", review_text)
+        return False, REVIEW_CONTAINS_PROFANITY
+
+
+def add_redirect_message(request: HttpRequest, message: str, success: bool) -> None:
+    """
+    add_redirect_message clears the current messages in the HttpRequest
+    and adds a new message. The message type (success or error) is determined
+    by the success argument.
+    """
+    messages.get_messages(request).used = True
+    if success:
+        messages.success(request, message)
+    else:
+        messages.error(request, message)

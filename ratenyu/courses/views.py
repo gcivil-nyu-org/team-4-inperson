@@ -1,28 +1,47 @@
 import logging
 from json import dumps
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from courses.models import Review
 from professors.models import Professor
 from .course_util import *
-from users.user_util import get_user_details
 from util.views import error404
 
 LOGGER = logging.getLogger("project")
 
 
 def course_detail(request: HttpRequest, course_id: str):
+    LOGGER.debug(f"course_detail: {course_id}")
+    try:
+        if request.method == "GET":
+            return load_course_detail(request, course_id)
+        elif request.method == "POST" and "submit" in request.POST:
+            LOGGER.debug(request.POST)
+            review, message = add_review_from_details(request)
+            return load_course_detail(request, course_id, review, message)
+        else:
+            LOGGER.error(request.POST)
+            return error404(request, error = "Invalid request")
+    except Exception as e:
+        return error404(request, error = e)
+
+
+def load_course_detail(request: HttpRequest, course_id: str, review: bool = None, review_message: str = "")-> HttpResponse:
     try:
         course = Course.objects.get(course_id=course_id)
         classes = Class.objects.filter(course=course)
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
-        context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
+        if review is not None:
+            context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list, "review_saved": review, "review_message" : review_message}
+        else :
+            context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
+        LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
     except Exception as e:
-        return error404(request, error = e)
+        return error404(request, error=e)
 
 
 def add_review(request):
@@ -54,6 +73,10 @@ def add_review(request):
     elif request.method == "POST":
         user = User.objects.get(username=request.user)
         try:
+            if not text_is_valid(request.POST["review_text"]):
+                context["review_text_invalid"] = True
+                return render(request, "courses/add_review.html", context)
+
             new_review = save_new_review(
                 user=user,
                 user_entered_course_id=request.POST["add_review_course_id"],
@@ -65,6 +88,16 @@ def add_review(request):
             context["review_saved"] = True
             return render(request, "courses/add_review.html", context)
         except Exception as e:
-            LOGGER.error(f"Could not create review, encountered error: {e}")
+            LOGGER.exception(f"Could not create review, encountered error: {e}")
             context["review_saved"] = False
             return render(request, "courses/add_review.html", context)
+
+
+def delete_review(request, review_id: str):
+    try:
+        r = Review.objects.get(pk=review_id)
+        r.delete()
+        add_redirect_message(request=request, message="Your review was deleted.", success=True)
+        return redirect('users:profile', user_name=request.user)
+    except Exception as e:
+        return error404(request, error=e)

@@ -92,3 +92,72 @@ document.addEventListener('DOMContentLoaded', function(){
         }//end of while loop
     })();//end of function
 })
+
+
+// Function to display review form on course results page
+function showReviewForm() {
+    let reviewForm = document.getElementById("add-review");
+    reviewForm.style.display = "block";
+}
+
+function hideReviewForm() {
+    let reviewForm = document.getElementById("add-review");
+    reviewForm.style.display = "none";
+}
+
+/*
+Handlers for Course Detail Filtering
+ */
+function professorSelect(professor)
+{
+        let listOfReviews = document.querySelectorAll(".review");
+        listOfReviews.forEach(element => {
+        let review_professor = element.getAttribute('review_professor');
+        if (review_professor.includes(professor)) {
+            element.style.display = "flex";
+        } else {
+            element.style.display = "none";
+        }
+    });
+}
+
+/*
+Handlers for Professor Detail Filtering
+ */
+function courseSelect(course)
+{
+        let listOfReviews = document.querySelectorAll(".review");
+        listOfReviews.forEach(element => {
+        let review_course = element.getAttribute('review_course');
+        if (review_course.includes(course)) {
+            element.style.display = "flex";
+        } else {
+            element.style.display = "none";
+        }
+    });
+}
+
+function hideProfile(elements) {
+    elements = elements.length ? elements : [elements];
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].style.display = 'none';
+    }
+    document.getElementById('edit_profile_div').style.display = 'block'
+    let input_dropdown = document.getElementById('user_status_input')
+    let student_status = document.getElementById('user_status').innerHTML
+
+    for (let i, j = 0; i = input_dropdown.options[j]; j++) {
+        if (String(i.value).trim() === String(student_status).trim()) {
+            input_dropdown.selectedIndex = j;
+            break;
+        }
+    }
+}
+
+function save(elements){
+    elements = elements.length ? elements : [elements];
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].style.display = 'none';
+    }
+    document.getElementById('profile_div').style.display = 'block'
+}

@@ -22,6 +22,9 @@
                 <option value="RevDateDesc">Class Level</option>
             </select>
         </form>
+        {% if user.is_authenticated %}
+            <button onclick="showReviewForm()" style="float: right;">Add Review</button>
+        {% endif %}
     </div>
 
     <ul class="detail-side-links">
@@ -30,8 +33,60 @@
             <li class="detail-side-links"><a href="">{{ course.course_title }}</a></li>
         {% endfor %}
     </ul>
-
+    <div class="add-reviews-status">
+        {% if review_saved == True %}
+            <h3> {{ review_message }} <a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
+        {% endif %}
+        {% if review_saved == False  and  "Profane" in review_message %}
+            <h4 class="review_text_invalid">Review not saved. Review text failed to meet RateNYU standards.</h4>
+        {% endif %}
+        {% if review_saved == False and "Profane" not in review_message %}
+        <h3>{{ review_message }}</h3>
+    {% endif %}
+    </div>
+    
     <div class="all-reviews">
+        <div id="add-review" class="add-reviews" style="display: none; border:2px solid #702B9D;">
+            <form class="review-form" method="POST" action="">
+                {% csrf_token %}
+                <br>
+                <div>
+                    <label for="professor_name" class="add_review_label">Professor:</label>
+                    <input id="professor_name" type="text" name="add_review_professor_name" list="courses"
+                        class="add_review_input" value="{{professor.name}}" readonly="readonly">
+                </div>
+                <br>
+                <div>
+                    <label for="course_title" class="add_review_label">Course:</label>
+                    <select id="detail-dropdown" name="course_id" style="padding: 5px;">
+                        {% for course in courses_list %}
+                        <option value="{{course.course_id}}">{{course.course_title}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                <label for="review_rating" class="add_review_label">Review Rating:</label>
+                <div class="star-rating">
+                    <i class="my-star star-1" data-star="1"></i>
+                    <i class="my-star star-2" data-star="2"></i>
+                    <i class="my-star star-3" data-star="3"></i>
+                    <i class="my-star star-4" data-star="4"></i>
+                    <i class="my-star star-5" data-star="5"></i>
+                </div>
+                <div>
+                <input id="review_rating" type="number" class="add_review_input" name="review_rating" hidden="True" required="True">
+                <p>
+                    <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
+                    <textarea id="review_text" name="review_text" class="add_review_textarea"
+                    placeholder="Must adhere to RateNYU standards: No profanity." required="True"></textarea>
+                </p>
+                </div>
+                <div style="text-align: center;">
+                    <button type="button" class="add_review_button" onclick="hideReviewForm()" >Cancel</button>
+                    <button type="submit" class="add_review_button" name="submit">Submit</button>
+                </div>
+            </form>
+        </div>
         {% for review in reviews_list %}
         <div class="review">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
