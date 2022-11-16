@@ -1,5 +1,5 @@
 from django.test import TestCase, RequestFactory, Client
-from .views import course_detail, add_review, delete_review, edit_review
+from .views import course_detail, add_review, delete_review
 from .course_util import *
 from professors.models import Professor
 import users.tests as user_tests

@@ -93,23 +93,6 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
-// Functions to display edit review form on Profile plage
-function showEditForm(reviewId) {
-    let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
-    staticText.style.display = "none";
-
-    let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
-    editForm.style.display = "block";
-}
-
-function hideEditForm(reviewId) {
-    let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
-    editForm.style.display = "none";
-
-    let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
-    staticText.style.display = "block";
-}
-
 
 // Function to display review form on course results page
 function showReviewForm() {
