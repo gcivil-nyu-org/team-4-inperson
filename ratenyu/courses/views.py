@@ -1,12 +1,11 @@
 import logging
 from json import dumps
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, Http404, HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from courses.models import Review
 from professors.models import Professor
 from .course_util import *
-from users.user_util import get_user_details
 from util.views import error404
 
 LOGGER = logging.getLogger("project")
@@ -16,11 +15,11 @@ def course_detail(request: HttpRequest, course_id: str):
     LOGGER.debug(f"course_detail: {course_id}")
     try:
         if request.method == "GET":
-            return load_course_deatail(request, course_id)
+            return load_course_detail(request, course_id)
         elif request.method == "POST" and "submit" in request.POST:
             LOGGER.debug(request.POST)
             review, message = add_review_from_details(request)
-            return load_course_deatail(request, course_id, review, message)
+            return load_course_detail(request, course_id, review, message)
         else:
             LOGGER.error(request.POST)
             return error404(request, error = "Invalid request")
@@ -28,7 +27,7 @@ def course_detail(request: HttpRequest, course_id: str):
         return error404(request, error = e)
 
 
-def load_course_deatail(request: HttpRequest, course_id: str, review: bool = None, review_message: str = "")-> HttpResponse:
+def load_course_detail(request: HttpRequest, course_id: str, review: bool = None, review_message: str = "")-> HttpResponse:
     try:
         course = Course.objects.get(course_id=course_id)
         classes = Class.objects.filter(course=course)
@@ -42,7 +41,7 @@ def load_course_deatail(request: HttpRequest, course_id: str, review: bool = Non
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
     except Exception as e:
-        return error404(request, error = e)
+        return error404(request, error=e)
 
 
 def add_review(request):
@@ -74,7 +73,6 @@ def add_review(request):
     elif request.method == "POST":
         user = User.objects.get(username=request.user)
         try:
-            # Validate Review Text
             if not text_is_valid(request.POST["review_text"]):
                 context["review_text_invalid"] = True
                 return render(request, "courses/add_review.html", context)
@@ -93,3 +91,13 @@ def add_review(request):
             LOGGER.exception(f"Could not create review, encountered error: {e}")
             context["review_saved"] = False
             return render(request, "courses/add_review.html", context)
+
+
+def delete_review(request, review_id: str):
+    try:
+        r = Review.objects.get(pk=review_id)
+        r.delete()
+        add_redirect_message(request=request, message="Your review was deleted.", success=True)
+        return redirect('users:profile', user_name=request.user)
+    except Exception as e:
+        return error404(request, error=e)

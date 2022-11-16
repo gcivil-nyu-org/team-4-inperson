@@ -1,6 +1,7 @@
 from typing import List
 from profanity_filter import ProfanityFilter
-from .models import Class, Review, Course
+from django.http import HttpRequest
+from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import Course, Class, Review
@@ -119,10 +120,23 @@ def add_review_from_details(request) -> tuple:
             )
             new_review.save()
             LOGGER.debug("Review saved successfully", review_text)
-            return(True, REVIEW_ADDED)
+            return True, REVIEW_ADDED
         except Exception as e:
             LOGGER.exception(e)
-            return(False, REVIEW_NOT_SAVED)
+            return False, REVIEW_NOT_SAVED
     else:
         LOGGER.debug("Review contains profanity", review_text)
-        return(False, REVIEW_CONTAINS_PROFANITY)
+        return False, REVIEW_CONTAINS_PROFANITY
+
+
+def add_redirect_message(request: HttpRequest, message: str, success: bool) -> None:
+    """
+    add_redirect_message clears the current messages in the HttpRequest
+    and adds a new message. The message type (success or error) is determined
+    by the success argument.
+    """
+    messages.get_messages(request).used = True
+    if success:
+        messages.success(request, message)
+    else:
+        messages.error(request, message)

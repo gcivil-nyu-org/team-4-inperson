@@ -776,6 +776,12 @@ div.user-review > p:nth-of-type(2) {
   flex: 10;
 }
 
+div.user-review > form {
+  flex: 10;
+  margin-left:82px;
+  margin-top: -30px;
+}
+
 .add-reviews{
   display: flex;
   justify-content: center;
@@ -819,6 +825,7 @@ div.user-review > p:nth-of-type(2) {
 .add_review_textarea {
   border:none;
   margin:0px auto;
+  padding: 10px;
   width: 400px;
   height: 200px;
 }
@@ -850,6 +857,30 @@ h4.review_text_invalid {
 /*set color on hover*/
 .my-star:not(.is-active):hover{
     color: #702B9D;
+}
+
+.edit-review-btn {
+  background-color: #702B9D;
+  color: white;
+  font-size: 14px;
+  /*height: 10px;*/
+}
+
+/* This is to disguise the Delete <a> element as a button */
+.delete-review-btn {
+  background-color: #702B9D;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
+  text-decoration: none;
+}
+
+.review-text-box {
+  display: none;
+  margin-top: -25px;
 }
 
 /* Fonts */
