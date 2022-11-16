@@ -97,6 +97,7 @@ def delete_review(request, review_id: str):
     try:
         r = Review.objects.get(pk=review_id)
         r.delete()
+        add_redirect_message(request=request, message="Your review was deleted.", success=True)
         return redirect('users:profile', user_name=request.user)
     except Exception as e:
         return error404(request, error=e)
