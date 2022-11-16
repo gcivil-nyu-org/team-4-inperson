@@ -30,9 +30,11 @@
     <ul class="detail-side-links">
         <li class="detail-side-links"><span class="rev-title">Courses</span></li>
         {% for course in courses_list %}
-            <li class="detail-side-links"><a href="">{{ course.course_title }}</a></li>
-        {% endfor %}
-    </ul>
+        <button class="detail-side-links"><a onclick = "courseSelect('{{course.course_title}}')">{{ course.course_title }}</a></button>
+    {% endfor %}
+    <button class="detail-side-links"><a onclick = "courseSelect('{{courses_list.course_title}}')">All</a></button>
+</ul>
+
     <div class="add-reviews-status">
         {% if review_saved == True %}
             <h3> {{ review_message }} <a href="{% url "users:profile" user_name=request.user %}">Click here</a> to view all your reviews.</h3>
@@ -88,7 +90,7 @@
             </form>
         </div>
         {% for review in reviews_list %}
-        <div class="review">
+        <div class="review" review_course = "{{review.course_obj.course_title}}">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
                 {{ review.review_obj.rating }}.0/5.0</p>
             <p><span class="rev-title">Course:<a href="{% url 'courses:course_detail' course_id=review.course_obj.course_id %}"> {{ review.course_obj.course_title }}</a>
