@@ -52,7 +52,7 @@
     <h1>My Reviews</h1>
     {% if messages %}
         {% for message in messages %}
-            <h3>Your review was deleted.</h3>
+            <h3>{{ message }}</h3>
         {% endfor %}
     {% endif %}
     <div class="nyu-logo-light">
