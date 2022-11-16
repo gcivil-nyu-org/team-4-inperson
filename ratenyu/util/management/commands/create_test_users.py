@@ -30,15 +30,14 @@ class Command(BaseCommand):
             user.set_password("testuser5")
             user.save()
             UserDetails.objects.create(user=User.objects.get(username="testuser5"), name="Test User 5", major="Computer Science", student_status="Master2")
-        if not User.objects.filter(username="testuser6").exists():
-            user = User.objects.create(username="testuser6", email="testuser6@nyu.edu")
-            user.set_password("testuser6")
+        if not User.objects.filter(username="professor").exists():
+            user = User.objects.create(username="professor", email="gt223@nyu.edu")
+            user.set_password("professor")
             user.save()
-            UserDetails.objects.create(user=User.objects.get(username="testuser6"), name="Test User 6", major="Computer Science", student_status="Master2")
-        if not User.objects.filter(username="testuser7").exists():
-            user = User.objects.create(username="testuser7", email="testuser7@nyu.edu")
-            user.set_password("testuser7")
+            UserDetails.objects.create(user=User.objects.get(username="professor"), name="Gennadiy Civil", major="Computer Science", student_status="Master2")
+        if not User.objects.filter(username="tatestuser").exists():
+            user = User.objects.create(username="tatestuser", email="df1911@nyu.edu")
+            user.set_password("tatestuser")
             user.save()
-            UserDetails.objects.create(user=User.objects.get(username="testuser7"), name="Test User 7", student_status="Master2")
+            UserDetails.objects.create(user=User.objects.get(username="tatestuser"), name="Denys Fenchenko", major="Computer Science", student_status="Master2")
         
-            
