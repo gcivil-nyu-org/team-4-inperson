@@ -52,12 +52,13 @@
     <h1>My Reviews</h1>
     {% if messages %}
         {% for message in messages %}
-            <h3>{{ message }}</h3>
+            {% if message.success %}
+                <h3>{{ message }}</h3>
+            {% else %}
+                <h4 class="review_text_invalid">{{ message }}</h4>
+            {% endif %}
         {% endfor %}
     {% endif %}
-    {% if invalid_review_text %}
-        <h4 class="review_text_invalid">Review not saved. Review text failed to meet RateNYU standards.</h4>
-    {%  endif %}
     <div class="nyu-logo-light">
     </div>
     {% for review in reviews %}
