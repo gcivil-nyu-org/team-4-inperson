@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
-// Functions to display edit review form on Profile plage
+// Functions to display edit review form on Profile page
 function showEditForm(reviewId) {
     let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
     staticText.style.display = "none";
@@ -108,7 +108,6 @@ function hideEditForm(reviewId) {
 
     let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
     staticText.style.display = "block";
-
 }
 
 

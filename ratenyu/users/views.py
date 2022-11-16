@@ -69,7 +69,6 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
             user = get_user_details(request.user)
             user.name = request.POST.get("user_name_input")
             user.major = request.POST.get("user_major_input")
-            # request.user.username = request.POST.get("user_username_input")
             user.student_status = request.POST.get("user_status_input")
             user.save()
 
