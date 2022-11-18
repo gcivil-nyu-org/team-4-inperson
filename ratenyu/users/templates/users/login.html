@@ -8,7 +8,9 @@
     <div class="add-reviews-status">
         {% if messages %}
             {% for message in messages %}
-            <h3> {{ message }} </h3>
+                {% if message.tags == 'success' %}
+                    <h3> {{ message }} </h3>
+                {% endif %}
             {% endfor %}
         {% endif %}
     </div>
