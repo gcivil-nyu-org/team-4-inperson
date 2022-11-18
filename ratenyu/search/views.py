@@ -8,6 +8,7 @@ from courses.models import Course, Class, Review
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
+from django.core.paginator import Paginator
 import logging
 
 logger = logging.getLogger("project")
@@ -51,7 +52,12 @@ def search_by_course_name(request: HttpRequest):
             current_course_info = get_course_results_info(i)
             if len(current_course_info) > 0:
                 filtered_courses.append(current_course_info)
+        paginator = Paginator(filtered_courses, 2)
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         context = {
+            "page_obj": page_obj,
             "courses": filtered_courses,
             "query": query,
         }
