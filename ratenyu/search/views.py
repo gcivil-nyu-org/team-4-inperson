@@ -76,7 +76,14 @@ def search_by_professor_name(request):
         for p in professors:
             current_prof_info = get_professor_results_info(p)
             filtered_professors.append(current_prof_info)
-        context = {"professors": filtered_professors, "query": query}
+        paginator = Paginator(filtered_professors, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "professors": filtered_professors,
+            "query": query,
+            "page_obj": page_obj,
+        }
         logger.debug(context)
         return render(request, "search/professorResult.html", context)
     except Exception as e:

@@ -7,6 +7,7 @@ from courses.models import Review
 from professors.models import Professor
 from .course_util import *
 from util.views import error404
+from django.core.paginator import Paginator
 
 LOGGER = logging.getLogger("project")
 
@@ -22,22 +23,44 @@ def course_detail(request: HttpRequest, course_id: str):
             return load_course_detail(request, course_id, review, message)
         else:
             LOGGER.error(request.POST)
-            return error404(request, error = "Invalid request")
+            return error404(request, error="Invalid request")
     except Exception as e:
-        return error404(request, error = e)
+        return error404(request, error=e)
 
 
-def load_course_detail(request: HttpRequest, course_id: str, review: bool = None, review_message: str = "")-> HttpResponse:
+def load_course_detail(request: HttpRequest, course_id: str, review: bool = None,
+                       review_message: str = "") -> HttpResponse:
     try:
         course = Course.objects.get(course_id=course_id)
         classes = Class.objects.filter(course=course)
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
+
+        paginator = Paginator(reviews_list, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         if review is not None:
-            context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list, "review_saved": review, "review_message" : review_message}
-        else :
-            context = {"classes": classes, "course": course, "reviews_list": reviews_list,"reviews_avg": reviews_avg, "professors_list": professors_list}
+            context = {
+                "classes": classes,
+                "course": course,
+                "reviews_list": reviews_list,
+                "reviews_avg": reviews_avg,
+                "professors_list": professors_list,
+                "review_saved": review,
+                "review_message": review_message,
+                "page_obj": page_obj,
+            }
+        else:
+            context = {
+                "classes": classes,
+                "course": course,
+                "reviews_list": reviews_list,
+                "reviews_avg": reviews_avg,
+                "professors_list": professors_list,
+                "page_obj": page_obj,
+            }
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
     except Exception as e:

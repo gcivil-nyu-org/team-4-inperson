@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from django.http import HttpRequest
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from util.views import error404
 from .models import UserDetails
@@ -74,9 +75,15 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
 
         user_details = get_user_details(request.user)
         reviews = Review.objects.filter(user=User.objects.get(username=user_name))
+
+        paginator = Paginator(reviews, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         context = {
             "user_details": user_details,
-            "reviews": reviews
+            "reviews": reviews,
+            "page_obj": page_obj,
         }
         if request.GET.get("invalid_review_text"):
             context["invalid_review_text"] = True
