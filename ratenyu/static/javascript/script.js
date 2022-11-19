@@ -27,26 +27,94 @@ function resultCheckBoxClicked() {
     });
 }
 /*
-Handlers for auto-populating Course Name and Course ID on Add Review Handler
+Handlers for auto-population and auto-fill on input boxes of Add Review form
  */
-function populateAddReviewCourseId(e, addReviewCourseId, coursesData) {
+let courseTitlesDatalist = document.getElementById('courses_datalist');
+let courseIdsDatalist = document.getElementById('course_ids_datalist');
+let professorsDataList = document.getElementById('professors_datalist');
+function courseNameInputted(e, addReviewCourseId, coursesData, professorsData) {
+    // If input is empty, clear Course ID field and unfilter Professor Name
+    if (e.target.value === "") {
+        addReviewCourseId.value = "";
+        replaceDataListOptions(professorsDataList, professorsData.map((obj) => obj['professor_name']));
+    }
+
     let matchingCourse = coursesData.find((course) => {
         return course['course_title'] === e.target.value;
     });
-    console.log(matchingCourse);
     if (matchingCourse) {
-        addReviewCourseId.value = matchingCourse['course_id'];
+        // Auto-populate Display Course ID
+        addReviewCourseId.value = matchingCourse['display_course_id'];
+
+        // Filter Professor Name options
+        let newOptions = matchingCourse['professors'].map(value => value['professor_name']);
+        replaceDataListOptions(professorsDataList, newOptions);
     }
 }
 
-function populateAddReviewCourseName(e, addReviewCourseName, coursesData) {
-    let matchingCourse = coursesData.find((course) => {
-        return course['course_id'] === e.target.value;
-    });
-    console.log(matchingCourse);
-    if (matchingCourse) {
-        addReviewCourseName.value = matchingCourse['course_title'];
+function courseIdInputted(e, addReviewCourseName, coursesData, professorsData) {
+    // If input is empty, clear Course Name field and unfilter Professor Name
+    if (e.target.value === "") {
+        addReviewCourseName.value = "";
+        replaceDataListOptions(professorsDataList, professorsData.map((obj) => obj['professor_name']));
     }
+
+    let matchingCourse = coursesData.find((course) => {
+        return course['display_course_id'] === e.target.value;
+    });
+    if (matchingCourse) {
+        // Auto-populate Course Name
+        addReviewCourseName.value = matchingCourse['course_title'];
+
+        // Filter Professor Name options
+        let newOptions = matchingCourse['professors'].map(value => value['professor_name']);
+        replaceDataListOptions(professorsDataList, newOptions);
+    }
+}
+
+function professorNameInputted(e, addReviewCourseName, addReviewCourseId, coursesData, professorsData) {
+    // If input is empty, unfilter Course Name and Course ID
+    if (e.target.value === "") {
+        replaceDataListOptions(courseTitlesDatalist, coursesData.map((obj) => obj['course_title']));
+        replaceDataListOptions(courseIdsDatalist, coursesData.map((obj) => obj['display_course_id']));
+    }
+
+    let matchingProfessor = professorsData.find((professor) => {
+        return professor['professor_name'] === e.target.value;
+    })
+    if (matchingProfessor) {
+        // Filter Course Name and Course ID options
+        let newCourseTitleOptions = matchingProfessor['courses'].map(value => value['course_title']);
+        let newCourseIdOptions = matchingProfessor['courses'].map(value => value['display_course_id']);
+        replaceDataListOptions(courseTitlesDatalist, newCourseTitleOptions);
+        replaceDataListOptions(courseIdsDatalist, newCourseIdOptions);
+    }
+}
+
+// Removes options from a given datalist that are not in newOptions
+function filterOptions(dataList, newOptions) {
+    let i, L = dataList.options.length - 1;
+    for(i = L; i >= 0; i--) {
+        let currentChild = dataList.children[i];
+        if (!newOptions.includes(currentChild.value))
+            dataList.removeChild(currentChild);
+    }
+}
+
+// Replaces options in the given dataList with newOptions
+function replaceDataListOptions(dataList, newOptions) {
+    // Add new options if they are not present
+    let existingOptions = [].slice.call(dataList.options).map((option) => option.value);
+    newOptions.forEach((optionValue) => {
+        if (!existingOptions.includes(optionValue)){
+            let newOption = document.createElement('option');
+            newOption.value = optionValue;
+            dataList.appendChild(newOption);
+        }
+    });
+
+    // Remove old options
+    filterOptions(dataList, newOptions);
 }
 
 //adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
