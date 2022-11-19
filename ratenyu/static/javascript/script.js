@@ -27,7 +27,7 @@ function resultCheckBoxClicked() {
     });
 }
 /*
-Handlers for auto-population and auto-fill on input boxes of Add Review form
+Handlers for Add Review form
  */
 let courseTitlesDatalist = document.getElementById('courses_datalist');
 let courseIdsDatalist = document.getElementById('course_ids_datalist');
@@ -115,6 +115,11 @@ function replaceDataListOptions(dataList, newOptions) {
 
     // Remove old options
     filterOptions(dataList, newOptions);
+}
+
+// Custom form validation
+function validateForm() {
+
 }
 
 //adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365

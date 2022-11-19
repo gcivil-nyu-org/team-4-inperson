@@ -138,7 +138,9 @@ def add_redirect_message(request: HttpRequest, message: str, success: bool) -> N
     and adds a new message. The message type (success or error) is determined
     by the success argument.
     """
-    messages.get_messages(request).used = True
+    storage = messages.get_messages(request)
+    if len(storage) > 0:
+        storage.used = True
     if success:
         messages.success(request, message)
     else:
