@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from django.http import HttpRequest
 from django.urls import reverse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from util.views import error404
 from .models import UserDetails
@@ -78,7 +78,13 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
 
         paginator = Paginator(reviews, 2)
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
 
         context = {
             "user_details": user_details,
