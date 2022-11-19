@@ -6,7 +6,7 @@
     <h2 class="add-reviews-title">Add your review:</h2>
 </div>
 
-<div class="add-reviews-status">
+<div class="add-reviews-status" id="add-review-status">
     {% if messages %}
         {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
@@ -25,7 +25,7 @@
 </div>
 
 <div class="add-reviews">
-    <form method="POST">
+    <form method="POST" name="add_review_form">
         {% csrf_token %}
            <p id="course_title_input">
                <label for="course_title" class="add_review_label">Course Title:</label>
@@ -69,7 +69,7 @@
            </p>
             <p>
                 <label class="add_review_label"></label>
-                <input type="submit" class="add_review_submit" onclick="validateForm()">
+                <input type="submit" class="add_review_submit">
             </p>
     </form>
 </div>
@@ -79,6 +79,7 @@
     // is only accessible from this HTML file.
     let coursesData = JSON.parse('{{ courses_json|safe }}');
     let professorsData = JSON.parse('{{ professors_json|safe }}');
+    let addReviewForm = document.querySelector('[name="add_review_form"]');
     let addReviewCourseId = document.querySelector('[name="add_review_course_id"]');
     let addReviewCourseName = document.querySelector('[name="add_review_course_title"]')
     let addReviewProfessorName = document.querySelector('[name="add_review_professor_name"]');
@@ -90,6 +91,9 @@
     }
     addReviewProfessorName.oninput = (e) => {
         professorNameInputted(e, addReviewCourseName, addReviewCourseId, coursesData, professorsData);
+    }
+    addReviewForm.onsubmit = () => {
+        return validateForm(coursesData);
     }
 </script>
 

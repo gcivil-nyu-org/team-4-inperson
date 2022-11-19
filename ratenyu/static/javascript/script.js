@@ -33,6 +33,9 @@ let courseTitlesDatalist = document.getElementById('courses_datalist');
 let courseIdsDatalist = document.getElementById('course_ids_datalist');
 let professorsDataList = document.getElementById('professors_datalist');
 function courseNameInputted(e, addReviewCourseId, coursesData, professorsData) {
+    removeErrorMessage('add-review-status', 'no-course-title-found-message');
+    removeErrorMessage('add-review-status', 'no-course-title-id-match-message');
+
     // If input is empty, clear Course ID field and unfilter Professor Name
     if (e.target.value === "") {
         addReviewCourseId.value = "";
@@ -53,6 +56,10 @@ function courseNameInputted(e, addReviewCourseId, coursesData, professorsData) {
 }
 
 function courseIdInputted(e, addReviewCourseName, coursesData, professorsData) {
+    removeErrorMessage('add-review-status', 'no-course-title-id-match-message');
+    removeErrorMessage('add-review-status', 'no-course-professor-match-message');
+    removeErrorMessage('add-review-status', 'no-course-id-found-message');
+
     // If input is empty, clear Course Name field and unfilter Professor Name
     if (e.target.value === "") {
         addReviewCourseName.value = "";
@@ -73,6 +80,8 @@ function courseIdInputted(e, addReviewCourseName, coursesData, professorsData) {
 }
 
 function professorNameInputted(e, addReviewCourseName, addReviewCourseId, coursesData, professorsData) {
+    removeErrorMessage('add-review-status', 'no-course-professor-match-message');
+
     // If input is empty, unfilter Course Name and Course ID
     if (e.target.value === "") {
         replaceDataListOptions(courseTitlesDatalist, coursesData.map((obj) => obj['course_title']));
@@ -118,8 +127,75 @@ function replaceDataListOptions(dataList, newOptions) {
 }
 
 // Custom form validation
-function validateForm() {
+function validateForm(coursesData) {
+    let courseTitle = document.forms['add_review_form']['add_review_course_title'].value;
+    let courseId = document.forms['add_review_form']['add_review_course_id'].value;
+    let professorName = document.forms['add_review_form']['add_review_professor_name'].value;
+    let matchingCourseId = coursesData.find((course) => {
+        return course['display_course_id'] === courseId;
+    });
+    let matchingCourseTitle = coursesData.find((course) => {
+        return course['course_title'] === courseTitle;
+    });
 
+    // Validate Course Name, CourseID, and Course/Professor combo
+    if (!matchingCourseTitle) {
+        addErrorMessage('add-review-status',
+            'No Course found with Course Title "' + courseTitle + '."',
+            'no-course-title-found-message');
+        return false;
+    }
+    if (!matchingCourseId) {
+        addErrorMessage('add-review-status',
+            'No Course found with Course ID "' + courseId + '."',
+            'no-course-id-found-message');
+        return false;
+    } else {
+        if (matchingCourseTitle['display_course_id'] !== matchingCourseId['display_course_id']) {
+            addErrorMessage('add-review-status',
+                'No match found for Course Title "' + courseTitle + '" and Course ID "' + courseId + '."',
+                'no-course-title-id-match-message');
+            return false;
+        }
+        let professorOptions = matchingCourseId['professors'].map(value => value['professor_name']);
+        if (!professorOptions.includes(professorName)) {
+            addErrorMessage('add-review-status',
+                'No match found for Course ID "' + courseId + '" and Professor "' + professorName + '."',
+                'no-course-professor-match-message');
+            return false;
+        }
+    }
+
+    // Validate Rating requirement
+    return validateRatingRequirement();
+}
+
+function validateRatingRequirement() {
+    let star = document.querySelector('.my-star.add-star.star-1');
+    if (!star.classList.contains('is-active')) {
+        addErrorMessage('add-review-status',
+                'Please select a Review Rating.',
+                'no-rating-entered-message');
+            return false;
+    }
+    return true;
+}
+
+function addErrorMessage(divId, message, errorMessageId) {
+    let divParent = document.getElementById(divId);
+    let errorMessage = document.createElement('h4');
+    errorMessage.id = errorMessageId;
+    errorMessage.style.color = 'red';
+    errorMessage.innerHTML = message;
+    divParent.appendChild(errorMessage);
+}
+
+function removeErrorMessage(divId, errorMessageId) {
+    let divParent = document.getElementById(divId);
+    let errorMessage = document.getElementById(errorMessageId);
+    if (errorMessage) {
+        divParent.removeChild(errorMessage);
+    }
 }
 
 //adapted from https://medium.com/geekculture/how-to-build-a-simple-star-rating-system-abcbb5117365
@@ -131,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function(){
         while (i < sr.length){
             //attach click event
             sr[i].addEventListener('click', function(){
+                removeErrorMessage('add-review-status', 'no-rating-entered-message');
                 //current star
                 let cs = parseInt(this.getAttribute("data-star"));
                 //output current clicked star value
