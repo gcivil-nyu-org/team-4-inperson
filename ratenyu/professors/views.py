@@ -4,7 +4,7 @@ from .models import Professor
 from courses.models import Class, Course, Review
 from courses.course_util import *
 from util.views import error404
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import logging
 
 LOGGER = logging.getLogger("project")
@@ -38,7 +38,14 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
 
         paginator = Paginator(reviews_list, 2)
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
         if review is not None:
             context = {
                 "professor": professor,
@@ -52,7 +59,7 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
         else:
             context = {
                 "professor": professor,
-                "courses_list": courses_list, 
+                "courses_list": courses_list,
                 "reviews_list": reviews_list,
                 "reviews_avg": reviews_avg,
                 "page_obj": page_obj,

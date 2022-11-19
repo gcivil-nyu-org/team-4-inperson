@@ -8,7 +8,7 @@ from courses.models import Course, Class, Review
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
 import logging
 
 logger = logging.getLogger("project")
@@ -55,7 +55,14 @@ def search_by_course_name(request: HttpRequest):
         paginator = Paginator(filtered_courses, 2)
 
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
         context = {
             "page_obj": page_obj,
             "courses": filtered_courses,
@@ -76,9 +83,17 @@ def search_by_professor_name(request):
         for p in professors:
             current_prof_info = get_professor_results_info(p)
             filtered_professors.append(current_prof_info)
+
         paginator = Paginator(filtered_professors, 2)
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
         context = {
             "professors": filtered_professors,
             "query": query,
