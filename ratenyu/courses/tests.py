@@ -270,6 +270,7 @@ def create_test_review_2(class_id: Class) -> Review:
         pub_date=timezone.now(),
     )
 
+
 def create_test_review_easy() -> Review:
     create_test_course()
     create_test_professor()
