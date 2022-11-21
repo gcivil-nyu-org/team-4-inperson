@@ -267,6 +267,56 @@ function showEditForm(reviewId) {
 
     let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
     editForm.style.display = "block";
+
+    let stars = editForm.childNodes[5];
+    console.log(stars);
+    let rating_val = editForm.childNodes[8];
+    console.log(rating_val);
+    let sr = stars.querySelectorAll('.prof-star');
+
+    let curr_rating = rating_val.value;
+    let max_star = curr_rating;
+
+    while(1 <= max_star){
+        if(!stars.querySelector('.star-'+max_star).classList.contains('is-active')){
+            stars.querySelector('.star-'+max_star).classList.add('is-active');
+        }
+        --max_star;
+    }
+
+    let i = 0;
+    //loop through stars
+    while (i < sr.length) {
+        //attach click event
+        sr[i].addEventListener('click', function () {
+            //current star
+            let cs = parseInt(this.getAttribute("data-star"));
+            //output current clicked star value
+            rating_val.value = cs;
+            let pre = cs;
+
+            while(1 <= pre){
+                //check if the classlist contains the active class, if not, add the class
+                if(!stars.querySelector('.star-'+pre).classList.contains('is-active')){
+                    stars.querySelector('.star-'+pre).classList.add('is-active');
+                }
+                //decrement our current index
+                --pre;
+            }
+
+            let succ = cs+1;
+            while(5 >= succ){
+                //check if the classlist contains the active class, if yes, remove the class
+                if(stars.querySelector('.star-'+succ).classList.contains('is-active')){
+                    stars.querySelector('.star-'+succ).classList.remove('is-active');
+                }
+                //increment current index
+                ++succ;
+            }
+        })//end of click event
+        i++;
+    }//end of while loop
+
 }
 
 function hideEditForm(reviewId) {
