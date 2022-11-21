@@ -311,3 +311,9 @@ function save(elements){
     }
     document.getElementById('profile_div').style.display = 'block'
 }
+
+if ( window.history.replaceState ) {
+	window.history.replaceState( null, null, window.location.href );
+   }
+    
+
