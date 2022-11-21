@@ -191,6 +191,21 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Invalid request")
 
+class TestEditReview(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        user_tests.create_test_user()
+
+    def test_edit_review(self):
+        self.client.login(username="viren", password="viren")
+        review = create_test_review_easy()
+        self.assertEqual(1, len(Review.objects.filter(pk=review.id)), "Test Review was not created.")
+        url = f"http://127.0.0.1:8000/courses/edit_review"
+        self.client.post(url, {"new_review_text": "I don't care for this class", "review_rating": "2", "review_id": "1"})
+        review = Review.objects.get(pk=review.id)
+        self.assertEqual(review.rating, 2, "Test Review was not edited.")
+        self.assertEqual(review.review_text, "I don't care for this class", "Test Review was not edited.")
 
 class TestDeleteReview(TestCase):
     def setUp(self):
