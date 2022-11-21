@@ -269,9 +269,7 @@ function showEditForm(reviewId) {
     editForm.style.display = "block";
 
     let stars = editForm.childNodes[5];
-    console.log(stars);
     let rating_val = editForm.childNodes[8];
-    console.log(rating_val);
     let sr = stars.querySelectorAll('.prof-star');
 
     let curr_rating = rating_val.value;
