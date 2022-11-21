@@ -178,6 +178,7 @@ function validateRatingRequirement() {
                 'no-rating-entered-message');
             return false;
     }
+    hideReviewForm();
     return true;
 }
 
