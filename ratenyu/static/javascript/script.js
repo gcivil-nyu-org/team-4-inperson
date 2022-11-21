@@ -326,6 +326,16 @@ function hideEditForm(reviewId) {
 
 }
 
+function showReviewForm() {
+    let reviewForm = document.getElementById("add-review");
+    reviewForm.style.display = "block";
+}
+
+function hideReviewForm() {
+    let reviewForm = document.getElementById("add-review");
+    reviewForm.style.display = "none";
+}
+
 
 /*
 Handlers for Course Detail Filtering
