@@ -66,12 +66,13 @@
            </p>
             <p>
                 <label class="add_review_label"></label>
-                <input type="submit" class="add_review_submit">
+                <input type="submit" class="add_review_submit" onclick="this.disabled=true;this.form.submit()">
             </p>
     </form>
 </div>
 
 <script>
+
     let coursesData = JSON.parse('{{ courses_json|safe }}');
     let addReviewCourseId = document.querySelector('[name="add_review_course_id"]');
     let addReviewCourseName = document.querySelector('[name="add_review_course_title"]');
