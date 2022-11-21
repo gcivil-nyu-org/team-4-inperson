@@ -829,6 +829,7 @@ div.user-review > form {
   padding: 7px;
 }
 
+/*Styling for the create account button on the registation page*/
 .create_account {
   background: #702B9D;
   color: #FFFFFF;
