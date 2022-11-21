@@ -68,11 +68,6 @@
             <p><span class="user-title">
                 Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
                 | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
-                <span hidden="True" id="csrf">{{csrf_token}}</span>
-                <a onclick="return confirm('Are you sure you want to delete this Review?')" href="{% url 'courses:delete_review' review.id %}" class="delete-review-btn">Delete Review</a><br>
-                <br>
-                <span>{{ review.review_text }}<br></span></p>
-        </div>
                 <button class="edit-review-btn" onclick="showEditForm({{ review.id }})">Edit Review</button>
                 <span hidden="True" id="csrf">{{csrf_token}}</span>
                 <a onclick="return confirm('Are you sure you want to delete this Review?')" href="{% url 'courses:delete_review' review.id %}" class="delete-review-btn">Delete Review</a><br>
