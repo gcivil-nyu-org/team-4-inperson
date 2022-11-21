@@ -179,6 +179,7 @@ function validateRatingRequirement() {
             return false;
     }
     hideReviewForm();
+    this.disabled = true;
     return true;
 }
 
