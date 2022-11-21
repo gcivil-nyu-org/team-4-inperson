@@ -70,6 +70,7 @@
                 <span>{{ review.review_text }}<br></span></p>
         </div>
     {% endfor %}
+    <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};">You have not written any reviews. </h3>
 </div>
 
 {% endblock %}
