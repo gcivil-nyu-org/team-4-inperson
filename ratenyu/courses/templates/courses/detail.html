@@ -104,6 +104,7 @@
             </div>
         </form>
     </div>
+    
     {% for review in reviews_list %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
             <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
@@ -113,6 +114,8 @@
             {{ review.review_obj.review_text }}</p>
     </div>
     {% endfor %}
+    <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
+
 </div>
 
 

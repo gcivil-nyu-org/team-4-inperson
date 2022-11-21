@@ -262,14 +262,22 @@ Handlers for Course Detail Filtering
 function professorSelect(professor)
 {
         let listOfReviews = document.querySelectorAll(".review");
+        var visible = 0;
         listOfReviews.forEach(element => {
         let review_professor = element.getAttribute('review_professor');
         if (review_professor.includes(professor)) {
             element.style.display = "flex";
+            visible++;
         } else {
             element.style.display = "none";
         }
     });
+    if (visible == 0) {
+        //insert no reviews tag in here
+        document.getElementsByClassName("no-reviews")[0].style.display = "block";
+    } else {
+        document.getElementsByClassName("no-reviews")[0].style.display = "none";
+    }
 }
 
 /*
@@ -278,14 +286,22 @@ Handlers for Professor Detail Filtering
 function courseSelect(course)
 {
         let listOfReviews = document.querySelectorAll(".review");
+        var visible = 0;
         listOfReviews.forEach(element => {
         let review_course = element.getAttribute('review_course');
         if (review_course.includes(course)) {
             element.style.display = "flex";
+            visible++;
         } else {
             element.style.display = "none";
         }
-    });
+        });
+        if (visible == 0) {
+            //insert no reviews tag in here
+            document.getElementsByClassName("no-reviews")[0].style.display = "block";
+        } else {
+            document.getElementsByClassName("no-reviews")[0].style.display = "none";
+        }
 }
 
 function hideProfile(elements) {
