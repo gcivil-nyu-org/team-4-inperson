@@ -96,7 +96,7 @@
                 <textarea required name="new_review_text" class="add_review_textarea"
                           placeholder="Must adhere to RateNYU standards: No profanity." >{{review.review_text}}</textarea><br>
                 <button type="submit" class="edit-review-btn">Save</button>
-                <button class="edit-review-btn" onclick="hideEditForm({{ review.id }})">Cancel</button>
+                <button type="button" class="edit-review-btn" onclick="hideEditForm({{ review.id }})">Cancel</button>
             </form>
         </div>
     {% endfor %}
