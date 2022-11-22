@@ -413,55 +413,58 @@ function save(elements){
 
 
 function sortReviews(selectObject) {
-    let d = document.getElementsByClassName('review');
-    let d1 = Array.from(d);
-    if (selectObject.value === 'RatingDesc') {
-        d1.sort((a,b) => {
-            let nameA = a.children[0].children[2].textContent;
-            let nameB = b.children[0].children[2].textContent;
-            if (nameA > nameB) {
-                return -1;
-            }
-            else {
-                return 1;}
+    let reviews = document.getElementsByClassName('review');
+    let reviewsArr = Array.from(reviews);
+    switch (selectObject.value) {
+        case 'RatingDesc':
+            reviewsArr.sort((a,b) => {
+                let nameA = a.children[0].children[2].textContent;
+                let nameB = b.children[0].children[2].textContent;
+                if (nameA > nameB) {
+                    return -1;
+                }
+                else {
+                    return 1;}
+                });
+            break;
+        case 'RatingAsc':
+            reviewsArr.sort((a,b) => {
+                let nameA = a.children[0].children[2].textContent;
+                let nameB = b.children[0].children[2].textContent;
+                if (nameA < nameB) {
+                    return -1;
+                }
+                else {
+                    return 1;}
+                });
+            break;
+        case 'RevDateDesc':
+            reviewsArr.sort((a, b) => {
+                let nameA = Date.parse(a.children[0].children[0].textContent);
+                let nameB = Date.parse(b.children[0].children[0].textContent);
+                if (nameA > nameB) {
+                    return -1;
+                } else {
+                    return 1;
+                }
             });
-    } else if (selectObject.value === 'RatingAsc') {
-        d1.sort((a,b) => {
-            let nameA = a.children[0].children[2].textContent;
-            let nameB = b.children[0].children[2].textContent;
-            if (nameA < nameB) {
-                return -1;
-            }
-            else {
-                return 1;}
-            });
-    } else if (selectObject.value === 'RevDateDesc') {
-        d1.sort((a, b) => {
-            let nameA = a.children[0].children[0].textContent;
-            let nameB = b.children[0].children[0].textContent;
-            if (nameA < nameB) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
-    } else if (selectObject.value === 'RevDateAsc') {
-        d1.sort((a, b) => {
-            let nameA = a.children[0].children[0].textContent;
-            let nameB = b.children[0].children[0].textContent;
-            if (nameA > nameB) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
-    }
-
-    for (var i = 0; i < d1.length; i++) {
-        d[0].parentElement.appendChild(d1[i]);
+            break;
+        case 'RevDateAsc':
+            reviewsArr.sort((a, b) => {
+                    let nameA = Date.parse(a.children[0].children[0].textContent);
+                    let nameB = Date.parse(b.children[0].children[0].textContent);
+                    if (nameA < nameB) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                break;
+        }
+    for (var i = 0; i < reviewsArr.length; i++) {
+        reviews[0].parentElement.appendChild(reviewsArr[i]);
     }
 }
-
 
 
 if ( window.history.replaceState ) {
