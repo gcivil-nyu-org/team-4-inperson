@@ -1,7 +1,7 @@
 import logging
 from json import dumps
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.urls import reverse
 from courses.models import Review
 from professors.models import Professor
@@ -28,8 +28,9 @@ def course_detail(request: HttpRequest, course_id: str):
         return error404(request, error=e)
 
 
-def load_course_detail(request: HttpRequest, course_id: str, review: bool = None,
-                       review_message: str = "") -> HttpResponse:
+def load_course_detail(
+    request: HttpRequest, course_id: str, review: bool = None, review_message: str = ""
+) -> HttpResponse:
     try:
         course = Course.objects.get(course_id=course_id)
         classes = Class.objects.filter(course=course)
@@ -74,26 +75,12 @@ def load_course_detail(request: HttpRequest, course_id: str, review: bool = None
 
 
 def add_review(request):
-    all_courses = Course.objects.only(
-        "course_subject_code", "catalog_number", "course_title"
-    )
-    all_courses_list = [
-        {
-            "course_title": course.course_title.replace("'", ""),
-            "course_id": f"{course.course_subject_code} {course.catalog_number}",
-        }
-        for course in all_courses
-    ]
-    all_course_ids = [
-        f"{course.course_subject_code} {course.catalog_number}"
-        for course in all_courses
-    ]
-    all_professors = Professor.objects.only("professor_id", "name")
     context = {
-        "courses": all_courses,
-        "professors": all_professors,
-        "course_ids": all_course_ids,
-        "courses_json": dumps(all_courses_list),
+        "courses": Course.objects.all(),
+        "professors": Professor.objects.only("professor_id", "name"),
+        "course_ids": [f"{course.course_subject_code} {course.catalog_number}" for course in Course.objects.all()],
+        "courses_json": get_courses_data_json(),
+        "professors_json": get_professors_data_json()
     }
     if request.method == "GET":
         if request.user.id is None:
@@ -104,7 +91,12 @@ def add_review(request):
         try:
             if not text_is_valid(request.POST["review_text"]):
                 context["review_text_invalid"] = True
-                return render(request, "courses/add_review.html", context)
+                add_redirect_message(
+                    request=request,
+                    message="Review not saved. Review text failed to meet RateNYU standards.",
+                    success=False,
+                )
+                return redirect("courses:add_review")
 
             new_review = save_new_review(
                 user=user,
@@ -114,19 +106,29 @@ def add_review(request):
                 review_text=request.POST["review_text"],
             )
             LOGGER.info(f"Created new Review: {new_review}")
-            context["review_saved"] = True
-            return render(request, "courses/add_review.html", context)
+            add_redirect_message(
+                request=request,
+                message="Your review was saved!",
+                success=True,
+            )
+            return redirect("courses:add_review")
         except Exception as e:
             LOGGER.exception(f"Could not create review, encountered error: {e}")
-            context["review_saved"] = False
-            return render(request, "courses/add_review.html", context)
+            add_redirect_message(
+                request=request,
+                message="Uh Oh, something went wrong. Your review could not be saved.",
+                success=False,
+            )
+            return redirect("courses:add_review")
 
 
 def delete_review(request, review_id: str):
     try:
         r = Review.objects.get(pk=review_id)
         r.delete()
-        add_redirect_message(request=request, message="Your review was deleted.", success=True)
-        return redirect('users:profile', user_name=request.user)
+        add_redirect_message(
+            request=request, message="Your review was deleted.", success=True
+        )
+        return redirect("users:profile", user_name=request.user)
     except Exception as e:
         return error404(request, error=e)

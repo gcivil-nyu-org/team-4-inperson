@@ -829,6 +829,20 @@ div.user-review > form {
   padding: 7px;
 }
 
+/*Styling for the create account button on the registation page*/
+.create_account {
+  background: #702B9D;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
+  width: 99%;
+  height: 42px;
+}
+
 .add_review_textarea {
   border:none;
   margin:0px auto;
