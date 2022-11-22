@@ -3,6 +3,7 @@ from .views import course_detail, add_review, delete_review, edit_review
 from .course_util import *
 from professors.models import Professor
 import users.tests as user_tests
+import datetime
 
 
 class TestHomePage(TestCase):
@@ -200,13 +201,14 @@ class TestEditReview(TestCase):
     def test_edit_review(self):
         self.client.login(username="viren", password="viren")
         review = create_test_review_easy()
+        review.pub_date = datetime.datetime(2022, 1, 1, 0, 0, 0, 548537, tzinfo=datetime.timezone.utc)
         self.assertEqual(1, len(Review.objects.filter(pk=review.id)), "Test Review was not created.")
         url = f"http://127.0.0.1:8000/courses/edit_review"
         self.client.post(url, {"new_review_text": "I don't care for this class", "review_rating": "2", "review_id": "1"})
         review = Review.objects.get(pk=review.id)
         self.assertEqual(review.rating, 2, "Test Review was not edited.")
         self.assertEqual(review.review_text, "I don't care for this class", "Test Review was not edited.")
-
+        self.assertEqual(review.pub_date.date(), timezone.now().date(),"Pub date not updated")
 class TestDeleteReview(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
