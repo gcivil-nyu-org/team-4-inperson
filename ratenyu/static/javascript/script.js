@@ -27,25 +27,191 @@ function resultCheckBoxClicked() {
     });
 }
 /*
-Handlers for auto-populating Course Name and Course ID on Add Review Handler
+Handlers for Add Review form
  */
-function populateAddReviewCourseId(e, addReviewCourseId, coursesData) {
+let courseTitlesDatalist = document.getElementById('courses_datalist');
+let courseIdsDatalist = document.getElementById('course_ids_datalist');
+let professorsDataList = document.getElementById('professors_datalist');
+function courseNameInputted(e, addReviewCourseId, coursesData, professorsData) {
+    removeErrorMessage('add-review-status', 'no-course-title-found-message');
+    removeErrorMessage('add-review-status', 'no-course-title-id-match-message');
+
+    // If input is empty, clear Course ID field and unfilter Professor Name
+    if (e.target.value === "") {
+        addReviewCourseId.value = "";
+        replaceDataListOptions(professorsDataList, professorsData.map((obj) => obj['professor_name']));
+    }
+
     let matchingCourse = coursesData.find((course) => {
         return course['course_title'] === e.target.value;
     });
-    console.log(matchingCourse);
     if (matchingCourse) {
-        addReviewCourseId.value = matchingCourse['course_id'];
+        // Auto-populate Display Course ID
+        addReviewCourseId.value = matchingCourse['display_course_id'];
+
+        // Filter Professor Name options
+        let newOptions = matchingCourse['professors'].map(value => value['professor_name']);
+        replaceDataListOptions(professorsDataList, newOptions);
     }
 }
 
-function populateAddReviewCourseName(e, addReviewCourseName, coursesData) {
+function courseIdInputted(e, addReviewCourseName, coursesData, professorsData) {
+    removeErrorMessage('add-review-status', 'no-course-title-id-match-message');
+    removeErrorMessage('add-review-status', 'no-course-professor-match-message');
+    removeErrorMessage('add-review-status', 'no-course-id-found-message');
+
+    // If input is empty, clear Course Name field and unfilter Professor Name
+    if (e.target.value === "") {
+        addReviewCourseName.value = "";
+        replaceDataListOptions(professorsDataList, professorsData.map((obj) => obj['professor_name']));
+    }
+
     let matchingCourse = coursesData.find((course) => {
-        return course['course_id'] === e.target.value;
+        return course['display_course_id'] === e.target.value;
     });
-    console.log(matchingCourse);
     if (matchingCourse) {
+        // Auto-populate Course Name
         addReviewCourseName.value = matchingCourse['course_title'];
+
+        // Filter Professor Name options
+        let newOptions = matchingCourse['professors'].map(value => value['professor_name']);
+        replaceDataListOptions(professorsDataList, newOptions);
+    }
+}
+
+function professorNameInputted(e, addReviewCourseName, addReviewCourseId, coursesData, professorsData) {
+    removeErrorMessage('add-review-status', 'no-course-professor-match-message');
+
+    // If input is empty, unfilter Course Name and Course ID
+    if (e.target.value === "") {
+        replaceDataListOptions(courseTitlesDatalist, coursesData.map((obj) => obj['course_title']));
+        replaceDataListOptions(courseIdsDatalist, coursesData.map((obj) => obj['display_course_id']));
+    }
+
+    let matchingProfessor = professorsData.find((professor) => {
+        return professor['professor_name'] === e.target.value;
+    })
+    if (matchingProfessor) {
+        // Filter Course Name and Course ID options
+        let newCourseTitleOptions = matchingProfessor['courses'].map(value => value['course_title']);
+        let newCourseIdOptions = matchingProfessor['courses'].map(value => value['display_course_id']);
+        replaceDataListOptions(courseTitlesDatalist, newCourseTitleOptions);
+        replaceDataListOptions(courseIdsDatalist, newCourseIdOptions);
+    }
+}
+
+function reviewTextInputted() {
+    removeErrorMessage('add-review-status', 'no-review-text-entered-message');
+}
+
+// Removes options from a given datalist that are not in newOptions
+function filterOptions(dataList, newOptions) {
+    let i, L = dataList.options.length - 1;
+    for(i = L; i >= 0; i--) {
+        let currentChild = dataList.children[i];
+        if (!newOptions.includes(currentChild.value))
+            dataList.removeChild(currentChild);
+    }
+}
+
+// Replaces options in the given dataList with newOptions
+function replaceDataListOptions(dataList, newOptions) {
+    // Add new options if they are not present
+    let existingOptions = [].slice.call(dataList.options).map((option) => option.value);
+    newOptions.forEach((optionValue) => {
+        if (!existingOptions.includes(optionValue)){
+            let newOption = document.createElement('option');
+            newOption.value = optionValue;
+            dataList.appendChild(newOption);
+        }
+    });
+
+    // Remove old options
+    filterOptions(dataList, newOptions);
+}
+
+// Custom form validation
+function validateForm(coursesData) {
+    let courseTitle = document.forms['add_review_form']['add_review_course_title'].value;
+    let courseId = document.forms['add_review_form']['add_review_course_id'].value;
+    let professorName = document.forms['add_review_form']['add_review_professor_name'].value;
+    let matchingCourseId = coursesData.find((course) => {
+        return course['display_course_id'] === courseId;
+    });
+    let matchingCourseTitle = coursesData.find((course) => {
+        return course['course_title'] === courseTitle;
+    });
+
+    // Validate Course Name, CourseID, and Course/Professor combo
+    if (!matchingCourseTitle) {
+        addErrorMessage('add-review-status',
+            'No Course found with Course Title "' + courseTitle + '."',
+            'no-course-title-found-message');
+        return false;
+    }
+    if (!matchingCourseId) {
+        addErrorMessage('add-review-status',
+            'No Course found with Course ID "' + courseId + '."',
+            'no-course-id-found-message');
+        return false;
+    } else {
+        if (matchingCourseTitle['display_course_id'] !== matchingCourseId['display_course_id']) {
+            addErrorMessage('add-review-status',
+                'No match found for Course Title "' + courseTitle + '" and Course ID "' + courseId + '."',
+                'no-course-title-id-match-message');
+            return false;
+        }
+        let professorOptions = matchingCourseId['professors'].map(value => value['professor_name']);
+        if (!professorOptions.includes(professorName)) {
+            addErrorMessage('add-review-status',
+                'No match found for Course ID "' + courseId + '" and Professor "' + professorName + '."',
+                'no-course-professor-match-message');
+            return false;
+        }
+    }
+
+    // Validate Rating requirement
+    return validateRatingRequirement();
+}
+
+function validateReviewTextAndRatingRequirement() {
+    let reviewTextInput = document.querySelector('[name="review_text"]');
+    if (reviewTextInput.value === "") {
+        addErrorMessage('add-review-status',
+            'Review Text cannot be empty.',
+            'no-review-text-entered-message');
+        return false;
+    }
+    return validateRatingRequirement();
+}
+
+function validateRatingRequirement() {
+    let star = document.querySelector('.my-star.add-star.star-1');
+    if (!star.classList.contains('is-active')) {
+        addErrorMessage('add-review-status',
+                'Please select a Review Rating.',
+                'no-rating-entered-message');
+            return false;
+    }
+    hideReviewForm();
+    this.disabled = true;
+    return true;
+}
+
+function addErrorMessage(divId, message, errorMessageId) {
+    let divParent = document.getElementById(divId);
+    let errorMessage = document.createElement('h4');
+    errorMessage.id = errorMessageId;
+    errorMessage.style.color = 'red';
+    errorMessage.innerHTML = message;
+    divParent.appendChild(errorMessage);
+}
+
+function removeErrorMessage(divId, errorMessageId) {
+    let divParent = document.getElementById(divId);
+    let errorMessage = document.getElementById(errorMessageId);
+    if (errorMessage) {
+        divParent.removeChild(errorMessage);
     }
 }
 
@@ -58,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function(){
         while (i < sr.length){
             //attach click event
             sr[i].addEventListener('click', function(){
+                removeErrorMessage('add-review-status', 'no-rating-entered-message');
                 //current star
                 let cs = parseInt(this.getAttribute("data-star"));
                 //output current clicked star value

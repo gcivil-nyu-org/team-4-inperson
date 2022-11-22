@@ -75,10 +75,11 @@ class TestAddReviewPage(TestCase):
             "review_text": "Test Content",
         }
         request = self.factory.post(request_str, request_body)
+        request._messages = messages.storage.default_storage(request)
         request.user = User.objects.get(pk=1)
         response = add_review(request)
         self.assertEqual(
-            200,
+            302,
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
@@ -139,6 +140,7 @@ class TestReviewTextValidation(TestCase):
             "review_text": "Shit is a bad word",
         }
         request = self.factory.post(request_str, request_body)
+        request._messages = messages.storage.default_storage(request)
         request.user = User.objects.get(pk=1)
         response = add_review(request)
         cl = Class.objects.get(pk=1)
@@ -267,6 +269,7 @@ def create_test_review_2(class_id: Class) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
 
 def create_test_review_easy() -> Review:
     create_test_course()
