@@ -173,6 +173,15 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertContains(response, "5.0")
         self.assertContains(response, REVIEW_ADDED)
 
+    def test_pagination(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/1?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review1", "review_rating": "4", "submit":""})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This is a test review1")
+        self.assertContains(response, "4.0")
+
+
     def test_review_from_details_page_2(self):
         self.client.login(username="viren", password="viren")
         request_str = f"http://127.0.0.1:8000/courses/1"
