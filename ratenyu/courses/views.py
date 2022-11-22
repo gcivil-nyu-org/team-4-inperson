@@ -7,6 +7,7 @@ from courses.models import Review
 from professors.models import Professor
 from .course_util import *
 from util.views import error404
+from django.utils import timezone
 
 LOGGER = logging.getLogger("project")
 
@@ -130,6 +131,7 @@ def edit_review(request):
             return redirect('users:profile', user_name=request.user)
 
         r.rating = request.POST['review_rating']
+        r.pub_date = timezone.now()
         r.save()
     return redirect('users:profile', user_name=request.user)
       
