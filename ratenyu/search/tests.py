@@ -1,4 +1,3 @@
-import json
 from django.test import TestCase, RequestFactory
 from .search_util import *
 from courses.models import Course, Class
@@ -10,8 +9,9 @@ from .views import (
     search_by_select,
 )
 from courses.tests import *
+import logging
 
-# Create your tests here.
+logging.disable(logging.ERROR)
 
 
 class TestSearchPageRequest(TestCase):

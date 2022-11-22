@@ -3,6 +3,9 @@ from .views import course_detail, add_review, delete_review
 from .course_util import *
 from professors.models import Professor
 import users.tests as user_tests
+import logging
+
+logging.disable(logging.ERROR)
 
 
 class TestHomePage(TestCase):
@@ -267,6 +270,7 @@ def create_test_review_2(class_id: Class) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
 
 def create_test_review_easy() -> Review:
     create_test_course()
