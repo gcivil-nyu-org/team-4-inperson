@@ -194,13 +194,19 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Invalid request")
 
-    def test_pagination(self):
+    def test_pagination_1(self):
         self.client.login(username="viren", password="viren")
         request_str = f"http://127.0.0.1:8000/courses/1?page=thisIsTheTestForPageNumberNotInt"
-        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review1", "review_rating": "4", "submit":""})
+        response = self.client.get(request_str)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "This is a test review1")
-        self.assertContains(response, "4.0")
+        self.assertContains(response, "I love this professor!")
+
+    def test_pagination_2(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/1?page=999"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "I love this professor!")
 
 
 class TestDeleteReview(TestCase):
