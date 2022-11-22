@@ -95,12 +95,13 @@
             <p>
                 <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
                 <textarea id="review_text" name="review_text" class="add_review_textarea"
-                placeholder="Must adhere to RateNYU standards: No profanity." required="True" maxlength="2200"></textarea>
+                placeholder="Must adhere to RateNYU standards: No profanity." required="True" maxlength="2200"
+                oninput="reviewTextInputted()"></textarea>
             </p>
             </div>
             <div style="text-align: center;">
                 <button type="button" class="add_review_button" onclick="hideReviewForm()" >Cancel</button>
-                <button type="submit" class="add_review_button" name="submit" onclick="return validateRatingRequirement()">Submit</button>
+                <button type="submit" class="add_review_button" name="submit" onclick="return validateReviewTextAndRatingRequirement()">Submit</button>
             </div>
         </form>
     </div>

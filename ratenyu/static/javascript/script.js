@@ -100,6 +100,10 @@ function professorNameInputted(e, addReviewCourseName, addReviewCourseId, course
     }
 }
 
+function reviewTextInputted() {
+    removeErrorMessage('add-review-status', 'no-review-text-entered-message');
+}
+
 // Removes options from a given datalist that are not in newOptions
 function filterOptions(dataList, newOptions) {
     let i, L = dataList.options.length - 1;
@@ -167,6 +171,17 @@ function validateForm(coursesData) {
     }
 
     // Validate Rating requirement
+    return validateRatingRequirement();
+}
+
+function validateReviewTextAndRatingRequirement() {
+    let reviewTextInput = document.querySelector('[name="review_text"]');
+    if (reviewTextInput.value === "") {
+        addErrorMessage('add-review-status',
+            'Review Text cannot be empty.',
+            'no-review-text-entered-message');
+        return false;
+    }
     return validateRatingRequirement();
 }
 
