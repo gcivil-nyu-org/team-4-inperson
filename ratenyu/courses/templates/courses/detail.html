@@ -105,10 +105,10 @@
         </form>
     </div>
 
-    {% for review in reviews_list|dictsort:"review_obj.pub_date" %}
+    {% for review in reviews_list|dictsortreversed:"review_obj.pub_date" %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
-            <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
-            <span class="r">{{ review.review_obj.rating }}</span>.0/5.0</p>
+            <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span></span> <br>
+            <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
         <p><span class="rev-title">Course: {{ course.course_title }}
                 | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
