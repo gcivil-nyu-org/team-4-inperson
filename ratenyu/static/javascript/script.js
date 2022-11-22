@@ -412,6 +412,43 @@ function save(elements){
 }
 
 
+function sortReviews(selectObject) {
+    let d = document.getElementsByClassName('review');
+    let d1 = Array.from(d);
+    if (selectObject.value === 'RatingDesc') {
+        d1.sort((a,b) => {
+            let nameA = a.children[0].children[1].textContent;
+            let nameB = b.children[0].children[1].textContent;
+            if (nameA > nameB) {
+                return -1;
+            }
+            else {
+                return 1;}
+            });
+    } else if (selectObject.value === 'RatingAsc') {
+        d1.sort((a,b) => {
+            let nameA = a.children[0].children[1].textContent;
+            let nameB = b.children[0].children[1].textContent;
+            if (nameA < nameB) {
+                return -1;
+            }
+            else {
+                return 1;}
+            });
+    }
+
+    // console.log(d1);
+    for (var i = 0; i < d1.length; i++) {
+        console.log(d1[i].children[0].children[1].textContent);
+        d[0].parentElement.appendChild(d1[i]);
+    }
+    // if (selectObject.value === 'RatingDesc') {
+    //     console.log('test');
+    // }
+}
+
+
+
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
    }
