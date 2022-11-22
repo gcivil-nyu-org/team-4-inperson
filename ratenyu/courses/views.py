@@ -7,6 +7,7 @@ from courses.models import Review
 from professors.models import Professor
 from .course_util import *
 from util.views import error404
+from django.utils import timezone
 
 LOGGER = logging.getLogger("project")
 
@@ -118,3 +119,21 @@ def delete_review(request, review_id: str):
         return redirect("users:profile", user_name=request.user)
     except Exception as e:
         return error404(request, error=e)
+
+def edit_review(request):
+    if request.method == 'POST':
+        r = Review.objects.get(pk=request.POST.get('review_id'))
+        r.review_text = request.POST.get('new_review_text')
+        if not text_is_valid(r.review_text):
+            add_redirect_message(request=request,
+                                 message="Review not saved. Review text failed to meet RateNYU standards.",
+                                 success=False)
+            return redirect('users:profile', user_name=request.user)
+
+        r.rating = request.POST['review_rating']
+        r.pub_date = timezone.now()
+        r.save()
+    return redirect('users:profile', user_name=request.user)
+      
+
+

@@ -260,8 +260,72 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
+// Functions to display edit review form on Profile plage
+function showEditForm(reviewId) {
+    let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
+    staticText.style.display = "none";
 
-// Function to display review form on course results page
+    let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
+    editForm.style.display = "block";
+
+    let stars = editForm.childNodes[5];
+    let rating_val = editForm.childNodes[8];
+    let sr = stars.querySelectorAll('.prof-star');
+
+    let curr_rating = rating_val.value;
+    let max_star = curr_rating;
+
+    while(1 <= max_star){
+        if(!stars.querySelector('.star-'+max_star).classList.contains('is-active')){
+            stars.querySelector('.star-'+max_star).classList.add('is-active');
+        }
+        --max_star;
+    }
+
+    let i = 0;
+    //loop through stars
+    while (i < sr.length) {
+        //attach click event
+        sr[i].addEventListener('click', function () {
+            //current star
+            let cs = parseInt(this.getAttribute("data-star"));
+            //output current clicked star value
+            rating_val.value = cs;
+            let pre = cs;
+
+            while(1 <= pre){
+                //check if the classlist contains the active class, if not, add the class
+                if(!stars.querySelector('.star-'+pre).classList.contains('is-active')){
+                    stars.querySelector('.star-'+pre).classList.add('is-active');
+                }
+                //decrement our current index
+                --pre;
+            }
+
+            let succ = cs+1;
+            while(5 >= succ){
+                //check if the classlist contains the active class, if yes, remove the class
+                if(stars.querySelector('.star-'+succ).classList.contains('is-active')){
+                    stars.querySelector('.star-'+succ).classList.remove('is-active');
+                }
+                //increment current index
+                ++succ;
+            }
+        })//end of click event
+        i++;
+    }//end of while loop
+
+}
+
+function hideEditForm(reviewId) {
+    let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
+    editForm.style.display = "none";
+
+    let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
+    staticText.style.display = "block";
+
+}
+
 function showReviewForm() {
     let reviewForm = document.getElementById("add-review");
     reviewForm.style.display = "block";
@@ -271,6 +335,7 @@ function hideReviewForm() {
     let reviewForm = document.getElementById("add-review");
     reviewForm.style.display = "none";
 }
+
 
 /*
 Handlers for Course Detail Filtering
@@ -337,6 +402,7 @@ function hideProfile(elements) {
     }
 }
 
+
 function save(elements){
     elements = elements.length ? elements : [elements];
     for (let index = 0; index < elements.length; index++) {
@@ -345,8 +411,9 @@ function save(elements){
     document.getElementById('profile_div').style.display = 'block'
 }
 
+
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
    }
-    
+     
 
