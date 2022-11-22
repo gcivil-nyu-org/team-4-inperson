@@ -76,7 +76,7 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
         user_details = get_user_details(request.user)
         reviews = Review.objects.filter(user=User.objects.get(username=user_name))
 
-        paginator = Paginator(reviews, 2)
+        paginator = Paginator(reviews, 10)
         page_number = request.GET.get('page')
 
         try:

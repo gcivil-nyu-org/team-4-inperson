@@ -52,7 +52,7 @@ def search_by_course_name(request: HttpRequest):
             current_course_info = get_course_results_info(i)
             if len(current_course_info) > 0:
                 filtered_courses.append(current_course_info)
-        paginator = Paginator(filtered_courses, 2)
+        paginator = Paginator(filtered_courses, 10)
 
         page_number = request.GET.get('page')
 
@@ -84,7 +84,7 @@ def search_by_professor_name(request):
             current_prof_info = get_professor_results_info(p)
             filtered_professors.append(current_prof_info)
 
-        paginator = Paginator(filtered_professors, 2)
+        paginator = Paginator(filtered_professors, 10)
         page_number = request.GET.get('page')
 
         try:

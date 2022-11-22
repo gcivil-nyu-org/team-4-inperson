@@ -36,7 +36,7 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
 
-        paginator = Paginator(reviews_list, 2)
+        paginator = Paginator(reviews_list, 10)
         page_number = request.GET.get('page')
 
         try:
