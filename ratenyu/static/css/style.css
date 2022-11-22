@@ -879,6 +879,21 @@ h4.review_text_invalid {
 .my-star:not(.is-active):hover{
     color: #702B9D;
 }
+.prof-star::before{
+    content:"\002605";
+}
+/*remove the default style (italic) of the star*/
+.prof-star{
+    font-style: unset !important;
+}
+/*set active star color*/
+.is-active{
+    color:#702B9D;
+}
+/*set color on hover*/
+.prof-star:not(.is-active):hover{
+    color: #702B9D;
+}
 
 .edit-review-btn {
   background-color: #702B9D;
@@ -898,6 +913,7 @@ h4.review_text_invalid {
   padding: 7px;
   text-decoration: none;
 }
+
 
 .review-text-box {
   display: none;
