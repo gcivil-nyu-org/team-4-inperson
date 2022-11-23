@@ -1,6 +1,7 @@
 from .base import *
 
 if "RDS_DB_NAME" in os.environ:
+    DEBUG = False
     ALLOWED_HOSTS = ["ratenyu-dev.eba-apngxcqy.us-east-1.elasticbeanstalk.com"]
     DATABASES = {
         "default": {
