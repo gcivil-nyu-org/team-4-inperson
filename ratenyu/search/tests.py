@@ -10,8 +10,9 @@ from .views import (
     search_by_select,
 )
 from courses.tests import *
+import logging
 
-# Create your tests here.
+logging.disable(logging.ERROR)
 
 
 class TestSearchPageRequest(TestCase):

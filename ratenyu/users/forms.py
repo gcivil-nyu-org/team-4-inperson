@@ -7,13 +7,13 @@ class UserRegistrationForm(UserCreationForm):
 
     STATUS_CHOICES = [
         ("", "-- Grade Level --"),
-        ("freshman", "Freshman"),
-        ("sophomore", "Sophomore"),
-        ("junior", "Junior"),
-        ("senior", "Senior"),
-        ("master1", "Master1"),
-        ("master2", "Master2"),
-        ("phd", "PHD"),
+        ("Freshman", "Freshman"),
+        ("Sophomore", "Sophomore"),
+        ("Junior", "Junior"),
+        ("Senior", "Senior"),
+        ("Master1", "Master1"),
+        ("Master2", "Master2"),
+        ("Phd", "PHD"),
     ]
     name = forms.CharField(
         max_length=100,

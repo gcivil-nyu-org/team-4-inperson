@@ -61,7 +61,7 @@
     {% endif %}
     <div class="nyu-logo-light">
     </div>
-    {% for review in reviews %}
+    {% for review in page_obj %}
         <div class="user-review">
             <p style="padding-top: 3px;">{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }}<br>
                 {{ review.rating }}.0/5.0<br></p>
@@ -96,6 +96,24 @@
         </div>
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews %} none  {% else %} block {% endif %};">You have not written any reviews. </h3>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
 
 {% endblock %}

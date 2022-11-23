@@ -105,7 +105,7 @@
         </form>
     </div>
 
-    {% for review in reviews_list|dictsortreversed:"review_obj.pub_date" %}
+    {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
             <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span></span> <br>
             <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
@@ -116,6 +116,24 @@
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
 
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
 
 

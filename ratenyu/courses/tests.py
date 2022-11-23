@@ -4,6 +4,9 @@ from .course_util import *
 from professors.models import Professor
 import users.tests as user_tests
 import datetime
+import logging
+
+logging.disable(logging.ERROR)
 
 
 class TestHomePage(TestCase):
@@ -192,6 +195,20 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Invalid request")
 
+    def test_pagination_1(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/1?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "I love this professor!")
+
+    def test_pagination_2(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/1?page=999"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "I love this professor!")
+
 class TestEditReview(TestCase):
     def setUp(self):
         self.client = Client()
@@ -209,6 +226,7 @@ class TestEditReview(TestCase):
         self.assertEqual(review.rating, 2, "Test Review was not edited.")
         self.assertEqual(review.review_text, "I don't care for this class", "Test Review was not edited.")
         self.assertEqual(review.pub_date.date(), timezone.now().date(),"Pub date not updated")
+
 class TestDeleteReview(TestCase):
     def setUp(self):
         self.factory = RequestFactory()

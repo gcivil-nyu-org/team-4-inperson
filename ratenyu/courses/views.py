@@ -8,6 +8,7 @@ from professors.models import Professor
 from .course_util import *
 from util.views import error404
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 LOGGER = logging.getLogger("project")
 
@@ -37,6 +38,17 @@ def load_course_detail(
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
+
+        paginator = Paginator(reviews_list, 10)
+        page_number = request.GET.get('page')
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
         if review is not None:
             context = {
                 "classes": classes,
@@ -46,6 +58,7 @@ def load_course_detail(
                 "professors_list": professors_list,
                 "review_saved": review,
                 "review_message": review_message,
+                "page_obj": page_obj,
             }
         else:
             context = {
@@ -54,6 +67,7 @@ def load_course_detail(
                 "reviews_list": reviews_list,
                 "reviews_avg": reviews_avg,
                 "professors_list": professors_list,
+                "page_obj": page_obj,
             }
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
@@ -134,6 +148,6 @@ def edit_review(request):
         r.pub_date = timezone.now()
         r.save()
     return redirect('users:profile', user_name=request.user)
-      
+
 
 

@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
+from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
 import logging
 
 logger = logging.getLogger("project")
@@ -46,7 +47,19 @@ def search_by_course_name(request: HttpRequest):
             current_course_info = get_course_results_info(i)
             if len(current_course_info) > 0:
                 filtered_courses.append(current_course_info)
+        paginator = Paginator(filtered_courses, 10)
+
+        page_number = request.GET.get('page')
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
         context = {
+            "page_obj": page_obj,
             "courses": filtered_courses,
             "query": query,
         }
@@ -65,7 +78,22 @@ def search_by_professor_name(request):
         for p in professors:
             current_prof_info = get_professor_results_info(p)
             filtered_professors.append(current_prof_info)
-        context = {"professors": filtered_professors, "query": query}
+
+        paginator = Paginator(filtered_professors, 10)
+        page_number = request.GET.get('page')
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
+        context = {
+            "professors": filtered_professors,
+            "query": query,
+            "page_obj": page_obj,
+        }
         logger.debug(context)
         return render(request, "search/professorResult.html", context)
     except Exception as e:

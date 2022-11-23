@@ -5,6 +5,9 @@ from courses.models import Course, Class
 from users.models import User
 import users.tests as user_tests
 from courses.course_util import REVIEW_ADDED, REVIEW_NOT_SAVED
+import logging
+
+logging.disable(logging.ERROR)
 
 
 class TestProfessorDetailPageRequest(TestCase):

@@ -2,10 +2,12 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
-
 from courses.models import Course, Review, Class
 from professors.models import Professor
 from users.models import UserDetails
+import logging
+
+logging.disable(logging.ERROR)
 
 class BaseTest(TestCase):
     def setUp(self):
