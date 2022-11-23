@@ -1,4 +1,16 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>RateNYU</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{%  static "css/style.css" %}">
+</head>
+<body style="background: #EEE6F3">
+{% include 'navbar.html' %}
+
+<script type="text/javascript" src="{% static 'javascript/script.js' %}"></script>
+</body>
+</html>
 
 {% block content %}
 
@@ -15,7 +27,7 @@
         </div>
         {% endfor %}
         <br>
-        <button class="register" type="submit">Create Account</button>
+        <input type="submit" class= "create_account" value = "Create Account" onclick="this.disabled=true;this.form.submit()"/>
     </form>
 </div>
 

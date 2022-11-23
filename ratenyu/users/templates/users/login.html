@@ -8,12 +8,19 @@
     <div class="add-reviews-status">
         {% if messages %}
             {% for message in messages %}
-            <h3> {{ message }} </h3>
+                {% if message.tags == 'success' %}
+                    <h3> {{ message }} </h3>
+                {% endif %}
             {% endfor %}
         {% endif %}
+
+    {% if form.non_field_errors %}
+        <h4 class = "review_text_invalid">Username and Password Invalid.</h4>
+    {% endif %}
+
     </div>
     <form class="register" action="" method="POST">
-        {% csrf_token %}
+        {%  csrf_token %}
         <input type="text" class="register" name="username" autofocus autocapitalize="none"
                 autocomplete="username" maxlength="150" required id="id_username" placeholder="Username">
         <input type="password" class="register" name="password" autocomplete="current-password" required

@@ -829,6 +829,20 @@ div.user-review > form {
   padding: 7px;
 }
 
+/*Styling for the create account button on the registation page*/
+.create_account {
+  background: #702B9D;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid darkgrey;
+  border-radius: 4px;
+  padding: 7px;
+  width: 99%;
+  height: 42px;
+}
+
 .add_review_textarea {
   border:none;
   margin:0px auto;
@@ -865,6 +879,21 @@ h4.review_text_invalid {
 .my-star:not(.is-active):hover{
     color: #702B9D;
 }
+.prof-star::before{
+    content:"\002605";
+}
+/*remove the default style (italic) of the star*/
+.prof-star{
+    font-style: unset !important;
+}
+/*set active star color*/
+.is-active{
+    color:#702B9D;
+}
+/*set color on hover*/
+.prof-star:not(.is-active):hover{
+    color: #702B9D;
+}
 
 .edit-review-btn {
   background-color: #702B9D;
@@ -885,11 +914,16 @@ h4.review_text_invalid {
   text-decoration: none;
 }
 
+
 .review-text-box {
   display: none;
   margin-top: -25px;
 }
 
+/*below is the css for pagination*/
+.pagination{
+  text-align: center;
+}
 /* Fonts */
 
 @font-face {

@@ -1,8 +1,12 @@
 from django.test import TestCase, RequestFactory, Client
-from .views import course_detail, add_review, delete_review
+from .views import course_detail, add_review, delete_review, edit_review
 from .course_util import *
 from professors.models import Professor
 import users.tests as user_tests
+import datetime
+import logging
+
+logging.disable(logging.ERROR)
 
 
 class TestHomePage(TestCase):
@@ -75,10 +79,11 @@ class TestAddReviewPage(TestCase):
             "review_text": "Test Content",
         }
         request = self.factory.post(request_str, request_body)
+        request._messages = messages.storage.default_storage(request)
         request.user = User.objects.get(pk=1)
         response = add_review(request)
         self.assertEqual(
-            200,
+            302,
             response.status_code,
             f"Request returned {response.status_code} for request {request_str}",
         )
@@ -139,6 +144,7 @@ class TestReviewTextValidation(TestCase):
             "review_text": "Shit is a bad word",
         }
         request = self.factory.post(request_str, request_body)
+        request._messages = messages.storage.default_storage(request)
         request.user = User.objects.get(pk=1)
         response = add_review(request)
         cl = Class.objects.get(pk=1)
@@ -189,6 +195,37 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Invalid request")
 
+    def test_pagination_1(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/1?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "I love this professor!")
+
+    def test_pagination_2(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/1?page=999"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "I love this professor!")
+
+class TestEditReview(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        user_tests.create_test_user()
+
+    def test_edit_review(self):
+        self.client.login(username="viren", password="viren")
+        review = create_test_review_easy()
+        review.pub_date = datetime.datetime(2022, 1, 1, 0, 0, 0, 548537, tzinfo=datetime.timezone.utc)
+        self.assertEqual(1, len(Review.objects.filter(pk=review.id)), "Test Review was not created.")
+        url = f"http://127.0.0.1:8000/courses/edit_review"
+        self.client.post(url, {"new_review_text": "I don't care for this class", "review_rating": "2", "review_id": "1"})
+        review = Review.objects.get(pk=review.id)
+        self.assertEqual(review.rating, 2, "Test Review was not edited.")
+        self.assertEqual(review.review_text, "I don't care for this class", "Test Review was not edited.")
+        self.assertEqual(review.pub_date.date(), timezone.now().date(),"Pub date not updated")
 
 class TestDeleteReview(TestCase):
     def setUp(self):
@@ -267,6 +304,7 @@ def create_test_review_2(class_id: Class) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
 
 def create_test_review_easy() -> Review:
     create_test_course()

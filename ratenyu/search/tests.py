@@ -1,5 +1,5 @@
 import json
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
 from .search_util import *
 from courses.models import Course, Class
 from professors.models import Professor
@@ -10,8 +10,9 @@ from .views import (
     search_by_select,
 )
 from courses.tests import *
+import logging
 
-# Create your tests here.
+logging.disable(logging.ERROR)
 
 
 class TestSearchPageRequest(TestCase):
@@ -137,12 +138,8 @@ class TestCourseIdSearch(TestCase):
         request_str = f"search/search?search_by=CourseID&query=BT-GY6093"
         request = self.factory.get(request_str)
         response = search_by_select(request=request)
-        self.assertEqual(
-            200,
-            response.status_code,
-            f"Request returned {response.status_code} for request {request_str}",
-        )
-        self.assertContains(response, self.courseId)
+        response.client = Client()
+        self.assertRedirects(response, expected_url="/courses/1")
 
     def test_valid_course_id_case_2(self) -> None:
         """if a valid course id is passed, it should return the course details page"""
@@ -150,12 +147,8 @@ class TestCourseIdSearch(TestCase):
         request_str = f"search/search?search_by=CourseID&query=BT-GY 6093"
         request = self.factory.get(request_str)
         response = search_by_select(request=request)
-        self.assertEqual(
-            200,
-            response.status_code,
-            f"Request returned {response.status_code} for request {request_str}",
-        )
-        self.assertContains(response, self.courseId)
+        response.client = Client()
+        self.assertRedirects(response, expected_url="/courses/1")
 
     def test_invalid_course_id(self) -> None:
         """if an invalid course id is passed, it should return the search page with no results"""

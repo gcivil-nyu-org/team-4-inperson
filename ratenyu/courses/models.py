@@ -26,7 +26,7 @@ class Class(models.Model):
 
 
 class Review(models.Model):
-    review_text = models.TextField()
+    review_text = models.TextField(max_length=2200)
     rating = models.PositiveIntegerField(
         choices=((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"))
     )

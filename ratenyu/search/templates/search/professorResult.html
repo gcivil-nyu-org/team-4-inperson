@@ -43,7 +43,7 @@
     </label> -->
 </ul>
 
-{% for professor in professors %}
+{% for professor in page_obj %}
 
 <div class="detail-sub-course-desc">
     <p style="margin-bottom:0;"> <a href=/professors/{{professor.professor_obj.professor_id}}>{{ professor.professor_obj.name }}</a> ({{professor.reviews_avg}}/5.0 | {{professor.reviews_list|length}} Reviews) </p>
@@ -53,6 +53,24 @@
 </div>
 
 {% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?search_by=ProfessorName&query={{query}}&page=1">&laquo; first</a>
+            <a href="?search_by=ProfessorName&query={{query}}&page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?search_by=ProfessorName&query={{query}}&page={{ page_obj.next_page_number }}">next</a>
+            <a href="?search_by=ProfessorName&query={{query}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 
 {% else %}
 

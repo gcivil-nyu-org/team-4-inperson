@@ -14,12 +14,11 @@
 
     <div class="detail-dropdown">
         <form class="search"  method="GET" action="">
-            <select class="dropdown" id="detail-dropdown">
-                <option value="RevDateDesc">Review Date Descending</option>
-                <option value="RevDateDesc">Review Date Ascending</option>
-                <option value="RevDateDesc">Rating Descending</option>
-                <option value="RevDateDesc">Rating Ascending</option>
-                <option value="RevDateDesc">Class Level</option>
+        <select class="dropdown" id="detail-dropdown" onchange="sortReviews(this)">
+            <option value="RevDateDesc">Review Date Descending</option>
+            <option value="RevDateAsc">Review Date Ascending</option>
+            <option value="RatingDesc">Rating Descending</option>
+            <option value="RatingAsc">Rating Ascending</option>
             </select>
         </form>
         {% if user.is_authenticated %}
@@ -49,6 +48,7 @@
     
     <div class="all-reviews">
         <div id="add-review" class="add-reviews" style="display: none; border:2px solid #702B9D;">
+            <div id="add-review-status"></div>
             <form class="review-form" method="POST" action="">
                 {% csrf_token %}
                 <br>
@@ -69,35 +69,55 @@
                 <br>
                 <label for="review_rating" class="add_review_label">Review Rating:</label>
                 <div class="star-rating">
-                    <i class="my-star star-1" data-star="1"></i>
-                    <i class="my-star star-2" data-star="2"></i>
-                    <i class="my-star star-3" data-star="3"></i>
-                    <i class="my-star star-4" data-star="4"></i>
-                    <i class="my-star star-5" data-star="5"></i>
+                    <i class="my-star add-star star-1" data-star="1"></i>
+                    <i class="my-star add-star star-2" data-star="2"></i>
+                    <i class="my-star add-star star-3" data-star="3"></i>
+                    <i class="my-star add-star star-4" data-star="4"></i>
+                    <i class="my-star add-star star-5" data-star="5"></i>
                 </div>
                 <div>
                 <input id="review_rating" type="number" class="add_review_input" name="review_rating" hidden="True" required="True">
                 <p>
                     <label for="review_text" class="add_review_label" id="add_review_label2">Review Text:</label>
                     <textarea id="review_text" name="review_text" class="add_review_textarea"
-                    placeholder="Must adhere to RateNYU standards: No profanity." required="True"></textarea>
+                    placeholder="Must adhere to RateNYU standards: No profanity." required="True" maxlength="2200"
+                    oninput="reviewTextInputted()"></textarea>
                 </p>
                 </div>
                 <div style="text-align: center;">
                     <button type="button" class="add_review_button" onclick="hideReviewForm()" >Cancel</button>
-                    <button type="submit" class="add_review_button" name="submit">Submit</button>
+                    <button type="submit" class="add_review_button" name="submit" onclick="return validateReviewTextAndRatingRequirement()">Submit</button>
                 </div>
             </form>
         </div>
-        {% for review in reviews_list %}
+        {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
         <div class="review" review_course = "{{review.course_obj.course_title}}">
-            <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
-                {{ review.review_obj.rating }}.0/5.0</p>
+            <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span> <br>
+                <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
             <p><span class="rev-title">Course:<a href="{% url 'courses:course_detail' course_id=review.course_obj.course_id %}"> {{ review.course_obj.course_title }}</a>
                 | Professor: {{ professor.name }}</span><br>
             {{ review.review_obj.review_text }}</p>
         </div>
         {% endfor %}
+        <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
+
+        <div class="pagination">
+            <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+            </span>
+        </div>
     </div>
 
 {% endblock %}

@@ -1,4 +1,5 @@
 from typing import List
+from json import dumps
 from profanity_filter import ProfanityFilter
 from django.http import HttpRequest
 from django.contrib import messages
@@ -6,6 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import Course, Class, Review
 from professors.models import Professor
+from courses.models import Course, Class
 import re
 import logging
 
@@ -14,6 +16,7 @@ LOGGER = logging.getLogger("project")
 REVIEW_ADDED = "Your review was saved!"
 REVIEW_CONTAINS_PROFANITY = "Profane review was not saved!"
 REVIEW_NOT_SAVED = "Uh Oh, something went wrong. Your review could not be saved."
+
 
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     review_objects = []
@@ -135,8 +138,75 @@ def add_redirect_message(request: HttpRequest, message: str, success: bool) -> N
     and adds a new message. The message type (success or error) is determined
     by the success argument.
     """
-    messages.get_messages(request).used = True
+    storage = messages.get_messages(request)
+    if len(storage) > 0:
+        storage.used = True
     if success:
         messages.success(request, message)
     else:
         messages.error(request, message)
+
+
+def get_courses_data_json() -> str:
+    """
+    creates a JSON string of course data to be consumed by front end
+    javascript.
+    """
+    courses_data_list = [
+        {
+            "course_id": course.course_id,
+            "course_title": course.course_title.replace("'", ""),
+            "display_course_id": f"{course.course_subject_code} {course.catalog_number}",
+            "professors": get_professors_for_course(course)
+        }
+        for course in Course.objects.all()
+    ]
+    return dumps(courses_data_list)
+
+
+def get_professors_for_course(course: Course) -> List[Professor]:
+    """
+    creates an array of data objects containing Professor info
+    for all Professors that teach a given Course
+    """
+    all_classes_for_course = Class.objects.filter(course=course)
+    all_professors_for_course = [cl.professor for cl in all_classes_for_course]
+    professors_data_list = [
+        {
+            "professor_id": professor.professor_id,
+            "professor_name": professor.name.replace("'", "")
+        } for professor in all_professors_for_course
+    ]
+    return professors_data_list
+
+
+def get_professors_data_json() -> str:
+    """
+    creates a JSON string of professor data to be consumed by front end
+    javascript. 
+    """
+    professors_data_list = [
+        {
+            "professor_id": professor.professor_id,
+            "professor_name": professor.name.replace("'", ""),
+            "courses": get_courses_for_professor(professor)
+        } for professor in Professor.objects.all()
+    ]
+    return dumps(professors_data_list)
+
+
+def get_courses_for_professor(professor: Professor) -> List[Course]:
+    """
+    creates an array of data objects containing Course info
+    for all Courses taught by a given Professor
+    """
+    all_classes_for_professor = Class.objects.filter(professor=professor)
+    all_courses_for_professor = [cl.course for cl in all_classes_for_professor]
+    courses_data_list = [
+        {
+            "course_id": course.course_id,
+            "course_title": course.course_title.replace("'", ""),
+            "display_course_id": f"{course.course_subject_code} {course.catalog_number}"
+        } for course in all_courses_for_professor
+    ]
+    return courses_data_list
