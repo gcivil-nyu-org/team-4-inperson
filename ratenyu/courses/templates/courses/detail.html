@@ -25,12 +25,11 @@
 
 <div class="detail-dropdown">
     <form class="search"  method="GET" action="">
-        <select class="dropdown" id="detail-dropdown">
+        <select class="dropdown" id="detail-dropdown" onchange="sortReviews(this)">
             <option value="RevDateDesc">Review Date Descending</option>
-            <option value="RevDateDesc">Review Date Ascending</option>
-            <option value="RevDateDesc">Rating Descending</option>
-            <option value="RevDateDesc">Rating Ascending</option>
-            <option value="RevDateDesc">Class Level</option>
+            <option value="RevDateAsc">Review Date Ascending</option>
+            <option value="RatingDesc">Rating Descending</option>
+            <option value="RatingAsc">Rating Ascending</option>
         </select>
     </form>
         {% if user.is_authenticated %}
@@ -106,10 +105,10 @@
         </form>
     </div>
 
-    {% for review in page_obj %}
+    {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
-            <p>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }} <br>
-            {{ review.review_obj.rating }}.0/5.0</p>
+            <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span></span> <br>
+            <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
         <p><span class="rev-title">Course: {{ course.course_title }}
                 | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
