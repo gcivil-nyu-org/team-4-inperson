@@ -1,10 +1,5 @@
-from django.http import HttpRequest, Http404
-from django.shortcuts import render
-from django.http import HttpRequest, Http404
-from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
-from professors.models import Professor
-from courses.models import Course, Class, Review
+from django.shortcuts import render, redirect
+from django.http import HttpRequest
 from .search_util import *
 from courses.course_util import *
 from courses.views import course_detail
@@ -35,11 +30,11 @@ def search_by_course_id(request: HttpRequest) -> render:
         query = request.GET["query"].strip()
         logger.debug(f"query: {query}")
         course_subject_code, catalog_number = get_sub_code_and_cat_num(query)
-        course_id = course_id_query(course_subject_code, catalog_number)
-        return course_detail(request, course_id.course_id)
+        course = course_id_query(course_subject_code, catalog_number)
+        return redirect("courses:course_detail", course_id=course.course_id)
     except Exception as e:
         logger.exception(e)
-        return render(request, "search/courseId.html",{"query": request.GET["query"].strip()})
+        return render(request, "search/courseId.html", {"query": request.GET["query"].strip()})
 
 
 def search_by_course_name(request: HttpRequest):
