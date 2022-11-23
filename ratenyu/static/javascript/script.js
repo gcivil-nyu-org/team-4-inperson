@@ -412,6 +412,61 @@ function save(elements){
 }
 
 
+function sortReviews(selectObject) {
+    let reviews = document.getElementsByClassName('review');
+    let reviewsArr = Array.from(reviews);
+    switch (selectObject.value) {
+        case 'RatingDesc':
+            reviewsArr.sort((a,b) => {
+                let nameA = a.children[0].children[2].textContent;
+                let nameB = b.children[0].children[2].textContent;
+                if (nameA > nameB) {
+                    return -1;
+                }
+                else {
+                    return 1;}
+                });
+            break;
+        case 'RatingAsc':
+            reviewsArr.sort((a,b) => {
+                let nameA = a.children[0].children[2].textContent;
+                let nameB = b.children[0].children[2].textContent;
+                if (nameA < nameB) {
+                    return -1;
+                }
+                else {
+                    return 1;}
+                });
+            break;
+        case 'RevDateDesc':
+            reviewsArr.sort((a, b) => {
+                let nameA = Date.parse(a.children[0].children[0].textContent);
+                let nameB = Date.parse(b.children[0].children[0].textContent);
+                if (nameA > nameB) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+            break;
+        case 'RevDateAsc':
+            reviewsArr.sort((a, b) => {
+                    let nameA = Date.parse(a.children[0].children[0].textContent);
+                    let nameB = Date.parse(b.children[0].children[0].textContent);
+                    if (nameA < nameB) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                break;
+        }
+    for (var i = 0; i < reviewsArr.length; i++) {
+        reviews[0].parentElement.appendChild(reviewsArr[i]);
+    }
+}
+
+
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
    }
