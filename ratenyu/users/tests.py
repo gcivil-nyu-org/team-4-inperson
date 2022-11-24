@@ -9,6 +9,7 @@ import logging
 
 logging.disable(logging.ERROR)
 
+
 class BaseTest(TestCase):
     def setUp(self):
         self.register_url = reverse("users:register")
@@ -24,6 +25,7 @@ class BaseTest(TestCase):
         }
         return super().setUp()
 
+
 class TestProfilePage(TestCase):
 
     def setUp(self) -> None:
@@ -36,7 +38,7 @@ class TestProfilePage(TestCase):
         create_test_review_1(Class.objects.get(pk="1"), User.objects.get(username="viren"))
         create_test_review_2(Class.objects.get(pk="1"), User.objects.get(username="viren"))
         return super().setUp()
-    
+
     def test_profile_page_1(self):
         '''
         A user is logged in and user is loading their own profile page
@@ -53,7 +55,7 @@ class TestProfilePage(TestCase):
         self.assertContains(response, "John Doe")
         self.assertContains(response, "I love this professor!")
         self.assertContains(response, "I love this professor!")
-        
+
     def test_profile_page_2(self):
         '''
         A user is logged in and user is loading someone else's profile page
@@ -73,7 +75,20 @@ class TestProfilePage(TestCase):
         response = self.client.get(reverse("users:profile", args=["viren"]))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("search:index"))
-        
+
+    def test_edit_profile_page(self):
+        self.client.login(username="viren", password="viren")
+        response = self.client.get(reverse("users:profile", args=["viren"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "users/profile.html")
+        url = f"http://127.0.0.1:8000/profile/viren"
+        self.client.post(url, {"user_name_input": "viren1",
+                               "user_major_input": "com sci",
+                               "user_status_input": "Sophomore"})
+        response = self.client.get(reverse("users:profile", args=["viren"]))
+        self.assertContains(response, "viren1")
+        self.assertContains(response, "com sci")
+        self.assertContains(response, "Sophomore")
 
 
 def create_test_course() -> Course:
@@ -85,17 +100,18 @@ def create_test_course() -> Course:
         course_description="course_description",
     )
 
+
 def create_test_professor() -> Professor:
     Professor.objects.create(
         professor_id="1", name="John Doe", net_id="jd123", role="01"
     )
+
 
 def create_test_user() -> User:
     user = User.objects.create(username="viren", email="vmp2018@nyu.edu")
     user.set_password("viren")
     user.save()
     UserDetails.objects.create(user=user, name="Viren Parmar", major="Computer Science", student_status="Master2")
-
 
 
 def create_test_class_1(course: Course, professor: Professor) -> Class:
