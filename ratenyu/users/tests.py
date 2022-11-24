@@ -90,6 +90,18 @@ class TestProfilePage(TestCase):
         self.assertContains(response, "com sci")
         self.assertContains(response, "Sophomore")
 
+    def test_pagination_in_profile_page_number_is_nonint(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/profile/viren?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+
+    def test_pagination_in_profile_page_numer_out_range(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/profile/viren?page=999"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+
 
 def create_test_course() -> Course:
     Course.objects.create(
