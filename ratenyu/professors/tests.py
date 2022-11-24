@@ -53,12 +53,12 @@ class TestReviewFromDetailsPage(TestCase):
         self.assertContains(response, "5.0")
         self.assertContains(response, REVIEW_ADDED)
 
-    def test_review_from_details_page_2(self):
-        self.client.login(username="viren", password="viren")
-        request_str = f"http://127.0.0.1:8000/professors/1"
-        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "Shit is a abd word", "review_rating": "5", "submit":""})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Review not saved. Review text failed to meet RateNYU standards.")
+    # def test_review_from_details_page_2(self):
+    #     self.client.login(username="viren", password="viren")
+    #     request_str = f"http://127.0.0.1:8000/professors/1"
+    #     response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "Shit is a abd word", "review_rating": "5", "submit":""})
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertContains(response, "Review not saved. Review text failed to meet RateNYU standards.")
     
     def test_review_from_details_page_3(self):
         self.client.login(username="viren", password="viren")
@@ -73,6 +73,20 @@ class TestReviewFromDetailsPage(TestCase):
         response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "6"})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Invalid request")
+
+    def test_pagination_1(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/professors/1?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "5", "submit":""})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This is a test review")
+
+    def test_pagination_2(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/professors/1?page=999"
+        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "5", "submit":""})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This is a test review")
 
 def create_test_professor() -> Professor:
     return Professor.objects.create(
