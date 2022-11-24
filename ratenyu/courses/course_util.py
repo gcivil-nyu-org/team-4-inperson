@@ -1,6 +1,6 @@
 from typing import List
 from json import dumps
-#from profanity_filter import ProfanityFilter
+from profanity_filter import ProfanityFilter
 from django.http import HttpRequest
 from django.contrib import messages
 from django.utils import timezone
@@ -99,9 +99,8 @@ def text_is_valid(review_text: str) -> bool:
     Returns false if given text string contains profanity
     Else returns true
     """
-    # pf = ProfanityFilter()
-    # return pf.censor(review_text) == review_text
-    return True
+    pf = ProfanityFilter()
+    return pf.censor(review_text) == review_text
 
 
 def add_review_from_details(request) -> tuple:
