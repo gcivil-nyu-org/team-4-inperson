@@ -3,7 +3,7 @@ from json import dumps
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from courses.models import Review
+from courses.models import Review, Vote
 from professors.models import Professor
 from .course_util import *
 from util.views import error404
@@ -72,6 +72,7 @@ def load_course_detail(
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
     except Exception as e:
+        LOGGER.exception(f"Could not load course detail, encountered error: {e}")
         return error404(request, error=e)
 
 
@@ -150,4 +151,25 @@ def edit_review(request):
     return redirect('users:profile', user_name=request.user)
 
 
-
+def like_review(request, review_id: str):
+    LOGGER.debug(f"like_review: {review_id}")
+    response = HttpResponse()
+    if request.method == 'POST':
+        review = Review.objects.get(pk=review_id)
+        user = User.objects.get(username=request.user.username)
+        try:
+            vote = Vote.objects.get(review=review, user=user)
+            if vote.vote == 'L':
+                response.content = 'You already liked this review.'
+                return response
+            else:
+                vote.vote = 'L'
+                vote.save()
+                response.content = "You liked this review!"
+                return response
+        except Vote.DoesNotExist:
+            vote = Vote(review=review, user=user, vote="L")
+            vote.save()
+            response.content = "You liked this review!"
+            return response
+    return redirect('courses:course_detail', course_id=review.class_id.course.course_id)

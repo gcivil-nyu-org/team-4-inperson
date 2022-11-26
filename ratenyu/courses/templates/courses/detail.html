@@ -112,10 +112,32 @@
         <p><span class="rev-title">Course: {{ course.course_title }}
                 | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
+            <p id="like-status-{{review.review_obj.id}}"> </p>
+            <button class="like" type="button" onclick="likeReview({{ review.review_obj.id }})"> Like</button>
+            <button class="dislike" type="button" onclick="dislikeReview({{ review.review_obj.id }})"> Dislike</button>
     </div>
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
+    <script>
+        function likeReview(review_id) {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                console.log(this.responseText);
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("like-status-"+review_id).innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("POST", review_id+"/like", true); 
+            xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+            xhttp.send();
 
+            console.log("likeReview called");
+            console.log(review_id);
+            
+         }
+        
+        </script>   
 
     <div class="pagination">
         <span class="step-links">
