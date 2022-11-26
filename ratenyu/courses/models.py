@@ -39,3 +39,9 @@ class Review(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+
+class Vote(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    review = models.ForeignKey(to=Review, on_delete=models.CASCADE)
+    vote = models.CharField(max_length=1, choices=(("L", "L"), ("D", "D")))
