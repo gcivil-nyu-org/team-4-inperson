@@ -159,7 +159,8 @@ def like_review(request, review_id: str):
         try:
             vote = Vote.objects.get(review=review, user=user)
             if vote.vote == 'L':
-                response.content = 'You already liked this review.'
+                vote.delete()
+                response.content = 'Your like was removed!'
                 return response
             else:
                 vote.vote = 'L'
