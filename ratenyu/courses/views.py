@@ -155,23 +155,53 @@ def edit_review(request):
 def like_review(request, review_id: str):
     LOGGER.debug(f"like_review: {review_id}")
     response = HttpResponse()
-    if request.method == 'POST':
-        review = Review.objects.get(pk=review_id)
-        user = User.objects.get(username=request.user.username)
-        try:
-            vote = Vote.objects.get(review=review, user=user)
-            if vote.vote == 'L':
-                vote.delete()
-                response.content = 'Your like was removed!'
-                return response
-            else:
-                vote.vote = 'L'
+    try :
+        if request.method == 'POST':
+            review = Review.objects.get(pk=review_id)
+            user = User.objects.get(username=request.user.username)
+            try:
+                vote = Vote.objects.get(review=review, user=user)
+                if vote.vote == 'L':
+                    vote.delete()
+                    response.content = 'Your like was removed!'
+                    return response
+                else:
+                    vote.vote = 'L'
+                    vote.save()
+                    response.content = "You liked this review!"
+                    return response
+            except Vote.DoesNotExist:
+                vote = Vote(review=review, user=user, vote="L")
                 vote.save()
                 response.content = "You liked this review!"
                 return response
-        except Vote.DoesNotExist:
-            vote = Vote(review=review, user=user, vote="L")
-            vote.save()
-            response.content = "You liked this review!"
-            return response
-    return redirect('courses:course_detail', course_id=review.class_id.course.course_id)
+    except Exception as e:
+        LOGGER.exception(f"Could not like review, encountered error: {e}")
+        return HttpResponse(status=500)
+
+def dislike_review(request, review_id: str):
+    LOGGER.debug(f"dislike_review: {review_id}")
+    response = HttpResponse()
+    try :
+        if request.method == 'POST':
+            review = Review.objects.get(pk=review_id)
+            user = User.objects.get(username=request.user.username)
+            try:
+                vote = Vote.objects.get(review=review, user=user)
+                if vote.vote == 'D':
+                    vote.delete()
+                    response.content = 'Your dislike was removed!'
+                    return response
+                else:
+                    vote.vote = 'D'
+                    vote.save()
+                    response.content = "You disliked this review!"
+                    return response
+            except Vote.DoesNotExist:
+                vote = Vote(review=review, user=user, vote="D")
+                vote.save()
+                response.content = "You disliked this review!"
+                return response
+    except Exception as e:
+        LOGGER.exception(f"Could not dislike review, encountered error: {e}")
+        return HttpResponse(status=500)
