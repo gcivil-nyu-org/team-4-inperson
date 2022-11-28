@@ -556,22 +556,48 @@ function likeReview(review_id) {
 
 
 /*
-Handlers for Like/Dislike functionality
+Handlers for Like/Dislike Button functionality
  */
 function likeReview(review_id) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     const likeButton = document.getElementById('like-' + review_id);
-    var xhttp = new XMLHttpRequest();
+    const dislikeButton = document.getElementById('dislike-' + review_id);
+    let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             if (likeButton.classList.contains('active')) {
                 likeButton.classList.remove('active');
             } else {
+                if (dislikeButton.classList.contains('active')) {
+                    dislikeButton.classList.remove('active');
+                }
                 likeButton.classList.add('active');
             }
         }
     };
     xhttp.open("POST", review_id+"/like", true);
+    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+    xhttp.send();
+ }
+
+ function dislikeReview(review_id) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const likeButton = document.getElementById('like-' + review_id);
+    const dislikeButton = document.getElementById('dislike-' + review_id);
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            if (dislikeButton.classList.contains('active')) {
+                dislikeButton.classList.remove('active');
+            } else {
+                if (likeButton.classList.contains('active')) {
+                    likeButton.classList.remove('active');
+                }
+                dislikeButton.classList.add('active');
+            }
+        }
+    };
+    xhttp.open("POST", review_id+"/dislike", true);
     xhttp.setRequestHeader("X-CSRFToken", csrftoken);
     xhttp.send();
  }
