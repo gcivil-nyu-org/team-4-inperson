@@ -179,6 +179,7 @@ def like_review(request, review_id: str):
         LOGGER.exception(f"Could not like review, encountered error: {e}")
         return HttpResponse(status=500)
 
+
 def dislike_review(request, review_id: str):
     LOGGER.debug(f"dislike_review: {review_id}")
     response = HttpResponse()

@@ -114,8 +114,8 @@
             <i class="fa fa-thumbs-up fa-3x like" aria-hidden="true" onclick="likeReview({{ review.review_obj.id }})"></i>
           </div>
           <!-- Thumbs down -->
-          <div class="dislike">
-            <i class="fa fa-thumbs-down fa-3x like" aria-hidden="true"></i>
+          <div class="dislike" id="dislike-{{ review.review_obj.id }}">
+            <i class="fa fa-thumbs-down fa-3x like" aria-hidden="true" onclick="dislikeReview({{ review.review_obj.id }})"></i>
           </div>
     </div>
     {% endfor %}
