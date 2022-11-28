@@ -26,6 +26,7 @@ function resultCheckBoxClicked() {
         }
     });
 }
+
 /*
 Handlers for Add Review form
  */
@@ -260,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
-// Functions to display edit review form on Profile plage
+// Functions to display edit review form on Profile page
 function showEditForm(reviewId) {
     let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
     staticText.style.display = "none";
@@ -467,8 +468,28 @@ function sortReviews(selectObject) {
 }
 
 
+/*
+Handlers for Like/Dislike functionality
+ */
+function likeReview(review_id) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const likeButton = document.getElementById('like-' + review_id);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            if (likeButton.classList.contains('active')) {
+                likeButton.classList.remove('active');
+            } else {
+                likeButton.classList.add('active');
+            }
+        }
+    };
+    xhttp.open("POST", review_id+"/like", true);
+    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+    xhttp.send();
+ }
+
+
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
    }
-     
-

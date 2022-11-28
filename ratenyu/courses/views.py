@@ -135,6 +135,7 @@ def delete_review(request, review_id: str):
     except Exception as e:
         return error404(request, error=e)
 
+
 def edit_review(request):
     if request.method == 'POST':
         r = Review.objects.get(pk=request.POST.get('review_id'))
