@@ -126,4 +126,9 @@ def save_course(request: HttpRequest, user_name: str):
             return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     return redirect("users:my_courses", user_name=user_name)
 
-# def delete_saved_course(request: HttpRequest, course_id: str):
+def delete_saved_course(request: HttpRequest, course_id: str):
+    course = Course.objects.get(pk=course_id)
+    user = request.user
+    saved_course = SavedCourse.objects.get(user_id = user, course_id = course)
+    saved_course.delete()
+    return redirect("users:my_courses", user_name=user.username)
