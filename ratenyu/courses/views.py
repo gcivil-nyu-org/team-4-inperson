@@ -4,7 +4,7 @@ from django.urls import reverse
 from courses.models import Review, Vote
 from professors.models import Professor
 from .course_util import *
-from util.views import error404
+from util.views import error404, util_like_review, util_dislike_review
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -36,6 +36,12 @@ def load_course_detail(
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
+        likes = []
+        dislikes = []
+        if request.user.id is not None:
+            user = User.objects.get(username=request.user)
+            likes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "L"]
+            dislikes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "D"]
 
         paginator = Paginator(reviews_list, 10)
         page_number = request.GET.get('page')
@@ -57,6 +63,8 @@ def load_course_detail(
                 "review_saved": review,
                 "review_message": review_message,
                 "page_obj": page_obj,
+                "likes": likes,
+                "dislikes": dislikes,
             }
         else:
             context = {
@@ -66,6 +74,8 @@ def load_course_detail(
                 "reviews_avg": reviews_avg,
                 "professors_list": professors_list,
                 "page_obj": page_obj,
+                "likes": likes,
+                "dislikes": dislikes,
             }
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
@@ -151,56 +161,8 @@ def edit_review(request):
 
 
 def like_review(request, review_id: str):
-    LOGGER.debug(f"like_review: {review_id}")
-    response = HttpResponse()
-    try :
-        if request.method == 'POST':
-            review = Review.objects.get(pk=review_id)
-            user = User.objects.get(username=request.user.username)
-            try:
-                vote = Vote.objects.get(review=review, user=user)
-                if vote.vote == 'L':
-                    vote.delete()
-                    response.content = 'Your like was removed!'
-                    return response
-                else:
-                    vote.vote = 'L'
-                    vote.save()
-                    response.content = "You liked this review!"
-                    return response
-            except Vote.DoesNotExist:
-                vote = Vote(review=review, user=user, vote="L")
-                vote.save()
-                response.content = "You liked this review!"
-                return response
-    except Exception as e:
-        LOGGER.exception(f"Could not like review, encountered error: {e}")
-        return HttpResponse(status=500)
+    return util_like_review(request=request, review_id=review_id)
 
 
 def dislike_review(request, review_id: str):
-    LOGGER.debug(f"dislike_review: {review_id}")
-    response = HttpResponse()
-    try :
-        if request.method == 'POST':
-            review = Review.objects.get(pk=review_id)
-            user = User.objects.get(username=request.user.username)
-            try:
-                vote = Vote.objects.get(review=review, user=user)
-                if vote.vote == 'D':
-                    vote.delete()
-                    response.content = 'Your dislike was removed!'
-                    return response
-                else:
-                    vote.vote = 'D'
-                    vote.save()
-                    response.content = "You disliked this review!"
-                    return response
-            except Vote.DoesNotExist:
-                vote = Vote(review=review, user=user, vote="D")
-                vote.save()
-                response.content = "You disliked this review!"
-                return response
-    except Exception as e:
-        LOGGER.exception(f"Could not dislike review, encountered error: {e}")
-        return HttpResponse(status=500)
+    return util_dislike_review(request=request, review_id=review_id)
