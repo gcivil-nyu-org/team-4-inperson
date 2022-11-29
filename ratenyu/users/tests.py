@@ -102,6 +102,18 @@ class TestProfilePage(TestCase):
         response = self.client.get(request_str)
         self.assertEqual(response.status_code, 200)
 
+    def test_pagination_in_mycourses_page_number_is_nonint(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/profile/viren/my_courses?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+
+    def test_pagination_in_mycourses_page_numer_out_range(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/profile/viren/my_courses?page=999"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+
 class TestSavedCourses(TestCase):
 
     def setUp(self) -> None:
