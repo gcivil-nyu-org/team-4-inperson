@@ -35,6 +35,11 @@
         {% if user.is_authenticated %}
             <button onclick="showSaveCourseForm()" style="float: right;">Save Course</button>
             <button onclick="showReviewForm()" style="float: right;">Add Review</button><br>
+    {% if messages %}
+        {% for message in messages %}
+        <h4 class="review_text_invalid" style="float:right;">{{message}}</h4>
+        {% endfor %}
+    {% endif %}
             <form id="save-course-form" method="POST" action="{% url "users:save_course" user_name=request.user %}">
                 {% csrf_token %}
                 <p>Select a professor (optional):</p>

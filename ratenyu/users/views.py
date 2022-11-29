@@ -131,11 +131,13 @@ def save_course(request: HttpRequest, user_name: str):
         try:
             SavedCourse.objects.create(user_id=request.user, course_id=course, professor_id=professor)
         except:
+            messages.add_message(request, messages.INFO, "This class was already saved")
             return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     else:
         try:
             SavedCourse.objects.create(course_id=course, user_id=request.user)
         except:
+            messages.add_message(request, messages.INFO, "This class was already saved")
             return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     return redirect("users:my_courses", user_name=user_name)
 
