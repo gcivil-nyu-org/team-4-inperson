@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from util.views import error404
 from .models import UserDetails
-from courses.models import Review, Course
+from courses.models import Review, Course, SavedCourse
 from .forms import UserRegistrationForm
 from .user_util import get_user_details
 
@@ -100,10 +100,10 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
 
 
 def get_courses(request: HttpRequest, user_name: str):
-    courses = Course.objects.get(course_id=170778)
+    mycourses = SavedCourse.objects.filter(user_id=request.user)
     user_details = get_user_details(request.user)
     context = {
-        "courses": courses,
+        "mycourses": mycourses,
         "user_details": user_details,
     }
     return render(request, "users/my_courses.html", context)
