@@ -118,6 +118,23 @@ class TestSavedCourses(TestCase):
         self.assertEqual(saved_course.course_id.course_id, "1", "Saved Course failed.")
         self.assertEqual(saved_course.professor_id.professor_id, "1", "Saved Course failed.")
 
+class TestDeleteSavedCourses(TestCase):
+
+    def setUp(self) -> None:
+        create_test_course()
+        create_test_professor()
+        create_test_user()
+        return super().setUp()
+    def test_delete_saved_course(self):
+        self.client.login(username="viren", password="viren")
+        user = User.objects.get(pk=1)
+        course = Course.objects.get(pk=1)
+        saved_course = create_saved_course(user = user, course = course)
+        self.assertEqual(1, len(SavedCourse.objects.filter(course_id=1, user_id = 1)), "Test SavedCourse was not created.")
+        url = f"http://127.0.0.1:8000/profile/delete_course/1"
+        self.client.get(url,
+                         {"course_id": "1"})
+        self.assertEqual(0, len(SavedCourse.objects.filter(course_id=1, user_id = 1)),"Test SavedCourse was not deleted")
 
 
 
@@ -190,3 +207,8 @@ def create_test_review_2(class_id: Class, user: User) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
+def create_saved_course(user: User, course: Course) -> SavedCourse:
+    return SavedCourse.objects.create(
+        user_id = user,
+        course_id = course)
