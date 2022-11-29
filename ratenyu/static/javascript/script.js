@@ -470,5 +470,18 @@ function sortReviews(selectObject) {
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
    }
-     
 
+
+// let placeholderText = {
+//     "CourseID": "example: CS-GY 6003",
+//     "CourseName": "example: Algorithms",
+//     "ProfessorName": "example: John Doe"
+// };
+//
+// function searchPlaceholder(){
+//
+//     let selection = document.getElementById("search_by");
+//     let inputBox = document.getElementById("query_search");
+//     let selectedVal = String(selection.value);
+//     inputBox.placeholder = String(placeholderText[selectedVal]);
+// }
