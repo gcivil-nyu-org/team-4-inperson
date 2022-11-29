@@ -104,7 +104,7 @@ def get_courses(request: HttpRequest, user_name: str):
     mycourses = SavedCourse.objects.filter(user_id=request.user)
     user_details = get_user_details(request.user)
 
-    paginator = Paginator(mycourses, 2)
+    paginator = Paginator(mycourses, 10)
     page_number = request.GET.get('page')
 
     try:
