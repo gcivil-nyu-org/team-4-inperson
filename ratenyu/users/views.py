@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from util.views import error404
 from .models import UserDetails
 from courses.models import Review, Course, SavedCourse
+from professors.models import Professor
 from .forms import UserRegistrationForm
 from .user_util import get_user_details
 
@@ -107,3 +108,16 @@ def get_courses(request: HttpRequest, user_name: str):
         "user_details": user_details,
     }
     return render(request, "users/my_courses.html", context)
+
+
+def save_course(request: HttpRequest, user_name: str):
+    course = Course.objects.get(pk=request.POST.get("course_id"))
+    professor = request.POST.get("save_course_professor_name")
+    if (professor):
+        professor = Professor.objects.get(name=professor)
+        SavedCourse.objects.create(user_id = request.user, course_id = course, professor_id = professor)
+    else:
+        SavedCourse.objects.create(course_id=course, user_id=request.user)
+    return redirect("users:my_courses", user_name=user_name)
+
+# def delete_saved_course(request: HttpRequest, course_id: str):
