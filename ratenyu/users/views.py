@@ -115,9 +115,15 @@ def save_course(request: HttpRequest, user_name: str):
     professor = request.POST.get("save_course_professor_name")
     if (professor):
         professor = Professor.objects.get(name=professor)
-        SavedCourse.objects.create(user_id = request.user, course_id = course, professor_id = professor)
+        try:
+            SavedCourse.objects.create(user_id=request.user, course_id=course, professor_id=professor)
+        except:
+            return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     else:
-        SavedCourse.objects.create(course_id=course, user_id=request.user)
+        try:
+            SavedCourse.objects.create(course_id=course, user_id=request.user)
+        except:
+            return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     return redirect("users:my_courses", user_name=user_name)
 
 # def delete_saved_course(request: HttpRequest, course_id: str):
