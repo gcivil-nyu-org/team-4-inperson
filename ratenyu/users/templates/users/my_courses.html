@@ -19,7 +19,7 @@
 </div>
 
 <div class="user-reviews">
-    <h1>My Courses</h1>
+    <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a> | <a href="{% url "users:my_courses" user_name=request.user %}">My Courses</a></h1>
     <div class="nyu-logo-light"> </div>
     {% for mycourse in mycourses %}
     <div class="user-review">
