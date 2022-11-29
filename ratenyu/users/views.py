@@ -103,10 +103,23 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
 def get_courses(request: HttpRequest, user_name: str):
     mycourses = SavedCourse.objects.filter(user_id=request.user)
     user_details = get_user_details(request.user)
+
+    paginator = Paginator(mycourses, 2)
+    page_number = request.GET.get('page')
+
+    try:
+        page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
     context = {
         "mycourses": mycourses,
         "user_details": user_details,
+        "page_obj": page_obj,
     }
+
     return render(request, "users/my_courses.html", context)
 
 
@@ -126,9 +139,10 @@ def save_course(request: HttpRequest, user_name: str):
             return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     return redirect("users:my_courses", user_name=user_name)
 
+
 def delete_saved_course(request: HttpRequest, course_id: str):
     course = Course.objects.get(pk=course_id)
     user = request.user
-    saved_course = SavedCourse.objects.get(user_id = user, course_id = course)
+    saved_course = SavedCourse.objects.get(user_id=user, course_id=course)
     saved_course.delete()
     return redirect("users:my_courses", user_name=user.username)
