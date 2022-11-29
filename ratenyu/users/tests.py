@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
-from courses.models import Course, Review, Class
+from courses.models import Course, Review, Class, SavedCourse
 from professors.models import Professor
 from users.models import UserDetails
 import logging
@@ -101,6 +101,24 @@ class TestProfilePage(TestCase):
         request_str = f"http://127.0.0.1:8000/profile/viren?page=999"
         response = self.client.get(request_str)
         self.assertEqual(response.status_code, 200)
+
+class TestSavedCourses(TestCase):
+
+    def setUp(self) -> None:
+        create_test_course()
+        create_test_professor()
+        create_test_user()
+        return super().setUp()
+    def test_saved_course(self):
+        self.client.login(username="viren", password="viren")
+        url = f"http://127.0.0.1:8000/profile/viren/save_course"
+        self.client.post(url,
+                         {"course_id": "1", "save_course_professor_name": "John Doe"})
+        saved_course = SavedCourse.objects.get(pk=1)
+        self.assertEqual(saved_course.course_id.course_id, "1", "Saved Course failed.")
+        self.assertEqual(saved_course.professor_id.professor_id, "1", "Saved Course failed.")
+
+
 
 
 def create_test_course() -> Course:
