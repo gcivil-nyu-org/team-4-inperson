@@ -130,6 +130,14 @@ class TestSavedCourses(TestCase):
         self.assertEqual(saved_course.course_id.course_id, "1", "Saved Course failed.")
         self.assertEqual(saved_course.professor_id.professor_id, "1", "Saved Course failed.")
 
+    def test_saved_course2(self):
+        self.client.login(username="viren", password="viren")
+        url = f"http://127.0.0.1:8000/profile/viren/save_course"
+        self.client.post(url,
+                         {"course_id": "1"})
+        saved_course = SavedCourse.objects.get(pk=1)
+        self.assertEqual(saved_course.course_id.course_id, "1", "Saved Course failed.")
+
 class TestDeleteSavedCourses(TestCase):
 
     def setUp(self) -> None:
