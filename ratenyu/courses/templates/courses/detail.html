@@ -106,6 +106,7 @@
         <p><span class="rev-title">Course: {{ course.course_title }}
                 | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
+        {% if user.is_authenticated %}
         <!-- Thumbs up -->
         <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
           <i class="fa fa-thumbs-up fa-3x like"
@@ -116,6 +117,7 @@
           <i class="fa fa-thumbs-down fa-3x like"
              aria-hidden="true" onclick="dislikeReview({{ review.review_obj.id }})"></i>
         </div>
+        {% endif %}
     </div>
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
