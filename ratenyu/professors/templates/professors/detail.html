@@ -97,6 +97,7 @@
             <p><span class="rev-title">Course:<a href="{% url 'courses:course_detail' course_id=review.course_obj.course_id %}"> {{ review.course_obj.course_title }}</a>
                 | Professor: {{ professor.name }}</span><br>
             {{ review.review_obj.review_text }}</p>
+            {% if user.is_authenticated %}
             <!-- Thumbs up -->
             <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
                 <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
@@ -121,6 +122,7 @@
                 <h3 align=" center" id="dislike-count-{{ review.review_obj.id }}"> {{review.dislike}}</h3>
                 </a>
             </div>
+            {% endif %}
         </div>
         {% endfor %}
         <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
