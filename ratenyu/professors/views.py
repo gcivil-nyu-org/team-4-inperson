@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from .models import Professor
-from courses.models import Class, Course, Review
+from courses.models import Class, Course, Review, Vote
 from courses.course_util import *
-from util.views import error404
+from util.views import error404, util_like_review, util_dislike_review
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import logging
 
@@ -35,9 +35,27 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
         courses_list = [cl.course for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
+        likes = []
+        dislikes = []
+        if request.user.id is not None:
+            user = User.objects.get(username=request.user)
+            likes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "L"]
+            dislikes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "D"]
 
         paginator = Paginator(reviews_list, 10)
         page_number = request.GET.get('page')
+
+        for rev in reviews_list:
+            vote = Vote.objects.filter(review=rev['review_obj'])
+            like_counter = 0
+            dislike_counter = 0
+            for i in vote:
+                if i.vote == 'L':
+                    like_counter += 1
+                elif i.vote == 'D':
+                    dislike_counter += 1
+            rev["like"] = like_counter
+            rev["dislike"] = dislike_counter
 
         try:
             page_obj = paginator.get_page(page_number)
@@ -55,6 +73,8 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
                 "review_saved": review,
                 "review_message": review_message,
                 "page_obj": page_obj,
+                "likes": likes,
+                "dislikes": dislikes,
             }
         else:
             context = {
@@ -63,7 +83,17 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
                 "reviews_list": reviews_list,
                 "reviews_avg": reviews_avg,
                 "page_obj": page_obj,
+                "likes": likes,
+                "dislikes": dislikes,
             }
         return render(request, "professors/detail.html", context)
     except Exception as e:
         return error404(request, error=e)
+
+
+def like_review(request, review_id: str):
+    return util_like_review(request=request, review_id=review_id)
+
+
+def dislike_review(request, review_id: str):
+    return util_dislike_review(request=request, review_id=review_id)
