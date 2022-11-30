@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from .models import Professor
-from courses.models import Class, Course, Review, Vote
+from courses.models import Class, Course, Review
+from util.models import Vote
 from courses.course_util import *
 from util.views import error404, util_like_review, util_dislike_review
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage

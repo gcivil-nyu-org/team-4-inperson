@@ -2,7 +2,8 @@ import logging
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from courses.models import Review, Vote
+from courses.models import Review
+from .models import Vote
 
 LOGGER = logging.getLogger("project")
 
