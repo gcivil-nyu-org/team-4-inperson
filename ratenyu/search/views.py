@@ -13,7 +13,9 @@ from util.views import error404
 def index(request):
     return render(request, "search/index.html")
 
-
+'''
+This functions gets called when someone hits search on the index page
+'''
 def search_by_select(request: HttpRequest):
     search_by = request.GET["search_by"]
     logger.debug(f"search_by: {search_by}")
