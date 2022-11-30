@@ -946,6 +946,10 @@ h4.review_text_invalid {
   color: #2EBDD1;
 }
 
+a.likes {
+  all: unset;
+}
+
 
 /* Fonts */
 
