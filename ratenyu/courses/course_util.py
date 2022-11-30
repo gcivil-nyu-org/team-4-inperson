@@ -87,8 +87,8 @@ def course_id_query(course_subject_code: str, catalog_number: str) -> Class:
 
 def get_sub_code_and_cat_num(query: str) -> tuple:
     course_subject_code = re.search(r"^[a-zA-Z]+[-\s]?[uy|UY|gy|GY]{2}", query).group(0)
-    if "-" not in course_subject_code:
-        course_subject_code = course_subject_code.replace(" ", "-")
+    if " " not in course_subject_code and "-" not in course_subject_code:
+        course_subject_code = course_subject_code[:-2] + "-" + course_subject_code[-2:]
     catalog_number = re.search(r"[0-9]{4}", query).group(0)
     return course_subject_code, catalog_number
 
