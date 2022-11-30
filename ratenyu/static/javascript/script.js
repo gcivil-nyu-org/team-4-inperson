@@ -467,6 +467,12 @@ function sortReviews(selectObject) {
     }
 }
 
+function showSaveCourseForm() {
+    let saveCourseForm = document.getElementById("save-course-form");
+    saveCourseForm.style.display = "block";
+}
+
+
 
 /*
 Handlers for Like/Dislike Button functionality

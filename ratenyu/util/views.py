@@ -1,10 +1,4 @@
-import logging
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from courses.models import Review, Vote
-
-LOGGER = logging.getLogger("project")
 
 
 def error404(request, error=""):
@@ -59,3 +53,11 @@ def util_dislike_review(request, review_id: str):
     except Exception as e:
         LOGGER.exception(f"Could not dislike review, encountered error: {e}")
         return HttpResponse(status=500)
+
+
+def page_not_found(request, exception):
+    return error404(request,  f"We could not find the page you were looking for.")
+
+
+def handler_500(request):
+    return error404(request, f"We could not find the page you were looking for.")

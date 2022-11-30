@@ -28,3 +28,8 @@ urlpatterns = [
     path("logout_social/", LogoutView.as_view()),
     path("", include("users.urls")),
 ]
+
+#404 url handler
+handler404 = "util.views.page_not_found"
+
+handler500 = "util.views.handler_500"

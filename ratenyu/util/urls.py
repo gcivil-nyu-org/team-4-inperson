@@ -6,3 +6,4 @@ app_name = "util"
 urlpatterns = [
     path("error", views.error404, name="error404"),
 ]
+
