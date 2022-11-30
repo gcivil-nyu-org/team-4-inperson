@@ -1,6 +1,5 @@
 <ul class="navbar">
-    <li class="title" href="">RateNYU</li>
-    <li><a href="{% url 'search:index' %}">Search</a></li>
+    <li><a href="{% url 'search:index' %}" class="title">RateNYU</a></li>
     <li><a href="{% url 'courses:add_review'  %}">Add Review</a></li>
     <div class="navbar-right">
         <li class="navbar-user"><a href="{% url 'users:profile' user_name=user.username %}">{{  user.username }}</a></li>

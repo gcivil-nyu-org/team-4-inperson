@@ -12,16 +12,15 @@
 
 <div class="searchbar">
     <form class="search" method="GET" action="search">
-        <select class="dropdown" name="search_by">
+        <select class="dropdown" name="search_by" id="search_by" onchange="searchPlaceholder()">
             <option value="CourseID">Course ID</option>
             <option value="CourseName">Course Name</option>
             <option value="ProfessorName">Professor Name</option>
         </select>
-        <input type="text" class="search" name="query" placeholder="Start Typing">
+        <input type="text" class="search" name="query" id="query_search" placeholder="example: CS-GY 6003">
         <button type="submit" class="search">Search!</button>
     </form>
     <div class="nyu-logo">
     </div>
 </div>
-
 {% endblock %}
