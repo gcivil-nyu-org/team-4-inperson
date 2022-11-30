@@ -101,10 +101,12 @@
             <!-- Thumbs up -->
             <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
               <i class="fa fa-thumbs-up fa-3x like" aria-hidden="true" onclick="likeReview({{ review.review_obj.id }})"></i>
+              <h3 align=" center" id="like-count-{{ review.review_obj.id }}"> {{review.like}}</h3>
             </div>
             <!-- Thumbs down -->
             <div class="dislike {% if review.review_obj.id in dislikes %} active {% endif %}" id="dislike-{{ review.review_obj.id }}">
               <i class="fa fa-thumbs-down fa-3x like" aria-hidden="true" onclick="dislikeReview({{ review.review_obj.id }})"></i>
+              <h3 align=" center" id="dislike-count-{{ review.review_obj.id }}"> {{review.dislike}}</h3>
             </div>
             {% endif %}
         </div>
