@@ -1,8 +1,9 @@
 from django.test import TestCase, RequestFactory, Client
 from django.urls import reverse
 from professors.models import Professor
-from courses.models import Course, Class, Vote, Review
+from courses.models import Course, Class, Review
 from users.models import User
+from .models import Vote
 
 import users.tests as user_tests
 

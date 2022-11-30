@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from courses.models import Review, Vote
+from courses.models import Review
+from util.models import Vote
 from professors.models import Professor
 from .course_util import *
 from util.views import error404, util_like_review, util_dislike_review
