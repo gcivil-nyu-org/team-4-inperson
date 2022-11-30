@@ -482,14 +482,14 @@ function likeReview(review_id) {
         if (this.readyState == 4 && this.status == 200) {
             if (likeButton.classList.contains('active')) {
                 likeButton.classList.remove('active');
-                document.getElementById('like-count-' + review_id).innerHTML = parseInt(likeCount) - 1;
+                document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) - 1).toString();
             } else {
                 if (dislikeButton.classList.contains('active')) {
                     dislikeButton.classList.remove('active');
-                    document.getElementById('dislike-count-' + review_id).innerHTML = parseInt(dislikeCount) - 1;
+                    document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) - 1).toString();
                 }
                 likeButton.classList.add('active');
-                document.getElementById('like-count-' + review_id).innerHTML = parseInt(likeCount) + 1;
+                document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) + 1).toString();
             }
         }
     };
@@ -509,14 +509,14 @@ function likeReview(review_id) {
         if (this.readyState == 4 && this.status == 200) {
             if (dislikeButton.classList.contains('active')) {
                 dislikeButton.classList.remove('active');
-                document.getElementById('dislike-count-' + review_id).innerHTML = parseInt(dislikeCount) - 1;
+                document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) - 1).toString();
             } else {
                 if (likeButton.classList.contains('active')) {
                     likeButton.classList.remove('active');
-                    document.getElementById('like-count-' + review_id).innerHTML = parseInt(likeCount) - 1;
+                    document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) - 1).toString();
                 }
                 dislikeButton.classList.add('active');
-                document.getElementById('dislike-count-' + review_id).innerHTML = parseInt(dislikeCount) + 1;
+                document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) + 1).toString();
             }
         }
     };
