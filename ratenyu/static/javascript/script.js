@@ -261,7 +261,8 @@ document.addEventListener('DOMContentLoaded', function(){
     })();//end of function
 })
 
-// Functions to display edit review form on Profile page
+
+// Functions to display edit review form on Profile plage
 function showEditForm(reviewId) {
     let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
     staticText.style.display = "none";
