@@ -32,6 +32,10 @@
   height: 60px;
 }
 
+.navbar a.title {
+  font-size: 20px;
+}
+
 .navbar-user {
   float: left;
   color: #FFFFFF;
