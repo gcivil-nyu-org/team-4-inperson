@@ -62,10 +62,10 @@ def get_professor_results_info(professor: Class) -> dict:
         "reviews_avg": reviews_avg,
     }
 
-
-def get_sub_code_and_cat_num(query: str) -> tuple:
-    course_subject_code = re.search(r"^[a-zA-Z]+[-\s][a-zA-Z]{2}", query).group(0)
-    if "-" not in course_subject_code:
-        course_subject_code = course_subject_code.replace(" ", "-")
-    catalog_number = re.search(r"[0-9]{4}", query).group(0)
-    return course_subject_code, catalog_number
+# This does not get executed as the same function exists in course_util.py. Coveralls has 0 coverage on this function.
+# def get_sub_code_and_cat_num(query: str) -> tuple:
+#     course_subject_code = re.search(r"^[a-zA-Z]+[-\s][a-zA-Z]{2}", query).group(0)
+#     if "-" not in course_subject_code:
+#         course_subject_code = course_subject_code.replace(" ", "-")
+#     catalog_number = re.search(r"[0-9]{4}", query).group(0)
+#     return course_subject_code, catalog_number
