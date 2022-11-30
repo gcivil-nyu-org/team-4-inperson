@@ -45,6 +45,18 @@ def load_course_detail(
 
         paginator = Paginator(reviews_list, 10)
         page_number = request.GET.get('page')
+        
+        for review in reviews_list:
+            vote = Vote.objects.filter(review=review['review_obj'])
+            like_counter = 0
+            dislike_counter = 0
+            for i in vote:
+                if i.vote == 'L':
+                    like_counter += 1
+                elif i.vote == 'D':
+                    dislike_counter += 1
+            review["like"] = like_counter
+            review["dislike"] = dislike_counter
 
         try:
             page_obj = paginator.get_page(page_number)
