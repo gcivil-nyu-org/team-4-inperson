@@ -6,7 +6,6 @@ from users.models import User
 
 import users.tests as user_tests
 
-# Create your tests here.
 
 class TestVotes(TestCase):
     def setUp(self) -> None:
