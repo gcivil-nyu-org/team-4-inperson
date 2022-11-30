@@ -955,6 +955,33 @@ h4.review_text_invalid {
 .pagination{
   text-align: center;
 }
+
+
+/* Styling for Like/Dislike buttons */
+.like,
+.dislike {
+  font-size: 10px;
+  display: inline-block;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.dislike:hover,
+.like:hover {
+  color: #2EBDD1;
+  transition: all .2s ease-in-out;
+  transform: scale(1.1);
+}
+
+.active {
+  color: #2EBDD1;
+}
+
+a.likes {
+  all: unset;
+}
+
+
 /* Fonts */
 
 @font-face {

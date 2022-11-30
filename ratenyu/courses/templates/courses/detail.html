@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-{#Commenting for now until we can decide how to populate#}
-{#    <ul class="detail-left-section">#}
-{#        <li>Last Offered: <span class="left-section">{{ classes.last_offered }}</span></li>#}
-{#        <li>Class Location: <span class="left-section">{{ classes.location }}</span></li>#}
-{#        <li>Class Capacity: <span class="left-section">{{ classes.enroll_capacity }}</span></li>#}
-{#    </ul>#}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="detail-title">
     <h1 class="detail-name">{{ course.course_title }}</h1>
@@ -135,10 +129,34 @@
         <p><span class="rev-title">Course: {{ course.course_title }}
                 | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
             {{ review.review_obj.review_text }}</p>
+
+        <!-- Thumbs up -->
+        <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
+            <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
+            <i class="fa fa-thumbs-up fa-3x like"
+             aria-hidden="true"
+             {% if user.is_authenticated %} onclick="likeReview({{ review.review_obj.id }})"
+             {% else %}
+             {% endif %}>
+            </i>
+            <h3 align=" center" id="like-count-{{ review.review_obj.id }}"> {{review.like}}</h3>
+            </a>
+        </div>
+        <!-- Thumbs down -->
+        <div class="dislike {% if review.review_obj.id in dislikes %} active {% endif %}" id="dislike-{{ review.review_obj.id }}">
+            <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
+            <i class="fa fa-thumbs-down fa-3x like"
+             aria-hidden="true"
+             {% if user.is_authenticated %} onclick="dislikeReview({{ review.review_obj.id }})"
+             {% else %}
+             {% endif %}>
+            </i>
+            <h3 align=" center" id="dislike-count-{{ review.review_obj.id }}"> {{review.dislike}}</h3>
+            </a>
+        </div>
     </div>
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
-
 
     <div class="pagination">
         <span class="step-links">

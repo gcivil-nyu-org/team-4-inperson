@@ -14,7 +14,7 @@ script:
   - black ratenyu/
   - ratenyu/manage.py makemigrations
   - ratenyu/manage.py migrate
-  - coverage run ratenyu/manage.py test search.tests users.tests professors.tests courses.tests
+  - coverage run ratenyu/manage.py test search.tests users.tests professors.tests courses.tests util.tests
 
 after_success:
   coveralls
