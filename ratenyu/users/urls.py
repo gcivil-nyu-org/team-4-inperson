@@ -46,8 +46,5 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path("profile/<str:user_name>", views.get_profile, name="profile"),
-    path("profile/<str:user_name>/my_courses", views.get_courses, name="my_courses"),
-    path("profile/<str:user_name>/save_course", views.save_course, name="save_course"),
-    path("profile/delete_course/<str:course_id>", views.delete_saved_course, name="delete_saved_course")
+    path("profile/<str:user_name>", views.get_profile, name="profile")
 ]
