@@ -150,6 +150,24 @@ class TestCourseIdSearch(TestCase):
         response.client = Client()
         self.assertRedirects(response, expected_url="/courses/1")
 
+    def test_valid_course_id_case_3(self) -> None:
+        """if a valid course id is passed, it should return the course details page"""
+        # Testing the get view for search_by_course_id
+        request_str = f"search/search?search_by=CourseID&query=BTGY 6093"
+        request = self.factory.get(request_str)
+        response = search_by_select(request=request)
+        response.client = Client()
+        self.assertRedirects(response, expected_url="/courses/1")
+    
+    def test_valid_course_id_case_4(self) -> None:
+        """if a valid course id is passed, it should return the course details page"""
+        # Testing the get view for search_by_course_id
+        request_str = f"search/search?search_by=CourseID&query=BTGY6093"
+        request = self.factory.get(request_str)
+        response = search_by_select(request=request)
+        response.client = Client()
+        self.assertRedirects(response, expected_url="/courses/1")
+
     def test_invalid_course_id(self) -> None:
         """if an invalid course id is passed, it should return the search page with no results"""
         request_str = f"search/search?search_by=CourseID&query=VIP-GY 6094"
