@@ -1,4 +1,10 @@
+import logging
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from courses.models import Review, Vote
+
+LOGGER = logging.getLogger("project")
 
 
 def error404(request, error=""):
