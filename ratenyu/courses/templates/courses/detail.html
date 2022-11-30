@@ -154,7 +154,6 @@
             <h3 align=" center" id="dislike-count-{{ review.review_obj.id }}"> {{review.dislike}}</h3>
             </a>
         </div>
-        {% endif %}
     </div>
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews_list %} none  {% else %} block {% endif %};"> No Reviews to display</h3>
