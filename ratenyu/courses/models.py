@@ -48,3 +48,9 @@ class SavedCourse(models.Model):
 
     class Meta:
         unique_together = ('user_id', 'course_id')
+
+
+class Vote(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    review = models.ForeignKey(to=Review, on_delete=models.CASCADE)
+    vote = models.CharField(max_length=1, choices=(("L", "L"), ("D", "D")))
