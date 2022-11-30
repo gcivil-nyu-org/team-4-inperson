@@ -34,7 +34,7 @@
         <h4 class="review_text_invalid" style="float:right;">{{message}}</h4>
         {% endfor %}
     {% endif %}
-            <form id="save-course-form" method="POST" action="">
+            <form id="save-course-form" method="POST" action="{% url "users:save_course" user_name=request.user %}">
                 {% csrf_token %}
                 <p>Select a professor (optional):</p>
                 <input value="{{ course.course_id }}" type="hidden" name="course_id">
