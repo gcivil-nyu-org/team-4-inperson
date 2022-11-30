@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class = "user-panel" id="profile_div">
+    <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
+    <div class="user-form">
+        <h4 class = 'user-form'> Name </h4>
+        <p id='user_name'> {{user_details.name}}</p>
+        <h4 class = 'user-form'> Username </h4>
+        <p id="user_username"> {{user_details.user}} </p>
+        <h4 class = 'user-form'> Major </h4>
+        <p id="user_major" > {{user_details.major}} </p>
+        <h4 class = 'user-form'> Student Status </h4>
+        <p id="user_status"> {{user_details.student_status}} </p>
+<!--        <button type="button" class="user-form" id="my_profile">My Profile</button>-->
+    </div>
+</div>
+
+<div class="user-reviews">
+    <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a> | <a href="{% url "users:my_courses" user_name=request.user %}">My Courses</a></h1>
+    <div class="nyu-logo-light"> </div>
+    {% for mycourse in page_obj %}
+    <div class="user-review">
+        <p>
+            <span class="user-title">
+                Course: <a href="{% url 'courses:course_detail' course_id=mycourse.course_id.course_id %}">{{ mycourse.course_id.course_title }}</a>
+            </span>
+            {% if mycourse.professor_id %}
+            <span class="user-title">
+                Professor: <a href="{% url 'professors:professor_detail' professor_id=mycourse.professor_id.professor_id %}">{{ mycourse.professor_id.name }}</a>
+            </span>
+            {% endif %}
+            <a class="delete-review-btn" href="{% url 'users:delete_saved_course' mycourse.course_id.course_id %}">Delete Course</a>
+            <br>
+            <span name="static-review-text-{{ review.id }}"><br>{{ mycourse.course_id.course_description }}<br></span>
+        </p>
+    </div>
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+</div>
+
+{% endblock %}

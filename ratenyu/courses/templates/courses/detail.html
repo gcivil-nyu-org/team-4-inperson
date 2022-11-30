@@ -33,7 +33,30 @@
         </select>
     </form>
         {% if user.is_authenticated %}
-            <button onclick="showReviewForm()" style="float: right;">Add Review</button>
+            <button onclick="showSaveCourseForm()" style="float: right;">Save Course</button>
+            <button onclick="showReviewForm()" style="float: right;">Add Review</button><br>
+    {% if messages %}
+        {% for message in messages %}
+        <h4 class="review_text_invalid" style="float:right;">{{message}}</h4>
+        {% endfor %}
+    {% endif %}
+            <form id="save-course-form" method="POST" action="{% url "users:save_course" user_name=request.user %}">
+                {% csrf_token %}
+                <p>Select a professor (optional):</p>
+                <input value="{{ course.course_id }}" type="hidden" name="course_id">
+                <div><select id="professor-dropdown" name="save_course_professor_name">
+                    <option value=""></option>
+                {% for professor in professors_list %}
+                    <option value="{{professor.name}}" >{{professor.name}}</option>
+                {% endfor %}
+                </select></div><br>
+                <div>
+                <button type="submit" class="add_review_button" name="submit" >Save</button>
+                </div>
+            </form>
+
+
+
         {% endif %}
 
 

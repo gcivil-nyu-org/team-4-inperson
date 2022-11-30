@@ -466,6 +466,12 @@ function sortReviews(selectObject) {
     }
 }
 
+function showSaveCourseForm() {
+    let saveCourseForm = document.getElementById("save-course-form");
+    saveCourseForm.style.display = "block";
+}
+
+
 
 if ( window.history.replaceState ) {
 	window.history.replaceState( null, null, window.location.href );
