@@ -51,7 +51,7 @@
 </form>
 
 <div class="user-reviews">
-    <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a></h1>
+    <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a> | <a href="{% url "users:my_courses" user_name=request.user %}">My Courses</a></h1>
     {% if messages %}
         {% for message in messages %}
             {% if message.success %}

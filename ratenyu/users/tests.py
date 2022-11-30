@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from courses.models import Course, Review, Class
+from util.models import SavedCourse
 from professors.models import Professor
 from users.models import UserDetails
 import logging
@@ -101,7 +102,60 @@ class TestProfilePage(TestCase):
         request_str = f"http://127.0.0.1:8000/profile/viren?page=999"
         response = self.client.get(request_str)
         self.assertEqual(response.status_code, 200)
+    
+    def test_pagination_in_mycourses_page_number_is_nonint(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/profile/viren/my_courses?page=thisIsTheTestForPageNumberNotInt"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
 
+    def test_pagination_in_mycourses_page_numer_out_range(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/profile/viren/my_courses?page=999"
+        response = self.client.get(request_str)
+        self.assertEqual(response.status_code, 200)
+
+class TestSavedCourses(TestCase):
+
+    def setUp(self) -> None:
+        create_test_course()
+        create_test_professor()
+        create_test_user()
+        return super().setUp()
+    def test_saved_course(self):
+        self.client.login(username="viren", password="viren")
+        url = f"http://127.0.0.1:8000/profile/viren/save_course"
+        self.client.post(url,
+                         {"course_id": "1", "save_course_professor_name": "John Doe"})
+        saved_course = SavedCourse.objects.get(pk=1)
+        self.assertEqual(saved_course.course_id.course_id, "1", "Saved Course failed.")
+        self.assertEqual(saved_course.professor_id.professor_id, "1", "Saved Course failed.")
+
+    def test_saved_course2(self):
+        self.client.login(username="viren", password="viren")
+        url = f"http://127.0.0.1:8000/profile/viren/save_course"
+        self.client.post(url,
+                         {"course_id": "1"})
+        saved_course = SavedCourse.objects.get(pk=1)
+        self.assertEqual(saved_course.course_id.course_id, "1", "Saved Course failed.")
+
+class TestDeleteSavedCourses(TestCase):
+
+    def setUp(self) -> None:
+        create_test_course()
+        create_test_professor()
+        create_test_user()
+        return super().setUp()
+    def test_delete_saved_course(self):
+        self.client.login(username="viren", password="viren")
+        user = User.objects.get(pk=1)
+        course = Course.objects.get(pk=1)
+        saved_course = create_saved_course(user = user, course = course)
+        self.assertEqual(1, len(SavedCourse.objects.filter(course_id=1, user_id = 1)), "Test SavedCourse was not created.")
+        url = f"http://127.0.0.1:8000/profile/delete_course/1"
+        self.client.get(url,
+                         {"course_id": "1"})
+        self.assertEqual(0, len(SavedCourse.objects.filter(course_id=1, user_id = 1)),"Test SavedCourse was not deleted")
 
 def create_test_course() -> Course:
     Course.objects.create(
@@ -172,3 +226,8 @@ def create_test_review_2(class_id: Class, user: User) -> Review:
         user=user,
         pub_date=timezone.now(),
     )
+
+def create_saved_course(user: User, course: Course) -> SavedCourse:
+    return SavedCourse.objects.create(
+        user_id = user,
+        course_id = course)
