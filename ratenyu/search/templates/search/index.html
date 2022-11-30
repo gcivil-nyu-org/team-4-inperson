@@ -23,22 +23,4 @@
     <div class="nyu-logo">
     </div>
 </div>
-
-
-<script>
-    let placeholderText = {
-        "CourseID": "example: CS-GY 6003",
-        "CourseName": "example: Algorithms",
-        "ProfessorName": "example: John Doe"
-    };
-
-    let selection = document.getElementById("search_by");
-    let inputBox = document.getElementById("query_search");
-    selection.onchange=function(){
-        let selectedVal = String(selection.value);
-        // document.write(placeholderText[selectedVal]);
-        inputBox.placeholder = String(placeholderText[selectedVal]);
-    }
-
-</script>
 {% endblock %}
