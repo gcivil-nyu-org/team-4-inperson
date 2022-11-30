@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from courses.models import Review, Vote
+from courses.models import Review
 from professors.models import Professor
 from .course_util import *
-from util.views import error404, util_like_review, util_dislike_review
+from util.views import error404
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -36,27 +36,9 @@ def load_course_detail(
         professors_list = [cl.professor for cl in classes]
         reviews_list = create_review_objects(classes)
         reviews_avg = calculate_rating_avg(reviews_list)
-        likes = []
-        dislikes = []
-        if request.user.id is not None:
-            user = User.objects.get(username=request.user)
-            likes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "L"]
-            dislikes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "D"]
 
         paginator = Paginator(reviews_list, 10)
         page_number = request.GET.get('page')
-        
-        for rev in reviews_list:
-            vote = Vote.objects.filter(review=rev['review_obj'])
-            like_counter = 0
-            dislike_counter = 0
-            for i in vote:
-                if i.vote == 'L':
-                    like_counter += 1
-                elif i.vote == 'D':
-                    dislike_counter += 1
-            rev["like"] = like_counter
-            rev["dislike"] = dislike_counter
 
         try:
             page_obj = paginator.get_page(page_number)
@@ -75,8 +57,6 @@ def load_course_detail(
                 "review_saved": review,
                 "review_message": review_message,
                 "page_obj": page_obj,
-                "likes": likes,
-                "dislikes": dislikes,
             }
         else:
             context = {
@@ -86,8 +66,6 @@ def load_course_detail(
                 "reviews_avg": reviews_avg,
                 "professors_list": professors_list,
                 "page_obj": page_obj,
-                "likes": likes,
-                "dislikes": dislikes,
             }
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
@@ -170,11 +148,3 @@ def edit_review(request):
         r.pub_date = timezone.now()
         r.save()
     return redirect('users:profile', user_name=request.user)
-
-
-def like_review(request, review_id: str):
-    return util_like_review(request=request, review_id=review_id)
-
-
-def dislike_review(request, review_id: str):
-    return util_dislike_review(request=request, review_id=review_id)
