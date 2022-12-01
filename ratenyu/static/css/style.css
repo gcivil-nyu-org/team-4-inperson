@@ -667,7 +667,7 @@ color: white;
 /*set appropriate area for the user form*/
 .user-form{
   width: 200px;
-  height: 20%;
+  /*height: 20%; Commented this because text was going out of the box while viewing profile.*/
   left: 24px;
   margin-top: 50%;
   text-align: center;
