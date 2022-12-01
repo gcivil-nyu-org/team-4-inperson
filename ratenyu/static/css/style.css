@@ -104,8 +104,8 @@ h1.welcome {
   color: black;
   display: flex;
   justify-content: center;
-  padding-top: 150px;
-  line-height: 40%;
+  padding-top: 100px;
+  /* line-height: 40%; Bug number 211*/
 }
 
 h1, h2, h3 {
