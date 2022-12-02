@@ -1,29 +1,51 @@
-from django.db.models import Q
+#from django.db.models import Q
 from django.db.models.query import QuerySet
-from courses.models import Course, Class, Review
+from courses.models import Course, Class
 from professors.models import Professor
 from courses.course_util import *
-import re
+from fuzzywuzzy import fuzz
 
 
 def course_query(query: str) -> QuerySet[Course]:
-    courses = Course.objects.filter(
-        Q(course_title__istartswith=f"{query} ")
-        | Q(course_title__icontains=f" {query} ")
-        | Q(course_title__iendswith=f" {query}")
-        | Q(course_title__iexact=query)
-    )
-    return courses
-
+    courses = {}
+    if (len(query) > 3):
+        all_courses = Course.objects.all()
+        for i in all_courses:
+            if (fuzz.WRatio(query, i.course_title) >= 90 or fuzz.token_sort_ratio(query, i.course_title) >= 90 or fuzz.partial_ratio(query, i.course_title) >= 70):
+                print(i.course_title, query, fuzz.WRatio(query, i.course_title), fuzz.token_sort_ratio(query, i.course_title), fuzz.partial_ratio(query, i.course_title))
+                courses[i] = fuzz.WRatio(query, i.course_title)
+        sorted_course = sorted(courses, key=courses.get, reverse=True)
+    return sorted_course
 
 def professor_query(query: str) -> QuerySet[Professor]:
-    professors = Professor.objects.filter(
-        Q(name__istartswith=f"{query} ")
-        | Q(name__icontains=f" {query} ")
-        | Q(name__iendswith=f" {query}")
-        | Q(name__iexact=query)
-    )
-    return professors
+    professors = {}
+    if (len(query) > 3):
+        all_professors = Professor.objects.all()
+        for i in all_professors:
+            if (fuzz.WRatio(query, i.name) >= 90 or fuzz.token_sort_ratio(query, i.name) >= 80 or fuzz.partial_ratio(query, i.name) >= 70):
+                print(i.name, query,fuzz.WRatio(query, i.name), fuzz.token_sort_ratio(query, i.name), fuzz.partial_ratio(query, i.name))
+                professors[i] = fuzz.WRatio(query, i.name)
+        sorted_professors = sorted(professors, key=professors.get, reverse=True)
+    return sorted_professors
+
+# def course_query(query: str) -> QuerySet[Course]:
+#     courses = Course.objects.filter(
+#         Q(course_title__istartswith=f"{query} ")
+#         | Q(course_title__icontains=f" {query} ")
+#         | Q(course_title__iendswith=f" {query}")
+#         | Q(course_title__iexact=query)
+#     )
+#     return courses
+
+
+# def professor_query(query: str) -> QuerySet[Professor]:
+#     professors = Professor.objects.filter(
+#         Q(name__istartswith=f"{query} ")
+#         | Q(name__icontains=f" {query} ")
+#         | Q(name__iendswith=f" {query}")
+#         | Q(name__iexact=query)
+#     )
+#     return professors
 
 
 def course_id_query(course_subject_code: str, catalog_number: str) -> Course:
