@@ -8,22 +8,22 @@ from fuzzywuzzy import fuzz
 
 def course_query(query: str) -> QuerySet[Course]:
     courses = {}
+    sorted_course = []
     if (len(query) > 3):
         all_courses = Course.objects.all()
         for i in all_courses:
-            if (fuzz.WRatio(query, i.course_title) >= 90 or fuzz.token_sort_ratio(query, i.course_title) >= 90 or fuzz.partial_ratio(query, i.course_title) >= 70):
-                print(i.course_title, query, fuzz.WRatio(query, i.course_title), fuzz.token_sort_ratio(query, i.course_title), fuzz.partial_ratio(query, i.course_title))
+            if (fuzz.WRatio(query, i.course_title) >= 90 or fuzz.token_sort_ratio(query, i.course_title) >= 50 or fuzz.partial_ratio(query, i.course_title) >= 70):
                 courses[i] = fuzz.WRatio(query, i.course_title)
         sorted_course = sorted(courses, key=courses.get, reverse=True)
     return sorted_course
 
 def professor_query(query: str) -> QuerySet[Professor]:
     professors = {}
+    sorted_professors = []
     if (len(query) > 3):
         all_professors = Professor.objects.all()
         for i in all_professors:
-            if (fuzz.WRatio(query, i.name) >= 90 or fuzz.token_sort_ratio(query, i.name) >= 80 or fuzz.partial_ratio(query, i.name) >= 70):
-                print(i.name, query,fuzz.WRatio(query, i.name), fuzz.token_sort_ratio(query, i.name), fuzz.partial_ratio(query, i.name))
+            if (fuzz.WRatio(query, i.name) >= 70 or fuzz.token_sort_ratio(query, i.name) >= 70 or fuzz.partial_ratio(query, i.name) >= 70):
                 professors[i] = fuzz.WRatio(query, i.name)
         sorted_professors = sorted(professors, key=professors.get, reverse=True)
     return sorted_professors
