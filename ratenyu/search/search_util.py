@@ -5,6 +5,14 @@ from professors.models import Professor
 from courses.course_util import *
 from fuzzywuzzy import fuzz
 
+# Similarity Thresholds above which course results must be displayed
+COURSE_WRATIO = 90
+COURSE_SORT_RATIO = 50
+COURSE_PARTIAL_RATIO = 70
+
+# Similarity Thresholds above which professor results must be displayed
+PROFESSOR_RATIO = 70
+
 # Uses (descending) fuzzy ratio as a treshold to list out courses closest to the query
 def course_query(query: str) -> QuerySet[Course]:
     if (len(query) > 3):
@@ -12,7 +20,7 @@ def course_query(query: str) -> QuerySet[Course]:
         sorted_course = []
         all_courses = Course.objects.all()
         for i in all_courses:
-            if (fuzz.WRatio(query, i.course_title) >= 90 or fuzz.token_sort_ratio(query, i.course_title) >= 50 or fuzz.partial_ratio(query, i.course_title) >= 70):
+            if (fuzz.WRatio(query, i.course_title) >= COURSE_WRATIO or fuzz.token_sort_ratio(query, i.course_title) >= COURSE_SORT_RATIO or fuzz.partial_ratio(query, i.course_title) >= COURSE_PARTIAL_RATIO):
                 courses[i] = fuzz.WRatio(query, i.course_title)
         sorted_course = sorted(courses, key=courses.get, reverse=True)
         return sorted_course
@@ -32,7 +40,7 @@ def professor_query(query: str) -> QuerySet[Professor]:
         sorted_professors = []
         all_professors = Professor.objects.all()
         for i in all_professors:
-            if (fuzz.WRatio(query, i.name) >= 70 or fuzz.token_sort_ratio(query, i.name) >= 70 or fuzz.partial_ratio(query, i.name) >= 70):
+            if (fuzz.WRatio(query, i.name) >= PROFESSOR_RATIO or fuzz.token_sort_ratio(query, i.name) >= PROFESSOR_RATIO or fuzz.partial_ratio(query, i.name) >= PROFESSOR_RATIO):
                 professors[i] = fuzz.WRatio(query, i.name)
         sorted_professors = sorted(professors, key=professors.get, reverse=True)
         return sorted_professors
