@@ -64,7 +64,7 @@
     <div class="nyu-logo-light">
     </div>
     {% for review in page_obj %}
-        <div class="user-review">
+        <div class="review">
             <p style="padding-top: 3px;">{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }}<br>
                 {{ review.rating }}.0/5.0<br></p>
             <p><span class="user-title">

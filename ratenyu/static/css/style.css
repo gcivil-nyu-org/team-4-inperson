@@ -620,8 +620,17 @@ ul.result-side-links {
   padding-bottom: 20px;
 }
 
+/* review container title */
+h5.rev-title {
+  font-size: 18px;
+  margin-block-start: 0;
+  margin-block-end: 0.5em;
+  font-family: inter-medium;
+}
+
 span.rev-title, span.left-section {
-  font-family: inter-bold;
+  font-family: inter-medium;
+  font-size: 18px
 }
 
 /*put the dropdown for sorting under the name title, course id, course description, */

@@ -27,7 +27,7 @@
     </div>
 
     <ul class="detail-side-links">
-        <li class="detail-side-links"><span class="rev-title">Courses</span></li>
+        <li class="detail-side-links"><span class="rev-title">Filters</span></li>
         {% for course in courses_list %}
         <button class="detail-side-links"><a onclick = "courseSelect('{{course.course_title}}')">{{ course.course_title }}</a></button>
     {% endfor %}
@@ -90,13 +90,22 @@
                 </div>
             </form>
         </div>
+
         {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
         <div class="review" review_course = "{{review.course_obj.course_title}}">
+            <!-- Date -->
             <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span> <br>
-                <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
-            <p><span class="rev-title">Course:<a href="{% url 'courses:course_detail' course_id=review.course_obj.course_id %}"> {{ review.course_obj.course_title }}</a>
-                | Professor: {{ professor.name }}</span><br>
-            {{ review.review_obj.review_text }}</p>
+            <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
+
+            <div>
+                <span class="rev-title">
+                <h5 class="rev-title">
+                   Course:<a href="{% url 'courses:course_detail' course_id=review.course_obj.course_id %}"> {{ review.course_obj.course_title }}</a>
+                </h5>
+                <p>{{ review.review_obj.review_text }}</p>
+                </span>
+            </div>
+
             <!-- Thumbs up -->
             <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
                 <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>

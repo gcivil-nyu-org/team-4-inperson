@@ -57,7 +57,7 @@
 </div>
 
 <ul class="detail-side-links">
-    <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
+    <li class="detail-side-links"><span class="rev-title">Filters</span></li>
     {% for professor in professors_list %}
         <button class="detail-side-links"><a onclick = "professorSelect('{{professor.name}}')">{{ professor.name }}</a></button>
     {% endfor %}
@@ -124,11 +124,18 @@
 
     {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
+            <!-- Date -->
             <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span></span> <br>
             <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
-        <p><span class="rev-title">Course: {{ course.course_title }}
-                | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
-            {{ review.review_obj.review_text }}</p>
+
+            <div>
+                <span class="rev-title">
+                <h5 class="rev-title">
+                    Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a>
+                </h5>
+                <p>{{ review.review_obj.review_text }}</p>
+                </span>
+            </div>
 
         <!-- Thumbs up -->
         <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
