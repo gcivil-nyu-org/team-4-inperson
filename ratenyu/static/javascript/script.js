@@ -411,6 +411,7 @@ function save(elements){
         elements[index].style.display = 'none';
     }
     document.getElementById('profile_div').style.display = 'block'
+    window.location.reload();
 }
 
 

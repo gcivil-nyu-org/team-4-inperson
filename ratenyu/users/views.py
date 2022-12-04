@@ -100,9 +100,16 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
     else:
         return redirect(reverse("search:index"))
 
+
 def get_courses(request: HttpRequest, user_name: str):
     mycourses = SavedCourse.objects.filter(user_id=request.user)
     user_details = get_user_details(request.user)
+
+    if request.method == "POST":
+        user_details.name = request.POST.get("user_name_input")
+        user_details.major = request.POST.get("user_major_input")
+        user_details.student_status = request.POST.get("user_status_input")
+        user_details.save()
 
     paginator = Paginator(mycourses, 10)
     page_number = request.GET.get('page')
@@ -122,6 +129,7 @@ def get_courses(request: HttpRequest, user_name: str):
 
     return render(request, "users/my_courses.html", context)
 
+
 def save_course(request: HttpRequest, user_name: str):
     course = Course.objects.get(pk=request.POST.get("course_id"))
     professor = request.POST.get("save_course_professor_name")
@@ -139,6 +147,7 @@ def save_course(request: HttpRequest, user_name: str):
             messages.add_message(request, messages.INFO, "This class was already saved")
             return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     return redirect("users:my_courses", user_name=user_name)
+
 
 def delete_saved_course(request: HttpRequest, course_id: str):
     course = Course.objects.get(pk=course_id)
