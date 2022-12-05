@@ -169,3 +169,12 @@ def delete_saved_course(request: HttpRequest, course_id: str):
     saved_course = SavedCourse.objects.get(user_id=user, course_id=course)
     saved_course.delete()
     return redirect("users:my_courses", user_name=user.username)
+
+
+# Below Functions for Voting functionality
+def like_review(request, review_id: str):
+    return util_like_review(request=request, review_id=review_id)
+
+
+def dislike_review(request, review_id: str):
+    return util_dislike_review(request=request, review_id=review_id)
