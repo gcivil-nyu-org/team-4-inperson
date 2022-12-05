@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 // Functions to display edit review form on Profile page
 function showEditForm(reviewId) {
-    let staticText = document.getElementById("static-review-text-" + CSS.escape(reviewId))
+    let staticText = document.getElementById("static-review-text-" + reviewId)
     staticText.style.display = "none";
 
     let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
