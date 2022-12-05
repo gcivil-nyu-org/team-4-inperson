@@ -120,12 +120,19 @@ def add_review(request):
                 review_rating=request.POST["review_rating"],
                 review_text=request.POST["review_text"],
             )
-            LOGGER.info(f"Created new Review: {new_review}")
-            add_redirect_message(
-                request=request,
-                message="Your review was saved!",
-                success=True,
-            )
+            if new_review == "Already wrote review for this course":
+                add_redirect_message(
+                    request=request,
+                    message="You already wrote a review for this course.",
+                    success=False,
+                )
+            else:
+                LOGGER.info(f"Created new Review: {new_review}")
+                add_redirect_message(
+                    request=request,
+                    message="Your review was saved!",
+                    success=True,
+                )
             return redirect("courses:add_review")
         except Exception as e:
             LOGGER.exception(f"Could not create review, encountered error: {e}")

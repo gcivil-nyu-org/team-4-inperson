@@ -66,6 +66,14 @@ def save_new_review(
     )
     course_id = course_id_query(course_subject_code, catalog_number).course_id
     class_obj = get_class(course_id=course_id, professor_name=professor_name)
+    existing_review = Review.objects.filter(user=user)
+    found_matching = False
+    for er in existing_review:
+        if er.class_id.course_id == course_id:
+            found_matching = True
+            break
+    if found_matching:
+        return "Already wrote review for this course"
     new_review = Review(
         review_text=review_text,
         rating=review_rating,
