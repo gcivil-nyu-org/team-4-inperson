@@ -92,7 +92,7 @@
         </div>
 
         {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
-        <div class="review" review_course = "{{review.course_obj.course_title}}">
+        <div class="review">
             <!-- Rating -->
             <div class="rev-col-1">
                 {% if review.review_obj.rating > 2.5 %}

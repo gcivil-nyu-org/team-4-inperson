@@ -355,7 +355,9 @@ h5.bad-rating {
 
 span.rev, span.left-section {
   font-family: inter-medium;
-  font-size: 18px
+  font-size: 18px;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 p.review-date {

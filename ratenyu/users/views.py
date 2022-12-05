@@ -5,11 +5,11 @@ from django.http import HttpRequest
 from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from util.views import error404
+from util.views import error404, util_like_review, util_dislike_review
 from .models import UserDetails
 from courses.models import Review, Course
 from professors.models import Professor
-from util.models import SavedCourse
+from util.models import SavedCourse, Vote
 from .forms import UserRegistrationForm
 from .user_util import get_user_details
 
@@ -76,9 +76,21 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
             user.save()
 
         user_details = get_user_details(request.user)
-        reviews = Review.objects.filter(user=User.objects.get(username=user_name))
+        user = User.objects.get(username=user_name)
+        likes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "L"]
+        dislikes = [vote.review.id for vote in Vote.objects.filter(user=user) if vote.vote == "D"]
+        reviews_list = [{
+            "id": review.id,
+            "review_text": review.review_text,
+            "rating": review.rating,
+            "class_id": review.class_id,
+            "user": review.user,
+            "pub_date": review.pub_date,
+            "like": len(Vote.objects.filter(review=review, vote="L")),
+            "dislike": len(Vote.objects.filter(review=review, vote="D")),
+        } for review in Review.objects.filter(user=User.objects.get(username=user_name))]
 
-        paginator = Paginator(reviews, 10)
+        paginator = Paginator(reviews_list, 10)
         page_number = request.GET.get('page')
 
         try:
@@ -90,8 +102,10 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
 
         context = {
             "user_details": user_details,
-            "reviews": reviews,
+            "reviews": reviews_list,
             "page_obj": page_obj,
+            "likes": likes,
+            "dislikes": dislikes,
         }
         if request.GET.get("invalid_review_text"):
             context["invalid_review_text"] = True
@@ -99,6 +113,7 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
         return render(request, "users/profile.html", context)
     else:
         return redirect(reverse("search:index"))
+
 
 def get_courses(request: HttpRequest, user_name: str):
     mycourses = SavedCourse.objects.filter(user_id=request.user)
@@ -122,10 +137,11 @@ def get_courses(request: HttpRequest, user_name: str):
 
     return render(request, "users/my_courses.html", context)
 
+
 def save_course(request: HttpRequest, user_name: str):
     course = Course.objects.get(pk=request.POST.get("course_id"))
     professor = request.POST.get("save_course_professor_name")
-    if (professor):
+    if professor:
         professor = Professor.objects.get(name=professor)
         try:
             SavedCourse.objects.create(user_id=request.user, course_id=course, professor_id=professor)
@@ -140,9 +156,19 @@ def save_course(request: HttpRequest, user_name: str):
             return redirect("courses:course_detail", course_id=request.POST.get("course_id"))
     return redirect("users:my_courses", user_name=user_name)
 
+
 def delete_saved_course(request: HttpRequest, course_id: str):
     course = Course.objects.get(pk=course_id)
     user = request.user
     saved_course = SavedCourse.objects.get(user_id=user, course_id=course)
     saved_course.delete()
     return redirect("users:my_courses", user_name=user.username)
+
+
+# Below Functions for Voting functionality
+def like_review(request, review_id: str):
+    return util_like_review(request=request, review_id=review_id)
+
+
+def dislike_review(request, review_id: str):
+    return util_dislike_review(request=request, review_id=review_id)
