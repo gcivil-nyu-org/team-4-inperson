@@ -14,9 +14,39 @@
         <p id="user_major" > {{user_details.major}} </p>
         <h4 class = 'user-form'> Student Status </h4>
         <p id="user_status"> {{user_details.student_status}} </p>
-<!--        <button type="button" class="user-form" id="my_profile">My Profile</button>-->
+        <button type="submit" class="user-form" onclick="hideProfile(document.querySelectorAll('.user-panel'))" id="edit_profile">Edit Profile</button>
     </div>
 </div>
+
+<form method="POST">
+    {% csrf_token %}
+    <div hidden class = "user-panel" id="edit_profile_div">
+        <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
+        <div class="user-form">
+            <label for="user_name_input" class = 'user-form'> Name </label>
+            <input required="True" class="edit-form" id='user_name_input' name="user_name_input" value="{{user_details.name}}" maxlength="100"/>
+            <label for="user_username_input" class = 'user-form'> Username </label>
+            <input required="True" readonly class="edit-form" id="user_username_input" name="user_username_input" value="{{user_details.user}}" maxlength="100"/>
+            <label for="user_major_input" class = 'user-form'> Major </label>
+            <input required="True" class="edit-form" id="user_major_input"  name="user_major_input" value="{{user_details.major}}" maxlength="100"/>
+            <label for="user_status_input" class = 'user-form'> Student Status </label>
+            <select value="user_details.student_status" name="user_status_input" class="edit-dropdown" required="" id="user_status_input">
+                <option value="Freshman">Freshman</option>
+                <option value="Sophomore">Sophomore</option>
+                <option value="Junior">Junior</option>
+                <option value="Senior">Senior</option>
+                <option value="Master1">Master1</option>
+                <option value="Master2">Master2</option>
+                <option value="PHD">PHD</option>
+            </select>
+            <button type="submit" class="edit-profile-form" id="save_profile" onclick="save(document.querySelectorAll('.user-panel'))">Save</button>
+            <div>
+                <br>
+                <button type="reset" class="edit-profile-form" id="cancel_profile" onclick="save(document.querySelectorAll('.user-panel'))">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
 
 <div class="user-reviews">
     <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a> | <a href="{% url "users:my_courses" user_name=request.user %}">My Courses</a></h1>

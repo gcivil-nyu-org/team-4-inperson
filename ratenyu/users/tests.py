@@ -91,6 +91,20 @@ class TestProfilePage(TestCase):
         self.assertContains(response, "com sci")
         self.assertContains(response, "Sophomore")
 
+    def test_edit_profile_page_in_myCourses(self):
+        self.client.login(username="viren", password="viren")
+        response = self.client.get(reverse("users:profile", args=["viren"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "users/profile.html")
+        url = f"http://127.0.0.1:8000/profile/viren/my_courses"
+        self.client.post(url, {"user_name_input": "viren1",
+                               "user_major_input": "com sci",
+                               "user_status_input": "Sophomore"})
+        response = self.client.get(reverse("users:profile", args=["viren"]))
+        self.assertContains(response, "viren1")
+        self.assertContains(response, "com sci")
+        self.assertContains(response, "Sophomore")
+
     def test_pagination_in_profile_page_number_is_nonint(self):
         self.client.login(username="viren", password="viren")
         request_str = f"http://127.0.0.1:8000/profile/viren?page=thisIsTheTestForPageNumberNotInt"
