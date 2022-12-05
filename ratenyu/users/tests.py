@@ -180,6 +180,15 @@ def create_test_course() -> Course:
         course_description="course_description",
     )
 
+def create_test_course2() -> Course:
+    Course.objects.create(
+        course_id="2",
+        course_title="test course",
+        course_subject_code="TS-UY",
+        catalog_number="1002",
+        course_description="course_description",
+    )
+
 
 def create_test_professor() -> Professor:
     Professor.objects.create(

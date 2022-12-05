@@ -126,22 +126,24 @@ def add_review_from_details(request) -> tuple:
         try:
             existing_review = Review.objects.filter(user=request.user)
             found_matching = False
-            for er in existing_review:
-                if er.class_id.course_id == course_id:
-                    found_matching = True
-                    break
+            if existing_review:
+                for er in existing_review:
+                    if er.class_id.course_id == course_id:
+                        found_matching = True
+                        break
             if found_matching:
                 return False, DUPLICATE_REVIEW
-            new_review = Review(
-                review_text=review_text,
-                rating=review_rating,
-                class_id=get_class(course_id, professor_name),
-                user=request.user,
-                pub_date=timezone.now(),
-            )
-            new_review.save()
-            LOGGER.debug("Review saved successfully", review_text)
-            return True, REVIEW_ADDED
+            else:
+                new_review = Review(
+                    review_text=review_text,
+                    rating=review_rating,
+                    class_id=get_class(course_id, professor_name),
+                    user=request.user,
+                    pub_date=timezone.now(),
+                )
+                new_review.save()
+                LOGGER.debug("Review saved successfully", review_text)
+                return True, REVIEW_ADDED
         except Exception as e:
             LOGGER.exception(e)
             return False, REVIEW_NOT_SAVED
