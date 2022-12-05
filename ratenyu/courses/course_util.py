@@ -16,6 +16,7 @@ LOGGER = logging.getLogger("project")
 REVIEW_ADDED = "Your review was saved!"
 REVIEW_CONTAINS_PROFANITY = "Profane review was not saved!"
 REVIEW_NOT_SAVED = "Uh Oh, something went wrong. Your review could not be saved."
+DUPLICATE_REVIEW = "You already wrote a review for this course."
 
 
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:
@@ -123,6 +124,14 @@ def add_review_from_details(request) -> tuple:
     review_text = request.POST["review_text"]
     if text_is_valid(review_text):
         try:
+            existing_review = Review.objects.filter(user=request.user)
+            found_matching = False
+            for er in existing_review:
+                if er.class_id.course_id == course_id:
+                    found_matching = True
+                    break
+            if found_matching:
+                return False, DUPLICATE_REVIEW
             new_review = Review(
                 review_text=review_text,
                 rating=review_rating,
