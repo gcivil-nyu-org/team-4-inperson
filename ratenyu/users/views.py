@@ -119,6 +119,12 @@ def get_courses(request: HttpRequest, user_name: str):
     mycourses = SavedCourse.objects.filter(user_id=request.user)
     user_details = get_user_details(request.user)
 
+    if request.method == "POST":
+        user_details.name = request.POST.get("user_name_input")
+        user_details.major = request.POST.get("user_major_input")
+        user_details.student_status = request.POST.get("user_status_input")
+        user_details.save()
+
     paginator = Paginator(mycourses, 10)
     page_number = request.GET.get('page')
 
@@ -163,12 +169,3 @@ def delete_saved_course(request: HttpRequest, course_id: str):
     saved_course = SavedCourse.objects.get(user_id=user, course_id=course)
     saved_course.delete()
     return redirect("users:my_courses", user_name=user.username)
-
-
-# Below Functions for Voting functionality
-def like_review(request, review_id: str):
-    return util_like_review(request=request, review_id=review_id)
-
-
-def dislike_review(request, review_id: str):
-    return util_dislike_review(request=request, review_id=review_id)
