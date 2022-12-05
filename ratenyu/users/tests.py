@@ -189,6 +189,15 @@ def create_test_course2() -> Course:
         course_description="course_description",
     )
 
+def create_test_course3() -> Course:
+    Course.objects.create(
+        course_id="3",
+        course_title="test course",
+        course_subject_code="TS-UY",
+        catalog_number="1003",
+        course_description="course_description",
+    )
+
 
 def create_test_professor() -> Professor:
     Professor.objects.create(
@@ -220,6 +229,19 @@ def create_test_class_1(course: Course, professor: Professor) -> Class:
 def create_test_class_2(course: Course, professor: Professor) -> Class:
     return Class.objects.create(
         class_id="2",
+        professor=professor,
+        course=course,
+        class_type="Test",
+        class_section="2",
+        term="Fall2023",
+        last_offered="Fall2023",
+        location="BK",
+        enroll_capacity=50,
+    )
+
+def create_test_class_3(course: Course, professor: Professor) -> Class:
+    return Class.objects.create(
+        class_id="3",
         professor=professor,
         course=course,
         class_type="Test",
