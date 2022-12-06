@@ -11,7 +11,12 @@
         </p>
         <form method="post">
             {% csrf_token %}
-            <button class="oauth-button" type="submit">Login with Google</button>
+            <div class="google-button">
+            <button class="oauth-button" type="submit">
+                <input type="image" class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
+                Login with Google
+            </button>
+            </div>
         </form>
     </div>
 
