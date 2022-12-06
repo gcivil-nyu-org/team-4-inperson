@@ -566,17 +566,22 @@ p.oauth-description {
 }
 
 /* Google button */
+div.google-button {
+  white-space: nowrap;
+}
+
 input.google-icon {
   width: 25px;
   float: left;
   border: 0;
   padding: 0;
+  padding-right: 5px;
 }
 
 button.oauth-button {
   background-color: #EEE6F3;
   color: black;
-  width: 19%;
+  width: 20%;
   height: 44px;
   line-height: 130%;
   padding: 10px;
