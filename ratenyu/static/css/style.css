@@ -319,8 +319,8 @@ div.results{
   width: 80%
 }
 .results:hover {
-  transition: all .2s ease-in-out;
-  transform: scale(1.1);
+  transition: all .1s ease-in-out;
+  transform: scale(1.02);
 }
 /*review takes up 10/11 of width; grade, review date, rating take up 1/11*/
 div.review > p:nth-of-type(2) {
