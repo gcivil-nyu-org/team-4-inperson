@@ -12,7 +12,7 @@ function getListOfChecked() {
 
 function resultCheckBoxClicked() {
     let listOfChecked = getListOfChecked();
-    let listOfItems = document.querySelectorAll(".detail-sub-course-desc");
+    let listOfItems = document.querySelectorAll(".results");
     listOfItems.forEach(element => {
         let level = element.getAttribute('data-level').slice(-2);
         let last_offered = element.getAttribute('data-offered').slice(-4);
@@ -20,7 +20,7 @@ function resultCheckBoxClicked() {
         console.log(last_offered);
         console.log(listOfChecked);
         if (listOfChecked.includes(level) && listOfChecked.includes(last_offered)) {
-            element.style.display = "block";
+            element.style.display = "flex";
         } else {
             element.style.display = "none";
         }
