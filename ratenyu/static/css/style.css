@@ -565,14 +565,29 @@ p.oauth-description {
   width: 50%;
 }
 
+/* Google button */
+div.google-button {
+  white-space: nowrap;
+}
+
+input.google-icon {
+  width: 25px;
+  float: left;
+  border: 0;
+  padding: 0;
+  padding-right: 5px;
+}
+
 button.oauth-button {
-  text-align: right;
+  background-color: #EEE6F3;
   color: black;
-  width: 17%;
+  width: 20%;
+  height: 44px;
+  line-height: 130%;
   padding: 10px;
-  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png') no-repeat left;
   background-size: 24px;
   background-origin: content-box;
+  overflow: hidden;
 }
 
 .error-page {
