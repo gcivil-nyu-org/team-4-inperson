@@ -262,9 +262,9 @@ document.addEventListener('DOMContentLoaded', function(){
 })
 
 
-// Functions to display edit review form on Profile plage
+// Functions to display edit review form on Profile page
 function showEditForm(reviewId) {
-    let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
+    let staticText = document.getElementById("static-review-text-" + reviewId)
     staticText.style.display = "none";
 
     let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
@@ -323,7 +323,7 @@ function hideEditForm(reviewId) {
     let editForm = document.querySelector("[name=edit-review-form-" + CSS.escape(reviewId) + "]")
     editForm.style.display = "none";
 
-    let staticText = document.querySelector("[name=static-review-text-" + CSS.escape(reviewId) + "]")
+    let staticText = document.getElementById("static-review-text-" + CSS.escape(reviewId))
     staticText.style.display = "block";
 
 }
@@ -421,8 +421,8 @@ function sortReviews(selectObject) {
     switch (selectObject.value) {
         case 'RatingDesc':
             reviewsArr.sort((a,b) => {
-                let nameA = a.children[0].children[2].textContent;
-                let nameB = b.children[0].children[2].textContent;
+                let nameA = a.children[0].children[0].textContent;
+                let nameB = b.children[0].children[0].textContent;
                 if (nameA > nameB) {
                     return -1;
                 }
@@ -432,8 +432,8 @@ function sortReviews(selectObject) {
             break;
         case 'RatingAsc':
             reviewsArr.sort((a,b) => {
-                let nameA = a.children[0].children[2].textContent;
-                let nameB = b.children[0].children[2].textContent;
+                let nameA = a.children[0].children[0].textContent;
+                let nameB = b.children[0].children[0].textContent;
                 if (nameA < nameB) {
                     return -1;
                 }
@@ -443,8 +443,8 @@ function sortReviews(selectObject) {
             break;
         case 'RevDateDesc':
             reviewsArr.sort((a, b) => {
-                let nameA = Date.parse(a.children[0].children[0].textContent);
-                let nameB = Date.parse(b.children[0].children[0].textContent);
+                let nameA = Date.parse(a.children[1].children[0].children[1].textContent);
+                let nameB = Date.parse(b.children[1].children[0].children[1].textContent);
                 if (nameA > nameB) {
                     return -1;
                 } else {
@@ -454,8 +454,8 @@ function sortReviews(selectObject) {
             break;
         case 'RevDateAsc':
             reviewsArr.sort((a, b) => {
-                    let nameA = Date.parse(a.children[0].children[0].textContent);
-                    let nameB = Date.parse(b.children[0].children[0].textContent);
+                    let nameA = Date.parse(a.children[1].children[0].children[1].textContent);
+                    let nameB = Date.parse(b.children[1].children[0].children[1].textContent);
                     if (nameA < nameB) {
                         return -1;
                     } else {
@@ -474,30 +474,35 @@ function showSaveCourseForm() {
     saveCourseForm.style.display = "block";
 }
 
-
-
 /*
 Handlers for Like/Dislike Button functionality
  */
 function likeReview(review_id) {
+    let likeButton = document.getElementById('like-' + review_id);
+    let dislikeButton = document.getElementById('dislike-' + review_id);
+    let likeCount = document.getElementById('like-count-' + review_id);
+    let dislikeCount = document.getElementById('dislike-count-' + review_id);
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const likeButton = document.getElementById('like-' + review_id);
-    const dislikeButton = document.getElementById('dislike-' + review_id);
-    let likeCount = document.getElementById('like-count-' + review_id).innerHTML;
-    let dislikeCount = document.getElementById('dislike-count-' + review_id).innerHTML;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             if (likeButton.classList.contains('active')) {
                 likeButton.classList.remove('active');
-                document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) - 1).toString();
+                likeCount.innerHTML = (parseInt(likeCount.innerHTML) - 1).toString();
+                if (likeCount.innerHTML === '0') {
+                    likeCount.classList.remove('like-color');
+                }
+
             } else {
                 if (dislikeButton.classList.contains('active')) {
                     dislikeButton.classList.remove('active');
-                    document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) - 1).toString();
+                    dislikeCount.innerHTML = (parseInt(dislikeCount.innerHTML) - 1).toString();
+                    if (dislikeCount.innerHTML === '0') {
+                        dislikeCount.classList.remove('dislike-color');
+                    }
                 }
                 likeButton.classList.add('active');
-                document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) + 1).toString();
+                likeCount.innerHTML = (parseInt(likeCount.innerHTML) + 1).toString();
             }
         }
     };
@@ -507,104 +512,30 @@ function likeReview(review_id) {
  }
 
  function dislikeReview(review_id) {
+    let likeButton = document.getElementById('like-' + review_id);
+    let dislikeButton = document.getElementById('dislike-' + review_id);
+    let likeCount = document.getElementById('like-count-' + review_id);
+    let dislikeCount = document.getElementById('dislike-count-' + review_id);
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const likeButton = document.getElementById('like-' + review_id);
-    const dislikeButton = document.getElementById('dislike-' + review_id);
-    let likeCount = document.getElementById('like-count-' + review_id).innerHTML;
-    let dislikeCount = document.getElementById('dislike-count-' + review_id).innerHTML;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             if (dislikeButton.classList.contains('active')) {
                 dislikeButton.classList.remove('active');
-                document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) - 1).toString();
+                dislikeCount.innerHTML = (parseInt(dislikeCount.innerHTML) - 1).toString();
+                if (dislikeCount.innerHTML === '0') {
+                    dislikeCount.classList.remove('dislike-color');
+                }
             } else {
                 if (likeButton.classList.contains('active')) {
                     likeButton.classList.remove('active');
-                    document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) - 1).toString();
+                    likeCount.innerHTML = (parseInt(likeCount.innerHTML) - 1).toString();
+                    if (likeCount.innerHTML === '0') {
+                        likeCount.classList.remove('like-color');
+                    }
                 }
                 dislikeButton.classList.add('active');
-                document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) + 1).toString();
-            }
-        }
-    };
-    xhttp.open("POST", review_id+"/dislike", true);
-    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-    xhttp.send();
- }
-
-
-/*
-Handlers for Like/Dislike functionality
- */
-function likeReview(review_id) {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const likeButton = document.getElementById('like-' + review_id);
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (likeButton.classList.contains('active')) {
-                likeButton.classList.remove('active');
-            } else {
-                likeButton.classList.add('active');
-            }
-        }
-    };
-    xhttp.open("POST", review_id+"/like", true);
-    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-    xhttp.send();
- }
-
-
-/*
-Handlers for Like/Dislike Button functionality
- */
-function likeReview(review_id) {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const likeButton = document.getElementById('like-' + review_id);
-    const dislikeButton = document.getElementById('dislike-' + review_id);
-    let likeCount = document.getElementById('like-count-' + review_id).innerHTML;
-    let dislikeCount = document.getElementById('dislike-count-' + review_id).innerHTML;
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (likeButton.classList.contains('active')) {
-                likeButton.classList.remove('active');
-                document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) - 1).toString();
-            } else {
-                if (dislikeButton.classList.contains('active')) {
-                    dislikeButton.classList.remove('active');
-                    document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) - 1).toString();
-                }
-                likeButton.classList.add('active');
-                document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) + 1).toString();
-            }
-        }
-    };
-    xhttp.open("POST", review_id+"/like", true);
-    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-    xhttp.send();
- }
-
- function dislikeReview(review_id) {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const likeButton = document.getElementById('like-' + review_id);
-    const dislikeButton = document.getElementById('dislike-' + review_id);
-    let likeCount = document.getElementById('like-count-' + review_id).innerHTML;
-    let dislikeCount = document.getElementById('dislike-count-' + review_id).innerHTML;
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (dislikeButton.classList.contains('active')) {
-                dislikeButton.classList.remove('active');
-                document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) - 1).toString();
-            } else {
-                if (likeButton.classList.contains('active')) {
-                    likeButton.classList.remove('active');
-                    document.getElementById('like-count-' + review_id).innerHTML = (parseInt(likeCount) - 1).toString();
-                }
-                dislikeButton.classList.add('active');
-                document.getElementById('dislike-count-' + review_id).innerHTML = (parseInt(dislikeCount) + 1).toString();
+                dislikeCount.innerHTML = (parseInt(dislikeCount.innerHTML) + 1).toString();
             }
         }
     };

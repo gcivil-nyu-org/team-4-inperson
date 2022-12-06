@@ -57,7 +57,7 @@
 </div>
 
 <ul class="detail-side-links">
-    <li class="detail-side-links"><span class="rev-title">Professor:</span></li>
+    <li class="detail-side-links"><span class="rev">Filters</span></li>
     {% for professor in professors_list %}
         <button class="detail-side-links"><a onclick = "professorSelect('{{professor.name}}')">{{ professor.name }}</a></button>
     {% endfor %}
@@ -123,36 +123,54 @@
     </div>
 
     {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
-    <div class="review" review_professor="{{review.professor_obj.name}}">
-            <p><span>{{ review.review_obj.pub_date.month }}/{{ review.review_obj.pub_date.day }}/{{ review.review_obj.pub_date.year }}</span></span> <br>
-            <span class="rating">{{ review.review_obj.rating }}</span>.0/5.0</p>
-        <p><span class="rev-title">Course: {{ course.course_title }}
-                | Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a></span><br>
-            {{ review.review_obj.review_text }}</p>
-
-        <!-- Thumbs up -->
-        <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
-            <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
-            <i class="fa fa-thumbs-up fa-3x like"
-             aria-hidden="true"
-             {% if user.is_authenticated %} onclick="likeReview({{ review.review_obj.id }})"
-             {% else %}
-             {% endif %}>
-            </i>
-            <h3 align=" center" id="like-count-{{ review.review_obj.id }}"> {{review.like}}</h3>
-            </a>
+    <div class="review">
+        <!-- Rating -->
+        <div class="rev-col-1">
+            {% if review.review_obj.rating > 2.5 %}
+            <h5 class="rev-rating good-rating">{{ review.review_obj.rating }} / 5</h5>
+            {% else %}
+            <h5 class="rev-rating bad-rating">{{ review.review_obj.rating }} / 5</h5>
+            {% endif %}
         </div>
-        <!-- Thumbs down -->
-        <div class="dislike {% if review.review_obj.id in dislikes %} active {% endif %}" id="dislike-{{ review.review_obj.id }}">
-            <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
-            <i class="fa fa-thumbs-down fa-3x like"
-             aria-hidden="true"
-             {% if user.is_authenticated %} onclick="dislikeReview({{ review.review_obj.id }})"
-             {% else %}
-             {% endif %}>
-            </i>
-            <h3 align=" center" id="dislike-count-{{ review.review_obj.id }}"> {{review.dislike}}</h3>
-            </a>
+
+        <!-- Title, Date, and Review Text -->
+        <div class="rev-col-2">
+            <span class="rev">
+            <h5 class="rev-title">
+                Professor: <a href="{% url 'professors:professor_detail' professor_id=review.professor_obj.professor_id %}">{{ review.professor_obj.name }}</a>
+            </h5>
+            <p class="review-date">{{ review.review_obj.pub_date.date }}</p>
+            <p>{{ review.review_obj.review_text }}</p>
+            </span>
+        </div>
+
+        <div class="rev-col-3">
+            <!-- Thumbs up -->
+            <div class="like {% if review.review_obj.id in likes %} active {% endif %}" id="like-{{ review.review_obj.id }}">
+                <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
+                <i class="fa fa-thumbs-up fa-3x like"
+                 aria-hidden="true"
+                 {% if user.is_authenticated %} onclick="likeReview({{ review.review_obj.id }})"
+                 {% else %}
+                 {% endif %}>
+                </i>
+                <h3 {% if review.like > 0 %} class="like-color" {% endif %}
+                    id="like-count-{{ review.review_obj.id }}"> {{review.like}}</h3>
+                </a>
+            </div>
+            <!-- Thumbs down -->
+            <div class="dislike {% if review.review_obj.id in dislikes %} active {% endif %}" id="dislike-{{ review.review_obj.id }}">
+                <a class="likes" {% if not user.is_authenticated %} href="{% url 'users:login' %}" {% endif %}>
+                <i class="fa fa-thumbs-down fa-3x like"
+                 aria-hidden="true"
+                 {% if user.is_authenticated %} onclick="dislikeReview({{ review.review_obj.id }})"
+                 {% else %}
+                 {% endif %}>
+                </i>
+                <h3 {% if review.dislike > 0 %} class="dislike-color" {% endif %}
+                    id="dislike-count-{{ review.review_obj.id }}"> {{review.dislike}}</h3>
+                </a>
+            </div>
         </div>
     </div>
     {% endfor %}
