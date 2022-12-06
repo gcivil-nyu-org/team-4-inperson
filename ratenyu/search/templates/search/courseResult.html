@@ -51,10 +51,14 @@
 <div class="results" data-level="{{ course.course_obj.course_subject_code  }}" data-offered="{{  course.last_offered }}" onclick="location.href='/courses/{{course.course_obj.course_id}}';" style="cursor:pointer;">
     <a href=/courses/{{course.course_obj.course_id}}></a>
     <div class="rev-col-1" style="margin-left:1rem; margin-right:1rem;">
-        {% if course.reviews_avg > 2.5 %}
-        <h5 class="rev-rating good-rating">{{ course.reviews_avg }} / 5</h5>
+        {% if course.reviews_list|length == 0 %}
+        <h5 class="rev-rating">N/A</h5>
         {% else %}
-        <h5 class="rev-rating bad-rating">{{ course.reviews_avg }} / 5</h5>
+            {% if course.reviews_avg > 2.5 %}
+            <h5 class="rev-rating good-rating">{{ course.reviews_avg }} / 5</h5>
+            {% else %}
+            <h5 class="rev-rating bad-rating">{{ course.reviews_avg }} / 5</h5>
+            {% endif %}
         {% endif %}
     </div>
 
