@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from .models import UserDetails
 
 class UserRegistrationForm(UserCreationForm):
 
@@ -24,8 +24,8 @@ class UserRegistrationForm(UserCreationForm):
     )
     major = forms.CharField(
         max_length=100,
-        widget=forms.TextInput(
-            attrs={"class": "register-input", "placeholder": "Major"}
+        widget=forms.Select(
+            attrs={"class": "dropdown-register"}, choices=UserDetails.LIST_OF_MAJORS
         ),
         label="Major",
     )
