@@ -56,7 +56,11 @@
 </form>
 
 <div class="user-reviews">
-    <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a> | <a href="{% url "users:my_courses" user_name=request.user %}">My Courses</a></h1>
+    <div>
+        <a class="delete-review-btn" style="padding: 10px" href="{% url "users:profile" user_name=request.user %}">My Reviews</a>
+        <a class="delete-review-btn" href="{% url "users:my_courses" user_name=request.user %}">My Courses</a>
+        <hr>
+      </div>
     {% if messages %}
         {% for message in messages %}
             {% if message.success %}
