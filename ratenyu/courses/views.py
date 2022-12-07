@@ -48,16 +48,8 @@ def load_course_detail(
         page_number = request.GET.get('page')
         
         for rev in reviews_list:
-            vote = Vote.objects.filter(review=rev['review_obj'])
-            like_counter = 0
-            dislike_counter = 0
-            for i in vote:
-                if i.vote == 'L':
-                    like_counter += 1
-                elif i.vote == 'D':
-                    dislike_counter += 1
-            rev["like"] = like_counter
-            rev["dislike"] = dislike_counter
+            rev["like"] = len(Vote.objects.filter(review=rev['review_obj'], vote="L"))
+            rev["dislike"] = len(Vote.objects.filter(review=rev['review_obj'], vote="D"))
 
         try:
             page_obj = paginator.get_page(page_number)
@@ -128,12 +120,19 @@ def add_review(request):
                 review_rating=request.POST["review_rating"],
                 review_text=request.POST["review_text"],
             )
-            LOGGER.info(f"Created new Review: {new_review}")
-            add_redirect_message(
-                request=request,
-                message="Your review was saved!",
-                success=True,
-            )
+            if new_review == "Already wrote review for this course":
+                add_redirect_message(
+                    request=request,
+                    message="You already wrote a review for this course.",
+                    success=False,
+                )
+            else:
+                LOGGER.info(f"Created new Review: {new_review}")
+                add_redirect_message(
+                    request=request,
+                    message="Your review was saved!",
+                    success=True,
+                )
             return redirect("courses:add_review")
         except Exception as e:
             LOGGER.exception(f"Could not create review, encountered error: {e}")

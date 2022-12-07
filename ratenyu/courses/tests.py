@@ -88,6 +88,25 @@ class TestAddReviewPage(TestCase):
             f"Request returned {response.status_code} for request {request_str}",
         )
 
+    def test_limit_1_review(self) -> None:
+        request_str = f"http://127.0.0.1:8000/courses/add_review"
+        request_body = {
+            "add_review_course_id": "TS-UY 1000",
+            "add_review_professor_name": "John Doe",
+            "review_rating": "5",
+            "review_text": "Test Content",
+        }
+        request = self.factory.post(request_str, request_body)
+        request._messages = messages.storage.default_storage(request)
+        request.user = User.objects.get(pk=1)
+        response = add_review(request)
+        response = add_review(request)
+        self.assertEqual(len(Review.objects.all()), 1)
+
+
+
+
+
 
 class TestAddReviewPageHelpers(TestCase):
     def setUp(self) -> None:
@@ -156,8 +175,12 @@ class TestReviewFromDetailsPage(TestCase):
         user_tests.create_test_course()
         user_tests.create_test_professor()
         user_tests.create_test_user()
+        user_tests.create_test_course2()
         user_tests.create_test_class_1(
             course=Course.objects.get(pk="1"), professor=Professor.objects.get(pk="1")
+        )
+        user_tests.create_test_class_2(
+            course=Course.objects.get(pk="2"), professor=Professor.objects.get(pk="1")
         )
         user_tests.create_test_review_1(Class.objects.get(pk="1"), User.objects.get(username="viren"))
         user_tests.create_test_review_2(Class.objects.get(pk="1"), User.objects.get(username="viren"))
@@ -167,12 +190,20 @@ class TestReviewFromDetailsPage(TestCase):
     
     def test_review_from_details_page_1(self):
         self.client.login(username="viren", password="viren")
-        request_str = f"http://127.0.0.1:8000/courses/1"
-        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "5", "submit":""})
+        request_str = f"http://127.0.0.1:8000/courses/2"
+        response = self.client.post(request_str, {"course_id":"2","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "5", "submit":""})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This is a test review")
         self.assertContains(response, "5.0")
         self.assertContains(response, REVIEW_ADDED)
+
+    def test_review_from_details_page_repeat(self):
+        self.client.login(username="viren", password="viren")
+        request_str = f"http://127.0.0.1:8000/courses/2"
+        response = self.client.post(request_str, {"course_id":"2","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "5", "submit":""})
+        response = self.client.post(request_str, {"course_id":"2","add_review_professor_name":"John Doe", "review_text": "This is a test review", "review_rating": "5", "submit":""})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You already wrote a review for this course.")
 
     def test_review_from_details_page_2(self):
         self.client.login(username="viren", password="viren")
@@ -183,8 +214,8 @@ class TestReviewFromDetailsPage(TestCase):
     
     def test_review_from_details_page_3(self):
         self.client.login(username="viren", password="viren")
-        request_str = f"http://127.0.0.1:8000/courses/1"
-        response = self.client.post(request_str, {"course_id":"1","add_review_professor_name":"Different Professor", "review_text": "This is a test review", "review_rating": "6", "submit":""})
+        request_str = f"http://127.0.0.1:8000/courses/2"
+        response = self.client.post(request_str, {"course_id":"2","add_review_professor_name":"Different Professor", "review_text": "This is a test review", "review_rating": "6", "submit":""})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, REVIEW_NOT_SAVED)
 
