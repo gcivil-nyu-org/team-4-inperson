@@ -106,6 +106,7 @@ def get_profile(request: HttpRequest, user_name: str) -> render:
             "page_obj": page_obj,
             "likes": likes,
             "dislikes": dislikes,
+            "list_of_majors" : UserDetails.LIST_OF_MAJORS,
         }
         if request.GET.get("invalid_review_text"):
             context["invalid_review_text"] = True
@@ -139,6 +140,7 @@ def get_courses(request: HttpRequest, user_name: str):
         "mycourses": mycourses,
         "user_details": user_details,
         "page_obj": page_obj,
+        "list_of_majors" : UserDetails.LIST_OF_MAJORS
     }
 
     return render(request, "users/my_courses.html", context)

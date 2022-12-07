@@ -31,7 +31,11 @@
             <label for="user_username_input" class = 'user-form'> Username </label>
             <input required="True" readonly class="edit-form" id="user_username_input" name="user_username_input" value="{{user_details.user}}" maxlength="100"/>
             <label for="user_major_input" class = 'user-form'> Major </label>
-            <input required="True" class="edit-form" id="user_major_input"  name="user_major_input" value="{{user_details.major}}" maxlength="100"/>
+            <select value="user_details.major" name="user_major_input" class="edit-dropdown" required="" id="user_major_input">
+                {% for n in list_of_majors %}
+                    <option value="{{ n.0 }}" {% if n.1 == user_details.major %} selected {% endif %}>{{ n.1 }}</option>
+                {% endfor %}
+            </select>
             <label for="user_status_input" class = 'user-form'> Student Status </label>
             <select value="user_details.student_status" name="user_status_input" class="edit-dropdown" required="" id="user_status_input">
                 <option value="Freshman">Freshman</option>
