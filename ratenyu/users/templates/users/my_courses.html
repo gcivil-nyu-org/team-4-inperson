@@ -54,38 +54,11 @@
 
 <div class="user-reviews">
     <div>
-        <a class="delete-review-btn" href="{% url "users:profile" user_name=request.user %}">My Reviews</a>
-        <a class="delete-review-btn" style="padding: 10px" href="{% url "users:my_courses" user_name=request.user>My Courses</a>
+        <a class="delete-review-btn review-btn" href="{% url "users:profile" user_name=request.user %}">My Reviews</a>
+        <a class="delete-review-btn review-btn" style="padding: 10px" href="{% url "users:my_courses" user_name=request.user %}">My Courses</a>
         <hr>
       </div>    
     {% for mycourse in page_obj %}
-    <!-- <div class="review" data-level="{{ mycourse.course_id.course_id  }}" data-offered="{{  mycourse.last_offered }}">
-        <div class="rev-col-1" style="margin-left:1rem; margin-right:1rem;">
-            {% if mycourse.reviews_list|length == 0 %}
-            <h5 class="rev-rating">N/A</h5>
-            {% else %}
-                {% if mycourse.reviews_avg > 2.5 %}
-                <h5 class="rev-rating good-rating">{{ mycourse.reviews_avg }} / 5</h5>
-                {% else %}
-                <h5 class="rev-rating bad-rating">{{ mycourse.reviews_avg }} / 5</h5>
-                {% endif %}
-            {% endif %}
-        </div>
-    
-        <div class="rev-col-2">
-            <span class="rev">
-            <p class="rev-title" style="color:#0a86e7;">
-                Course: <a href=/courses/{{mycourse.course_id.course_id}}>{{mycourse.course_id.course_title}}: {{ mycourse.course_id.course_subject_code }} {{ mycourse.course_id.catalog_number }} </a> &nbsp; | 
-                
-                <a class="delete-review-btn" href="{% url 'users:delete_saved_course' mycourse.course_id.course_id %}">Delete Course</a>
-            </p>
-            
-
-            <p class="review-date">{{mycourse.reviews_list|length}} Reviews</p>
-            <p style="margin-right:-10%;">{{ mycourse.course_id.course_description }}</p>
-            </span>
-        </div>
-    </div> -->
     <div class="my-course" onclick="location.href='/courses/{{mycourse.course_id.course_id}}';" style="cursor:pointer;">
         <div>
             <h5 class="course-title">
@@ -93,6 +66,12 @@
             </h5>
         </div>
         <div style="float: right;"><a class="delete-review-btn" href="{% url 'users:delete_saved_course' mycourse.course_id.course_id %}">Delete Course</a></div>
+        <br><br>
+        {% if mycourse.course_id.course_description %}
+            <span class="rev"><p>{{ mycourse.course_id.course_description }}</p></span>
+        {% else %}
+            <span class="rev"><p>No description available for the course.</p></span>
+        {% endif %}
     </div>
     {% endfor %}
 
