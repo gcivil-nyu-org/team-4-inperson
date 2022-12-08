@@ -119,6 +119,7 @@
             <button class="delete-review-btn" onclick="showEditForm({{ review.id }})">Edit</button>
                     <a onclick="return confirm('Are you sure you want to delete this Review?')" href="{% url 'courses:delete_review' review.id %}" class="delete-review-btn">Delete</a>
             <!-- Thumbs up -->
+            <br>
             <div class="like {% if review.id in likes %} active {% endif %}" id="like-{{ review.id }}">
                 <a class="likes">
                 <i class="fa fa-thumbs-up fa-3x like"
