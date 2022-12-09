@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from django.http import HttpRequest
 from courses.models import Course, Class
 from professors.models import Professor
 from courses.course_util import *
@@ -75,6 +76,7 @@ def get_course_results_info(course: Class) -> dict:
         "course_obj": course,
         "reviews_list": reviews_list,
         "reviews_avg": reviews_avg,
+        "course_subject_code": course.course_subject_code,
         "last_offered": max([cl.last_offered for cl in classes])
     }
 
@@ -89,10 +91,25 @@ def get_professor_results_info(professor: Class) -> dict:
         "reviews_avg": reviews_avg,
     }
 
-# This does not get executed as the same function exists in course_util.py. Coveralls has 0 coverage on this function.
-# def get_sub_code_and_cat_num(query: str) -> tuple:
-#     course_subject_code = re.search(r"^[a-zA-Z]+[-\s][a-zA-Z]{2}", query).group(0)
-#     if "-" not in course_subject_code:
-#         course_subject_code = course_subject_code.replace(" ", "-")
-#     catalog_number = re.search(r"[0-9]{4}", query).group(0)
-#     return course_subject_code, catalog_number
+
+RESULT_FILTERS = [
+    "UY",
+    "GY",
+    "y2021",
+    "y2022",
+]
+
+
+def apply_result_filters(request: HttpRequest, unfiltered_courses: [dict]) -> [dict]:
+    filtered_courses = []
+    for course in unfiltered_courses:
+        program = course["course_subject_code"].split("-")[1]
+        last_offered = f"y{course['last_offered'].split(' ')[1]}"
+        if program in request.POST and last_offered in request.POST:
+            filtered_courses.append(course)
+    return filtered_courses
+
+
+def apply_filter_checkbox_values(request: HttpRequest, context: dict) -> None:
+    for filter_value in RESULT_FILTERS:
+        context[filter_value] = filter_value in request.POST
