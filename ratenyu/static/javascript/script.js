@@ -300,6 +300,10 @@ function hideEditForm(reviewId) {
 }
 
 function showReviewForm() {
+    let saveCourseForm = document.getElementById("save-course-form");
+    if (saveCourseForm) {
+        saveCourseForm.style.display = "none";
+    }
     let reviewForm = document.getElementById("add-review");
     reviewForm.style.display = "block";
 }
@@ -441,10 +445,17 @@ function sortReviews(selectObject) {
 }
 
 function showSaveCourseForm() {
+    if (document.getElementById("add-review").style.display == "block") {
+        document.getElementById("add-review").style.display = "none";
+    }
     let saveCourseForm = document.getElementById("save-course-form");
     saveCourseForm.style.display = "block";
 }
 
+function hideSaveCourseForm() {
+    let saveCourseForm = document.getElementById("save-course-form");
+    saveCourseForm.style.display = "none";
+}
 /*
 Handlers for Like/Dislike Button functionality
  */
