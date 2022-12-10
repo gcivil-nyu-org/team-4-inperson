@@ -300,6 +300,7 @@ div.review {
   padding: 18px;
   font-size: 1.2rem;
   margin-bottom: 15px;
+  clear: right;
 }
 
 .review > p {
@@ -1019,11 +1020,12 @@ h4.review_text_invalid {
   float: right;
 }
 
-#save-course-form {
+.save-course-form {
     display: none;
     float: right;
     font-size:14px;
     text-align: right;
+    margin-bottom: 10px;
 }
 
 
