@@ -1,33 +1,4 @@
 /*
-Handlers for Course/Professor Result Filtering
- */
-function getListOfChecked() {
-  let listOfChecked = [];
-  let checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
-  checkBoxes.forEach(checkBox => {
-      listOfChecked.push(checkBox.id);
-  })
-  return listOfChecked;
-}
-
-function resultCheckBoxClicked() {
-    let listOfChecked = getListOfChecked();
-    let listOfItems = document.querySelectorAll(".results");
-    listOfItems.forEach(element => {
-        let level = element.getAttribute('data-level').slice(-2);
-        let last_offered = element.getAttribute('data-offered').slice(-4);
-        console.log(level);
-        console.log(last_offered);
-        console.log(listOfChecked);
-        if (listOfChecked.includes(level) && listOfChecked.includes(last_offered)) {
-            element.style.display = "flex";
-        } else {
-            element.style.display = "none";
-        }
-    });
-}
-
-/*
 Handlers for Add Review form
  */
 let courseTitlesDatalist = document.getElementById('courses_datalist');
@@ -329,6 +300,10 @@ function hideEditForm(reviewId) {
 }
 
 function showReviewForm() {
+    let saveCourseForm = document.getElementById("save-course-form");
+    if (saveCourseForm) {
+        saveCourseForm.style.display = "none";
+    }
     let reviewForm = document.getElementById("add-review");
     reviewForm.style.display = "block";
 }
@@ -470,10 +445,17 @@ function sortReviews(selectObject) {
 }
 
 function showSaveCourseForm() {
+    if (document.getElementById("add-review").style.display == "block") {
+        document.getElementById("add-review").style.display = "none";
+    }
     let saveCourseForm = document.getElementById("save-course-form");
     saveCourseForm.style.display = "block";
 }
 
+function hideSaveCourseForm() {
+    let saveCourseForm = document.getElementById("save-course-form");
+    saveCourseForm.style.display = "none";
+}
 /*
 Handlers for Like/Dislike Button functionality
  */

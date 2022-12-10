@@ -34,26 +34,7 @@
         <h4 class="review_text_invalid" style="float:right;">{{message}}</h4>
         {% endfor %}
     {% endif %}
-            <form id="save-course-form" method="POST" action="{% url "users:save_course" user_name=request.user %}">
-                {% csrf_token %}
-                <p>Select a professor (optional):</p>
-                <input value="{{ course.course_id }}" type="hidden" name="course_id">
-                <div><select id="professor-dropdown" name="save_course_professor_name">
-                    <option value=""></option>
-                {% for professor in professors_list %}
-                    <option value="{{professor.name}}" >{{professor.name}}</option>
-                {% endfor %}
-                </select></div><br>
-                <div>
-                <button type="submit" class="add_review_button" name="submit" >Save</button>
-                </div>
-            </form>
-
-
-
         {% endif %}
-
-
 </div>
 
 <ul class="detail-side-links">
@@ -121,7 +102,23 @@
             </div>
         </form>
     </div>
-
+    <div id="save-course-form" class="save-course-form">
+        <form method="POST" action="{% url "users:save_course" user_name=request.user %}">
+            {% csrf_token %}
+            <p>Select a professor (optional):</p>
+            <input value="{{ course.course_id }}" type="hidden" name="course_id">
+            <div><select id="professor-dropdown" name="save_course_professor_name">
+                <option value=""></option>
+            {% for professor in professors_list %}
+                <option value="{{professor.name}}" >{{professor.name}}</option>
+            {% endfor %}
+            </select></div><br>
+            <div>
+            <button type="button" class="add_review_button" name="cancel" onclick="hideSaveCourseForm()" >Cancel</button>
+            <button type="submit" class="add_review_button" name="submit" >Save</button>
+            </div>
+        </form>
+    </div>
     {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
         <!-- Rating -->

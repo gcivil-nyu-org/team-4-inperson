@@ -49,8 +49,12 @@ def search_by_course_name(request: HttpRequest):
             current_course_info = get_course_results_info(i)
             if len(current_course_info) > 0:
                 filtered_courses.append(current_course_info)
-        paginator = Paginator(filtered_courses, 10)
 
+        if request.method == "POST":
+            # Apply checkbox filters
+            filtered_courses = apply_result_filters(request, filtered_courses)
+
+        paginator = Paginator(filtered_courses, 10)
         page_number = request.GET.get('page')
 
         try:
@@ -64,7 +68,14 @@ def search_by_course_name(request: HttpRequest):
             "page_obj": page_obj,
             "courses": filtered_courses,
             "query": query,
+            "filters": False
         }
+
+        if request.method == "POST":
+            # Set checkbox UI values
+            context["filters"] = True
+            apply_filter_checkbox_values(request, context)
+
         return render(request, "search/courseResult.html", context)
     except Exception as e:
         logger.exception(e)

@@ -302,6 +302,7 @@ div.review {
   padding: 18px;
   font-size: 1.2rem;
   margin-bottom: 15px;
+  clear: right;
 }
 
 .review > p {
@@ -387,6 +388,7 @@ h5.course-title {
   float:left;
   color: #000000;
 }
+
 span.rev, span.left-section {
   font-family: inter-medium;
   font-size: 18px;
@@ -487,6 +489,10 @@ ul.result-side-links {
 
 .result-side-links > li {
   padding-bottom: 20px;
+}
+
+span.result-side-links-header {
+  font-size: 22px;
 }
 
 /*put the dropdown for sorting under the name title, course id, course description, */
@@ -691,35 +697,6 @@ button.oauth-button {
 /* Show the checkmark when checked */
 .container input:checked ~ .checkmark:after {
   display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 6px;
-  top: 3px;
-  bottom: 3px;
-  width: 3px;
-  height: 7px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-ul.result-side-links {
-  float:left;
-  display: inline;
-  text-align: left;
-  margin-bottom: 10px;
-  padding-left: 20px;
-  list-style: none;
-  overflow-wrap: break-word;
-  width:150px;
-}
-
-.result-side-links > li {
-  padding-bottom: 20px;
 }
 
 /*put the dropdown for sorting under the name title, course id, course description, */
@@ -1045,11 +1022,12 @@ h4.review_text_invalid {
   float: right;
 }
 
-#save-course-form {
+.save-course-form {
     display: none;
     float: right;
     font-size:14px;
     text-align: right;
+    margin-bottom: 10px;
 }
 
 

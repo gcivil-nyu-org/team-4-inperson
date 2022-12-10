@@ -8,44 +8,53 @@
 <div class="detail-title">
     <h1 class="detail-name">Course Results for '{{query}}'</h1>
 </div>
+{% else %}
+<div class="detail-title">
+    <h1 class="detail-name">No Results Found for '{{query}}'</h1>
+</div>
+{% endif %}
 
-<ul class="result-side-links">
-    <li class="result-side-links"><span class="rev">Program</span></li>
+<form method="POST" id="results-filters">
+    {% csrf_token %}
+    <ul class="result-side-links">
+        <li class="result-side-links"><span class="rev result-side-links-header">Filter By
+        </span></li>
 
-    <label class="container">Undergraduate
-        <input id="UY" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
+        <li class="result-side-links"><span class="rev-title">Program</span></li>
+        <label class="container">Undergraduate
+            <input name="UY" id="UY" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and UY == True %} checked {% endif %}
+                   onchange="this.form.submit()">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">Graduate
+            <input name="GY" id="GY" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and GY == True %} checked {% endif %}
+                   onchange="this.form.submit()">
+            <span class="checkmark"></span>
+        </label>
 
-    <label class="container">Graduate
-        <input id="GY" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
+        <li class="result-side-links"><span class="rev-title">Last Offered</span></li>
+        <label class="container">2022
+            <input name="y2022" id="2022" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and y2022 == True %} checked {% endif %}
+                   onchange="this.form.submit()">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">2021
+            <input name="y2021" id="2021" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and y2021 == True %} checked {% endif %}
+                   onchange="document.getElementById('results-filters').submit()">
+            <span class="checkmark"></span>
+        </label>
+    </ul>
+</form>
 
-    <!-- <li class="result-side-links"><span class="rev-title">Department</span></li>
-    <div class="result-dropdown">
-        <form class="search"  method="GET" action="">
-            <select class="dropdown" id="detail-dropdown">
-                <option value="RevDateDesc">CS</option>
-                <option value="RevDateDesc">CE</option>
-                <option value="RevDateDesc">MAT</option>
-                <option value="RevDateDesc">EE</option>
-            </select>
-        </form>
-    </div> -->
-
-    <li class="result-side-links"><span class="rev-title">Last Offered</span></li>
-
-    <label class="container">2022
-        <input id="2022" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
-    <label class="container">2021
-        <input id="2021" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
-</ul>
-
+{% if courses %}
 {% for course in page_obj %}
 
 <div class="results" data-level="{{ course.course_obj.course_subject_code  }}" data-offered="{{  course.last_offered }}" onclick="location.href='/courses/{{course.course_obj.course_id}}';" style="cursor:pointer;">
@@ -91,12 +100,5 @@
         {% endif %}
     </span>
 </div>
-
-{% else %}
-
-<div class="detail-title">
-    <h1 class="detail-name">No Results Found for '{{query}}'</h1>
-</div>
-
 {% endif %}
 {% endblock %}
