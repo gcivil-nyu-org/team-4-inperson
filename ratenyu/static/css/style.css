@@ -941,6 +941,7 @@ div.user-review > form {
   padding: 10px;
   width: 400px;
   height: 200px;
+  white-space: break-spaces;
 }
 
 /* Warning message for invalid Review Text */
