@@ -139,12 +139,14 @@ h2.welcome {
 form.search {
   display: inline-block;
   flex-wrap: nowrap;
-  width: 50%;
+  width: 750px;
   padding-bottom: 50px;
 }
 
 .dropdown {
-  width: 25%;
+  width: 175px;
+  margin: auto;
+  display: inline-block;
   font-size: 18px;
   background: #FFFFFF;
   cursor: pointer;
@@ -517,7 +519,7 @@ h2.register {
   color: black;
   display: flex;
   justify-content: center;
-  padding-top: 150px;
+  padding-top: 100px;
   padding-bottom: 15px;
   line-height: 40%;
 }
