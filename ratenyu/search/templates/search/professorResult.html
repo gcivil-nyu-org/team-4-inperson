@@ -2,8 +2,9 @@
 
 {% block content %}
 {% if professors %}
-<div class="detail-title">
-    <h1 class="detail-name">Professor Results for '{{query}}'</h1>
+<div class="detail-title2">
+    <h1 class="detail-name">Professor Results for '{{query}}'<br>({{professors|length}} results found)</h1><br>
+    <h1 class="detail-name"></h1>
 </div>
 
 <ul class="result-side-links">
@@ -45,13 +46,39 @@
 
 {% for professor in page_obj %}
 
-<div class="detail-sub-course-desc">
-    <p style="margin-bottom:0;"> <a href=/professors/{{professor.professor_obj.professor_id}}>{{ professor.professor_obj.name }}</a> ({{professor.reviews_avg}}/5.0 | {{professor.reviews_list|length}} Reviews) </p>
-<!--    <p style="margin : 0; padding-top:0;">{{ course.course_obj.course_description }} </p>-->
-    <br>
+<div class="results"  onclick="location.href='/professors/{{professor.professor_obj.professor_id}}';" style="cursor:pointer;">
+    <a href=/professors/{{professor.professor_obj.professor_id}}></a>
+    <div class="rev-col-1" style="margin-left:1rem; margin-right:1rem;">
+        {% if professor.reviews_list|length == 0 %}
+        <h5 class="rev-rating">N/A</h5>
+        {% else %}
+            {% if professor.reviews_avg > 2.5 %}
+            <h5 class="rev-rating good-rating">{{ professor.reviews_avg }} / 5</h5>
+            {% else %}
+            <h5 class="rev-rating bad-rating">{{ professor.reviews_avg }} / 5</h5>
+            {% endif %}
+        {% endif %}
+    </div>
 
+    <div class="rev-col-2">
+        <span class="rev">
+        <h5 class="rev-title" style="color:#0a86e7;">
+            {{professor.professor_obj.name}}
+        </h5>
+        <p class="review-date">{{professor.reviews_list|length}} Reviews</p>
+
+        {% if professor.courses|length > 0 %}
+            <p class="results_title">Courses Taught:</p>
+                   <p> {% for c in professor.courses %}
+                        {{ c.course_title|title }}{% if not forloop.last %}, {%endif%}
+                    {% endfor %}</p>
+        {% else %}
+            <p class="results_title">No Courses Found</p>
+        {%endif%}
+
+        </span>
+    </div>
 </div>
-
 {% endfor %}
 
 <div class="pagination">
