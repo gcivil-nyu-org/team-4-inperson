@@ -185,7 +185,7 @@
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
+                <a href="?page=1&rev-sorting={{sorting_reviews}}">&laquo; first</a>
                 <a href="?page={{ page_obj.previous_page_number }}&rev-sorting={{sorting_reviews}}">previous</a>
             {% endif %}
 
