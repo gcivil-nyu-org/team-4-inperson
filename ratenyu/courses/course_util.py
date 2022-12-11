@@ -36,6 +36,8 @@ def create_review_objects(classes: List[Class]) -> List[dict]:
     review_objects = []
     for class_obj in classes:
         review_objects += create_review_objects_from_class(class_obj)
+    review_objects = sorted(review_objects, key=lambda d: d['review_obj'].pub_date, reverse=True)
+    print(review_objects)
     return review_objects
 
 
