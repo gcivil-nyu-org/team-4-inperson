@@ -32,12 +32,18 @@ def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     return review_objects
 
 
-def create_review_objects(classes: List[Class]) -> List[dict]:
+def create_review_objects(classes: List[Class], rev_sorting: str = 'RevDateDesc') -> List[dict]:
     review_objects = []
     for class_obj in classes:
         review_objects += create_review_objects_from_class(class_obj)
-    review_objects = sorted(review_objects, key=lambda d: d['review_obj'].pub_date, reverse=True)
-    print(review_objects)
+    if rev_sorting == 'RevDateDesc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].pub_date, reverse=True)
+    elif rev_sorting == 'RevDateAsc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].pub_date, reverse=False)
+    elif rev_sorting == 'RatingDesc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].rating, reverse=True)
+    elif rev_sorting == 'RatingAsc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].rating, reverse=False)
     return review_objects
 
 

@@ -26,12 +26,12 @@
 <!--            <option value="RatingAsc">Rating Ascending</option>-->
 <!--        </select>-->
 <!--    </form>-->
-        <form class="search"  method="GET" action="">
-        <select class="dropdown" id="detail-dropdown" onchange="sortReviews(this)">
-            <option value="RevDateDesc">Review Date Descending</option>
-            <option value="RevDateAsc">Review Date Ascending</option>
-            <option value="RatingDesc">Rating Descending</option>
-            <option value="RatingAsc">Rating Ascending</option>
+        <form class="search"  method="GET" action="{% url 'courses:course_detail' course_id=course.course_id %}">
+        <select class="dropdown" id="detail-dropdown" name="rev-sorting"  onChange="form.submit();">
+            <option value="RevDateDesc"{%if sorting_reviews == "RevDateDesc" %}selected {%endif%}>Review Date Descending</option>
+            <option value="RevDateAsc" {%if sorting_reviews == "RevDateAsc" %}selected {%endif%}>Review Date Ascending</option>
+            <option value="RatingDesc" {%if sorting_reviews == "RatingDesc" %}selected {%endif%}>Rating Descending</option>
+            <option value="RatingAsc"{%if sorting_reviews == "RatingAsc" %}selected {%endif%}>Rating Ascending</option>
         </select>
     </form>
 
@@ -128,7 +128,7 @@
             </div>
         </form>
     </div>
-    {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
+    {% for review in page_obj %}
     <div class="review" review_professor="{{review.professor_obj.name}}">
         <!-- Rating -->
         <div class="rev-col-1">

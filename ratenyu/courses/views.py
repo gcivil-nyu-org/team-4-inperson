@@ -16,7 +16,11 @@ def course_detail(request, course_id: str):
     LOGGER.debug(f"course_detail: {course_id}")
     try:
         if request.method == "GET":
-            return load_course_detail(request, course_id)
+            rev_sorting = request.GET.get('rev-sorting')
+            if rev_sorting is None:
+                return load_course_detail(request, course_id)
+            else:
+                return load_course_detail(request, course_id, rev_sorting=rev_sorting)
         elif request.method == "POST" and "submit" in request.POST:
             LOGGER.debug(request.POST)
             review, message = add_review_from_details(request)
@@ -29,13 +33,14 @@ def course_detail(request, course_id: str):
 
 
 def load_course_detail(
-    request, course_id: str, review: bool = None, review_message: str = ""
+    request, course_id: str, review: bool = None, review_message: str = "",
+        rev_sorting: str = "RevDateDesc"
 ) -> HttpResponse:
     try:
         course = Course.objects.get(course_id=course_id)
         classes = Class.objects.filter(course=course)
         professors_list = [cl.professor for cl in classes]
-        reviews_list = create_review_objects(classes)
+        reviews_list = create_review_objects(classes, rev_sorting)
         reviews_avg = calculate_rating_avg(reviews_list)
         likes = []
         dislikes = []
@@ -70,6 +75,7 @@ def load_course_detail(
                 "page_obj": page_obj,
                 "likes": likes,
                 "dislikes": dislikes,
+                "sorting_reviews": rev_sorting
             }
         else:
             context = {
@@ -81,6 +87,7 @@ def load_course_detail(
                 "page_obj": page_obj,
                 "likes": likes,
                 "dislikes": dislikes,
+                "sorting_reviews": rev_sorting,
             }
         LOGGER.debug(context)
         return render(request, "courses/detail.html", context)
