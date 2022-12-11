@@ -318,6 +318,12 @@ div.review {
   clear: right;
 }
 
+
+.review:hover {
+  transition: all .1s ease-in-out;
+  transform: scale(1.02);
+}
+
 .review > p {
   margin-right: 20px;
 }
@@ -369,6 +375,11 @@ div.my-course {
   font-size: 1.2rem;
   margin-bottom: 15px;
   overflow: auto;
+}
+
+.my-course:hover {
+  transition: all .1s ease-in-out;
+  transform: scale(1.02);
 }
 
 /* review container title */
