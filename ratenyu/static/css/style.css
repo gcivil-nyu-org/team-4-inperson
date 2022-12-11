@@ -250,6 +250,19 @@ ul.detail-side-links {
   padding: 50px;
 }
 
+.detail-title2 {
+  margin: 0 auto;
+  font-size: 30px;
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+  padding-left:0px;
+  margin-left: 15rem;
+  padding-right: 18px;
+  width: 80%
+}
+
+
 /* Add spacing between detail name and detail rating */
 .detail-name {
   margin-right: 15px;
@@ -1075,6 +1088,13 @@ h4.review_text_invalid {
 a.likes {
   all: unset;
 }
+
+.results_title {
+  font-family: inter-bold;
+  margin-right:-10%;
+}
+
+
 
 
 /* Fonts */
