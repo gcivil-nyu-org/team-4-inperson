@@ -13,14 +13,15 @@
     </div>
 
     <div class="detail-dropdown">
-        <form class="search"  method="GET" action="">
-        <select class="dropdown" id="detail-dropdown" onchange="sortReviews(this)">
-            <option value="RevDateDesc">Review Date Descending</option>
-            <option value="RevDateAsc">Review Date Ascending</option>
-            <option value="RatingDesc">Rating Descending</option>
-            <option value="RatingAsc">Rating Ascending</option>
-            </select>
-        </form>
+    <form class="search"  method="GET" action="{% url 'professors:professor_detail' professor_id=professor.professor_id %}">
+    <select class="dropdown" id="detail-dropdown" name="rev-sorting"  onChange="form.submit();">
+        <option value="RevDateDesc"{%if sorting_reviews == "RevDateDesc" %}selected {%endif%}>Review Date Descending</option>
+        <option value="RevDateAsc" {%if sorting_reviews == "RevDateAsc" %}selected {%endif%}>Review Date Ascending</option>
+        <option value="RatingDesc" {%if sorting_reviews == "RatingDesc" %}selected {%endif%}>Rating Descending</option>
+        <option value="RatingAsc"{%if sorting_reviews == "RatingAsc" %}selected {%endif%}>Rating Ascending</option>
+    </select>
+    </form>
+
         {% if user.is_authenticated %}
             <button onclick="showReviewForm()" style="float: right;">Add Review</button>
         {% endif %}
@@ -91,7 +92,7 @@
             </form>
         </div>
 
-        {% for review in page_obj|dictsortreversed:"review_obj.pub_date" %}
+        {% for review in page_obj %}
         <div class="review" review_course = "{{review.course_obj.course_title}}">
             <!-- Rating -->
             <div class="rev-col-1">
@@ -145,8 +146,8 @@
         <div class="pagination">
             <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <a href="?page=1&rev-sorting={{sorting_reviews}}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&rev-sorting={{sorting_reviews}}">previous</a>
             {% endif %}
 
             <span class="current">
@@ -154,8 +155,8 @@
             </span>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <a href="?page={{ page_obj.next_page_number }}&rev-sorting={{sorting_reviews}}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&rev-sorting={{sorting_reviews}}">last &raquo;</a>
             {% endif %}
             </span>
         </div>
