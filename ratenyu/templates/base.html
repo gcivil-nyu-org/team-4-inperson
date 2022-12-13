@@ -4,17 +4,19 @@
     <title>RateNYU</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{%  static "css/style.css" %}">
+    <link rel="icon" href="{% static "images/ratenyulogo.png"%}">
+
 </head>
-<body style="background: #EEE6F3">
+<body>
     {% if user.is_authenticated %}
         {% include 'navbar2.html' %}
     {% else %}
         {% include 'navbar.html' %}
     {% endif %}
 
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 
-<script type="text/javascript" src="{% static 'javascript/script.js' %}"></script>
+    <script type="text/javascript" src="{% static 'javascript/script.js' %}"></script>
 </body>
 </html>

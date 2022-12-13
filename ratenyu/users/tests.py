@@ -84,11 +84,25 @@ class TestProfilePage(TestCase):
         self.assertTemplateUsed(response, "users/profile.html")
         url = f"http://127.0.0.1:8000/profile/viren"
         self.client.post(url, {"user_name_input": "viren1",
-                               "user_major_input": "com sci",
+                               "user_major_input": "Computer Engineering",
                                "user_status_input": "Sophomore"})
         response = self.client.get(reverse("users:profile", args=["viren"]))
         self.assertContains(response, "viren1")
-        self.assertContains(response, "com sci")
+        self.assertContains(response, "Computer Engineering")
+        self.assertContains(response, "Sophomore")
+
+    def test_edit_profile_page_in_myCourses(self):
+        self.client.login(username="viren", password="viren")
+        response = self.client.get(reverse("users:profile", args=["viren"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "users/profile.html")
+        url = f"http://127.0.0.1:8000/profile/viren/my_courses"
+        self.client.post(url, {"user_name_input": "viren1",
+                               "user_major_input": "Computer Engineering",
+                               "user_status_input": "Sophomore"})
+        response = self.client.get(reverse("users:profile", args=["viren"]))
+        self.assertContains(response, "viren1")
+        self.assertContains(response, "Computer Engineering")
         self.assertContains(response, "Sophomore")
 
     def test_pagination_in_profile_page_number_is_nonint(self):
@@ -166,6 +180,24 @@ def create_test_course() -> Course:
         course_description="course_description",
     )
 
+def create_test_course2() -> Course:
+    Course.objects.create(
+        course_id="2",
+        course_title="test course",
+        course_subject_code="TS-UY",
+        catalog_number="1002",
+        course_description="course_description",
+    )
+
+def create_test_course3() -> Course:
+    Course.objects.create(
+        course_id="3",
+        course_title="test course",
+        course_subject_code="TS-UY",
+        catalog_number="1003",
+        course_description="course_description",
+    )
+
 
 def create_test_professor() -> Professor:
     Professor.objects.create(
@@ -197,6 +229,19 @@ def create_test_class_1(course: Course, professor: Professor) -> Class:
 def create_test_class_2(course: Course, professor: Professor) -> Class:
     return Class.objects.create(
         class_id="2",
+        professor=professor,
+        course=course,
+        class_type="Test",
+        class_section="2",
+        term="Fall2023",
+        last_offered="Fall2023",
+        location="BK",
+        enroll_capacity=50,
+    )
+
+def create_test_class_3(course: Course, professor: Professor) -> Class:
+    return Class.objects.create(
+        class_id="3",
         professor=professor,
         course=course,
         class_type="Test",

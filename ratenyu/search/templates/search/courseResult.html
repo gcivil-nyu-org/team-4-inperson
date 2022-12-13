@@ -1,56 +1,86 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 {% if courses %}
-<div class="detail-title">
-    <h1 class="detail-name">Course Results for '{{query}}'</h1>
+<div class="detail-title2">
+    <h1 class="detail-name">Course Results for '{{query}}'<br>({{courses|length}} results found)</h1>
 </div>
+{% else %}
+<div class="detail-title">
+    <h1 class="detail-name">No Results Found for '{{query}}'</h1>
+</div>
+{% endif %}
 
-<ul class="result-side-links">
-    <li class="result-side-links"><span class="rev-title">Program</span></li>
+<form method="POST" id="results-filters">
+    {% csrf_token %}
+    <ul class="result-side-links">
+        <li class="result-side-links"><span class="rev result-side-links-header">Filter By
+        </span></li>
 
-    <label class="container">Undergraduate
-        <input id="UY" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
+        <li class="result-side-links"><span class="rev-title">Program</span></li>
+        <label class="container">Undergraduate
+            <input name="UY" id="UY" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and UY == True %} checked {% endif %}
+                   onchange="this.form.submit()">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">Graduate
+            <input name="GY" id="GY" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and GY == True %} checked {% endif %}
+                   onchange="this.form.submit()">
+            <span class="checkmark"></span>
+        </label>
 
-    <label class="container">Graduate
-        <input id="GY" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
+        <li class="result-side-links"><span class="rev-title">Last Offered</span></li>
+        <label class="container">2022
+            <input name="y2022" id="2022" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and y2022 == True %} checked {% endif %}
+                   onchange="this.form.submit()">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">2021
+            <input name="y2021" id="2021" type="checkbox"
+                   {% if filters == False %} checked {% endif %}
+                   {% if filters == True and y2021 == True %} checked {% endif %}
+                   onchange="document.getElementById('results-filters').submit()">
+            <span class="checkmark"></span>
+        </label>
+    </ul>
+</form>
 
-    <!-- <li class="result-side-links"><span class="rev-title">Department</span></li>
-    <div class="result-dropdown">
-        <form class="search"  method="GET" action="">
-            <select class="dropdown" id="detail-dropdown">
-                <option value="RevDateDesc">CS</option>
-                <option value="RevDateDesc">CE</option>
-                <option value="RevDateDesc">MAT</option>
-                <option value="RevDateDesc">EE</option>
-            </select>
-        </form>
-    </div> -->
-
-    <li class="result-side-links"><span class="rev-title">Last Offered</span></li>
-
-    <label class="container">2022
-        <input id="2022" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
-    <label class="container">2021
-        <input id="2021" type="checkbox" checked="checked" onclick="resultCheckBoxClicked()">
-        <span class="checkmark"></span>
-    </label>
-</ul>
-
+{% if courses %}
 {% for course in page_obj %}
 
-<div class="detail-sub-course-desc" data-level="{{ course.course_obj.course_subject_code  }}" data-offered="{{  course.last_offered }}">
-    <p style="margin-bottom:0;"> <a href=/courses/{{course.course_obj.course_id}}>{{course.course_obj.course_title}}: {{ course.course_obj.course_subject_code }} {{ course.course_obj.catalog_number }}</a> ({{course.reviews_avg}}/5.0 | {{course.reviews_list|length}} Reviews)</p>
-    <p style="margin : 0; padding-top:0;">{{ course.course_obj.course_description }} </p>
-    <br>
-</div>
+<div class="results" data-level="{{ course.course_obj.course_subject_code  }}" data-offered="{{  course.last_offered }}" onclick="location.href='/courses/{{course.course_obj.course_id}}';" style="cursor:pointer;">
+    <a href=/courses/{{course.course_obj.course_id}}></a>
+    <div class="rev-col-1" style="margin-left:1rem; margin-right:1rem;">
+        {% if course.reviews_list|length == 0 %}
+        <h5 class="rev-rating">N/A</h5>
+        {% else %}
+            {% if course.reviews_avg > 2.5 %}
+            <h5 class="rev-rating good-rating">{{ course.reviews_avg }} / 5</h5>
+            {% else %}
+            <h5 class="rev-rating bad-rating">{{ course.reviews_avg }} / 5</h5>
+            {% endif %}
+        {% endif %}
+    </div>
 
+    <div class="rev-col-2">
+        <span class="rev">
+        <h5 class="rev-title" style="color:#0a86e7;">
+            {{course.course_obj.course_title}}: {{ course.course_obj.course_subject_code }} {{ course.course_obj.catalog_number }}
+        </h5>
+        <p class="review-date">{{course.reviews_list|length}} Reviews</p>
+        <p style="margin-right:-10%;">{{ course.course_obj.course_description }}</p>
+        </span>
+    </div>
+</div>
 {% endfor %}
 
 <div class="pagination">
@@ -70,12 +100,5 @@
         {% endif %}
     </span>
 </div>
-
-{% else %}
-
-<div class="detail-title">
-    <h1 class="detail-name">No Results Found for '{{query}}'</h1>
-</div>
-
 {% endif %}
 {% endblock %}

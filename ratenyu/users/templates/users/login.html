@@ -21,8 +21,10 @@
     </div>
     <form class="register" action="" method="POST">
         {%  csrf_token %}
+        <label style="display: flex; color: rgb(116, 115, 115);">Username</label>
         <input type="text" class="register" name="username" autofocus autocapitalize="none"
-                autocomplete="username" maxlength="150" required id="id_username" placeholder="Username">
+                autocomplete="username" maxlength="150" required id="id_username" placeholder="Username">  
+        <label style="display: flex;  color: rgb(116, 115, 115);">Password</label>
         <input type="password" class="register" name="password" autocomplete="current-password" required
                 id="id_password" placeholder="Password">
         <p><a href="{% url 'users:reset_password' %}">Forgot Password?</a></p>

@@ -16,6 +16,7 @@ LOGGER = logging.getLogger("project")
 REVIEW_ADDED = "Your review was saved!"
 REVIEW_CONTAINS_PROFANITY = "Profane review was not saved!"
 REVIEW_NOT_SAVED = "Uh Oh, something went wrong. Your review could not be saved."
+DUPLICATE_REVIEW = "You already wrote a review for this course."
 
 
 def create_review_objects_from_class(class_obj: Class) -> List[dict]:
@@ -31,10 +32,18 @@ def create_review_objects_from_class(class_obj: Class) -> List[dict]:
     return review_objects
 
 
-def create_review_objects(classes: List[Class]) -> List[dict]:
+def create_review_objects(classes: List[Class], rev_sorting: str = 'RevDateDesc') -> List[dict]:
     review_objects = []
     for class_obj in classes:
         review_objects += create_review_objects_from_class(class_obj)
+    if rev_sorting == 'RevDateDesc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].pub_date, reverse=True)
+    elif rev_sorting == 'RevDateAsc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].pub_date, reverse=False)
+    elif rev_sorting == 'RatingDesc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].rating, reverse=True)
+    elif rev_sorting == 'RatingAsc':
+        review_objects = sorted(review_objects, key=lambda d: d['review_obj'].rating, reverse=False)
     return review_objects
 
 
@@ -66,6 +75,14 @@ def save_new_review(
     )
     course_id = course_id_query(course_subject_code, catalog_number).course_id
     class_obj = get_class(course_id=course_id, professor_name=professor_name)
+    existing_review = Review.objects.filter(user=user)
+    found_matching = False
+    for er in existing_review:
+        if er.class_id.course_id == course_id:
+            found_matching = True
+            break
+    if found_matching:
+        return "Already wrote review for this course"
     new_review = Review(
         review_text=review_text,
         rating=review_rating,
@@ -115,16 +132,26 @@ def add_review_from_details(request) -> tuple:
     review_text = request.POST["review_text"]
     if text_is_valid(review_text):
         try:
-            new_review = Review(
-                review_text=review_text,
-                rating=review_rating,
-                class_id=get_class(course_id, professor_name),
-                user=request.user,
-                pub_date=timezone.now(),
-            )
-            new_review.save()
-            LOGGER.debug("Review saved successfully", review_text)
-            return True, REVIEW_ADDED
+            existing_review = Review.objects.filter(user=request.user)
+            found_matching = False
+            if existing_review:
+                for er in existing_review:
+                    if er.class_id.course_id == course_id:
+                        found_matching = True
+                        break
+            if found_matching:
+                return False, DUPLICATE_REVIEW
+            else:
+                new_review = Review(
+                    review_text=review_text,
+                    rating=review_rating,
+                    class_id=get_class(course_id, professor_name),
+                    user=request.user,
+                    pub_date=timezone.now(),
+                )
+                new_review.save()
+                LOGGER.debug("Review saved successfully", review_text)
+                return True, REVIEW_ADDED
         except Exception as e:
             LOGGER.exception(e)
             return False, REVIEW_NOT_SAVED

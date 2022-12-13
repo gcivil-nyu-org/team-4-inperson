@@ -15,7 +15,11 @@ def professor_detail(request: HttpRequest, professor_id: str):
     LOGGER.debug(f"professor_detail: {professor_id}")
     try:
         if request.method == "GET":
-            return load_professor_detail(request, professor_id)
+            rev_sorting = request.GET.get('rev-sorting')
+            if rev_sorting is None:
+                return load_professor_detail(request, professor_id)
+            else:
+                return load_professor_detail(request, professor_id, rev_sorting=rev_sorting)
         elif request.method == "POST" and "submit" in request.POST:
             LOGGER.debug(request.POST)
             review, message = add_review_from_details(request)
@@ -29,12 +33,12 @@ def professor_detail(request: HttpRequest, professor_id: str):
 
 
 def load_professor_detail(request: HttpRequest, professor_id: str, review: bool = None,
-                          review_message: str = "") -> HttpResponse:
+                          review_message: str = "",rev_sorting: str = "RevDateDesc") -> HttpResponse:
     try:
         professor = Professor.objects.get(pk=professor_id)
         classes = Class.objects.filter(professor_id=professor_id)
         courses_list = [cl.course for cl in classes]
-        reviews_list = create_review_objects(classes)
+        reviews_list = create_review_objects(classes, rev_sorting)
         reviews_avg = calculate_rating_avg(reviews_list)
         likes = []
         dislikes = []
@@ -47,16 +51,8 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
         page_number = request.GET.get('page')
 
         for rev in reviews_list:
-            vote = Vote.objects.filter(review=rev['review_obj'])
-            like_counter = 0
-            dislike_counter = 0
-            for i in vote:
-                if i.vote == 'L':
-                    like_counter += 1
-                elif i.vote == 'D':
-                    dislike_counter += 1
-            rev["like"] = like_counter
-            rev["dislike"] = dislike_counter
+            rev["like"] = len(Vote.objects.filter(review=rev['review_obj'], vote="L"))
+            rev["dislike"] = len(Vote.objects.filter(review=rev['review_obj'], vote="D"))
 
         try:
             page_obj = paginator.get_page(page_number)
@@ -76,6 +72,7 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
                 "page_obj": page_obj,
                 "likes": likes,
                 "dislikes": dislikes,
+                "sorting_reviews": rev_sorting,
             }
         else:
             context = {
@@ -86,6 +83,7 @@ def load_professor_detail(request: HttpRequest, professor_id: str, review: bool 
                 "page_obj": page_obj,
                 "likes": likes,
                 "dislikes": dislikes,
+                "sorting_reviews": rev_sorting,
             }
         return render(request, "professors/detail.html", context)
     except Exception as e:

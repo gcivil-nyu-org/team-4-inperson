@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class = "user-panel" id="profile_div">
     <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
@@ -16,7 +17,6 @@
         <p id="user_status"> {{user_details.student_status}} </p>
             <button type="submit" class="user-form" onclick="hideProfile(document.querySelectorAll('.user-panel'))" id="edit_profile">Edit Profile</button>
             <br><br><br>
-<!--            <button onclick="window.location.href='/profile/{{user_details.name}}/my_courses';" class="user-form">My Courses</button>-->
     </div>
 </div>
 
@@ -26,11 +26,15 @@
         <h1 class = "user-details">Hello <br><br> {{user_details.user}}!</h1>
         <div class="user-form">
             <label for="user_name_input" class = 'user-form'> Name </label>
-            <input required="True" class="edit-form" id='user_name_input' name="user_name_input" value="{{user_details.name}}"/>
+            <input required="True" class="edit-form" id='user_name_input' name="user_name_input" value="{{user_details.name}}" maxlength="100"/>
             <label for="user_username_input" class = 'user-form'> Username </label>
-            <input required="True" readonly class="edit-form" id="user_username_input" name="user_username_input" value="{{user_details.user}}"/>
+            <input required="True" readonly class="edit-form" id="user_username_input" name="user_username_input" value="{{user_details.user}}" maxlength="100"/>
             <label for="user_major_input" class = 'user-form'> Major </label>
-            <input required="True" class="edit-form" id="user_major_input"  name="user_major_input" value="{{user_details.major}}"/>
+            <select value="user_details.major" name="user_major_input" class="edit-dropdown" required="" id="user_major_input">
+                {% for n in list_of_majors %}
+                    <option value="{{ n.0 }}" {% if n.1 == user_details.major %} selected {% endif %}>{{ n.1 }}</option>
+                {% endfor %}
+            </select>
             <label for="user_status_input" class = 'user-form'> Student Status </label>
             <select value="user_details.student_status" name="user_status_input" class="edit-dropdown" required="" id="user_status_input">
                 <option value="Freshman">Freshman</option>
@@ -51,7 +55,11 @@
 </form>
 
 <div class="user-reviews">
-    <h1><a href="{% url "users:profile" user_name=request.user %}">My Reviews</a> | <a href="{% url "users:my_courses" user_name=request.user %}">My Courses</a></h1>
+    <div>
+        <a class="delete-review-btn review-btn" style="padding: 10px" href="{% url "users:profile" user_name=request.user %}">My Reviews</a>
+        <a class="delete-review-btn review-btn" href="{% url "users:my_courses" user_name=request.user %}">My Courses</a>
+        <hr>
+      </div>
     {% if messages %}
         {% for message in messages %}
             {% if message.success %}
@@ -61,41 +69,80 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-    <div class="nyu-logo-light">
-    </div>
+
     {% for review in page_obj %}
-        <div class="user-review">
-            <p style="padding-top: 3px;">{{ review.pub_date.month }}/{{ review.pub_date.day }}/{{ review.pub_date.year }}<br>
-                {{ review.rating }}.0/5.0<br></p>
-            <p><span class="user-title">
-                Course: <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a>
-                | Professor : <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a></span>
-                <button class="edit-review-btn" onclick="showEditForm({{ review.id }})">Edit Review</button>
-                <span hidden="True" id="csrf">{{csrf_token}}</span>
-                <a onclick="return confirm('Are you sure you want to delete this Review?')" href="{% url 'courses:delete_review' review.id %}" class="delete-review-btn">Delete Review</a><br>
-
-                <span name="static-review-text-{{ review.id }}">{{ review.review_text }}<br></span></p>
+    <div class="review">
+        <!-- Rating -->
+        <div class="rev-col-1">
+            {% if review.rating > 2.5 %}
+            <h5 class="rev-rating good-rating">{{ review.rating }} / 5</h5>
+            {% else %}
+            <h5 class="rev-rating bad-rating">{{ review.rating }} / 5</h5>
+            {% endif %}
         </div>
 
-        <div class="user-review">
-            <p></p>
-            <form name="edit-review-form-{{ review.id }}" class="review-text-box" action="{% url 'courses:edit_review' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="review_id" value={{review.id}}>
-                <div class="star-rating">
-                    <i class="prof-star star-1" data-star="1"></i>
-                    <i class="prof-star star-2" data-star="2"></i>
-                    <i class="prof-star star-3" data-star="3"></i>
-                    <i class="prof-star star-4" data-star="4"></i>
-                    <i class="prof-star star-5" data-star="5"></i>
-                </div><br>
-                <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True" value="{{review.rating}}">
-                <textarea required name="new_review_text" class="add_review_textarea"
-                          placeholder="Must adhere to RateNYU standards: No profanity." >{{review.review_text}}</textarea><br>
-                <button type="submit" class="edit-review-btn">Save</button>
-                <button type="button" class="edit-review-btn" onclick="hideEditForm({{ review.id }})">Cancel</button>
-            </form>
+        <!-- Title, Date, and Review Text -->
+        <div class="rev-col-2">
+            <span class="rev">
+                <h5 class="rev-title">
+                    <a href="{% url 'courses:course_detail' course_id=review.class_id.course.course_id %}">{{ review.class_id.course.course_title }}</a> 
+                    <span style="font-family: inter-bold;">by</span>
+                    <a href="{% url 'professors:professor_detail' professor_id=review.class_id.professor.professor_id %}">{{ review.class_id.professor.name }}</a>
+                </h5>
+                <p class="review-date">{{ review.pub_date.date }}</p>
+                <p id="static-review-text-{{ review.id|safe }}">{{ review.review_text }}</p>
+            </span>
+
+            <!-- Edit Review Form (Hidden by default) -->
+            <div class="user-review">
+                <p></p>
+                <form name="edit-review-form-{{ review.id }}" class="review-text-box" action="{% url 'courses:edit_review' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="review_id" value={{review.id}}>
+                    <div class="star-rating">
+                        <i class="prof-star star-1" data-star="1"></i>
+                        <i class="prof-star star-2" data-star="2"></i>
+                        <i class="prof-star star-3" data-star="3"></i>
+                        <i class="prof-star star-4" data-star="4"></i>
+                        <i class="prof-star star-5" data-star="5"></i>
+                    </div><br>
+                    <input id="review_rating" type="number"  class="add_review_input" name="review_rating" hidden="True" value="{{review.rating}}">
+                    <textarea required name="new_review_text" class="add_review_textarea"
+                              placeholder="Must adhere to RateNYU standards: No profanity." >{{review.review_text}}</textarea><br>
+                    <button type="submit" class="edit-review-btn">Save</button>
+                    <button type="button" class="edit-review-btn" onclick="hideEditForm({{ review.id }})">Cancel</button>
+                </form>
+            </div>
         </div>
+
+        <div class="rev-col-3">
+            <button class="delete-review-btn" onclick="showEditForm({{ review.id }})">Edit</button>
+                    <a onclick="return confirm('Are you sure you want to delete this Review?')" href="{% url 'courses:delete_review' review.id %}" class="delete-review-btn">Delete</a>
+            <!-- Thumbs up -->
+            <br>
+            <div class="like {% if review.id in likes %} active {% endif %}" id="like-{{ review.id }}">
+                <a class="likes">
+                <i class="fa fa-thumbs-up fa-3x like"
+                 aria-hidden="true" onclick="likeReview({{ review.id }})">
+                </i>
+                <h3 {% if review.like > 0 %} class="like-color" {% endif %}
+                    id="like-count-{{ review.id }}"> {{ review.like }}</h3>
+                </a>
+            </div>
+            <!-- Thumbs down -->
+            <div class="dislike {% if review.id in dislikes %} active {% endif %}" id="dislike-{{ review.id }}">
+                <a class="likes">
+                <i class="fa fa-thumbs-down fa-3x like"
+                 aria-hidden="true"
+                 onclick="dislikeReview({{ review.id }})">
+                </i>
+                <h3 {% if review.dislike > 0 %} class="dislike-color" {% endif %}
+                    id="dislike-count-{{ review.id }}"> {{ review.dislike }}</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+
     {% endfor %}
     <h3 class="no-reviews" style="display:{% if reviews %} none  {% else %} block {% endif %};">You have not written any reviews. </h3>
 
